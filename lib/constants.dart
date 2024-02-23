@@ -19,6 +19,12 @@ const headingStyle = TextStyle(
   height: 1.5,
 );
 
+const heading2Style = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.bold,
+  color: Colors.black,
+);
+
 const defaultDuration = Duration(milliseconds: 250);
 
 // Form Error
