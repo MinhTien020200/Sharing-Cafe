@@ -9,6 +9,7 @@ const kPrimaryGradientColor = LinearGradient(
 );
 const kSecondaryColor = Color(0xFF979797);
 const kTextColor = Colors.black;
+const kButtonColor = Color(0xFFF6EFED);
 
 const kAnimationDuration = Duration(milliseconds: 200);
 
@@ -17,6 +18,12 @@ const headingStyle = TextStyle(
   fontWeight: FontWeight.bold,
   color: Colors.black,
   height: 1.5,
+);
+
+const heading2Style = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.bold,
+  color: Colors.black,
 );
 
 const defaultDuration = Duration(milliseconds: 250);

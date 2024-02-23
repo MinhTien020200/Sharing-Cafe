@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sharing_cafe/view/screens/init_screen.dart';
 import 'package:sharing_cafe/view/screens/splash/splash_screen.dart';
 
 import 'routes.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Sharing Cafe',
       theme: AppTheme.lightTheme(context),
-      initialRoute: SplashScreen.routeName,
+      initialRoute: InitScreen.routeName,
       routes: routes,
     );
   }
