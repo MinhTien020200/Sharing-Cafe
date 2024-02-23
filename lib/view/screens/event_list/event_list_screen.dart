@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sharing_cafe/constants.dart';
+import 'package:sharing_cafe/view/screens/create_event/create_event_screen.dart';
+import 'package:sharing_cafe/view/screens/event_detail/event_detail_screen.dart';
 import 'package:sharing_cafe/view/screens/event_list/components/event_card_2.dart';
 
 import 'components/event_card.dart';
@@ -31,7 +33,9 @@ class EventListScreen extends StatelessWidget {
               Icons.add_box_outlined,
               size: 24,
             ),
-            onPressed: () {/* ... */},
+            onPressed: () {
+              Navigator.pushNamed(context, CreateEventScreen.routeName);
+            },
           ),
           IconButton(
             icon: const Icon(
@@ -50,7 +54,7 @@ class EventListScreen extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
             const Text(
@@ -61,7 +65,7 @@ class EventListScreen extends StatelessWidget {
               height: 333,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: const <Widget>[
+                children: <Widget>[
                   EventCard2(
                     imageUrl: 'https://picsum.photos/id/230/200/300',
                     title:
@@ -69,6 +73,9 @@ class EventListScreen extends StatelessWidget {
                     dateTime: 'T2, 20 THÁNG 5 LÚC 18.00',
                     location: 'Quận 1, TP.Hồ Chí Minh',
                     attendeeCount: 88,
+                    onTap: () {
+                      Navigator.pushNamed(context, EventDetailScreen.routeName);
+                    },
                   ),
                   EventCard2(
                     imageUrl: 'https://picsum.photos/id/236/200/300',
@@ -76,6 +83,9 @@ class EventListScreen extends StatelessWidget {
                     dateTime: 'T2, 20 THÁNG 5 LÚC 18.00',
                     location: 'Quận 1, TP.Hồ Chí Minh',
                     attendeeCount: 88,
+                    onTap: () {
+                      Navigator.pushNamed(context, EventDetailScreen.routeName);
+                    },
                   ),
                   EventCard2(
                     imageUrl: 'https://picsum.photos/id/233/200/300',
@@ -84,6 +94,9 @@ class EventListScreen extends StatelessWidget {
                     dateTime: 'T2, 20 THÁNG 5 LÚC 18.00',
                     location: 'Quận 1, TP.Hồ Chí Minh',
                     attendeeCount: 88,
+                    onTap: () {
+                      Navigator.pushNamed(context, EventDetailScreen.routeName);
+                    },
                   ),
                 ],
               ),
@@ -107,7 +120,7 @@ class EventListScreen extends StatelessWidget {
             ListView(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              children: const <Widget>[
+              children: <Widget>[
                 EventCard(
                   imageUrl: 'https://picsum.photos/id/230/200/300',
                   title:
@@ -115,6 +128,9 @@ class EventListScreen extends StatelessWidget {
                   dateTime: 'T2, 20 THÁNG 5 LÚC 18.00',
                   location: 'Quận 1, TP.Hồ Chí Minh',
                   attendeeCount: 88,
+                  onTap: () {
+                    Navigator.pushNamed(context, EventDetailScreen.routeName);
+                  },
                 ),
                 EventCard(
                   imageUrl: 'https://picsum.photos/id/236/200/300',
@@ -122,6 +138,9 @@ class EventListScreen extends StatelessWidget {
                   dateTime: 'T2, 20 THÁNG 5 LÚC 18.00',
                   location: 'Quận 1, TP.Hồ Chí Minh',
                   attendeeCount: 88,
+                  onTap: () {
+                    Navigator.pushNamed(context, EventDetailScreen.routeName);
+                  },
                 ),
                 EventCard(
                   imageUrl: 'https://picsum.photos/id/233/200/300',
@@ -130,6 +149,9 @@ class EventListScreen extends StatelessWidget {
                   dateTime: 'T2, 20 THÁNG 5 LÚC 18.00',
                   location: 'Quận 1, TP.Hồ Chí Minh',
                   attendeeCount: 88,
+                  onTap: () {
+                    Navigator.pushNamed(context, EventDetailScreen.routeName);
+                  },
                 ),
               ],
             ),

@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sharing_cafe/constants.dart';
 
 class EventCard2 extends StatelessWidget {
@@ -9,6 +7,7 @@ class EventCard2 extends StatelessWidget {
   final String dateTime;
   final String location;
   final int attendeeCount;
+  final Function() onTap;
 
   const EventCard2({
     super.key,
@@ -17,71 +16,75 @@ class EventCard2 extends StatelessWidget {
     required this.dateTime,
     required this.location,
     required this.attendeeCount,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 300,
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                child: Image.network(
-                  imageUrl,
-                  height: 150.0,
-                  fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: onTap,
+      child: SizedBox(
+        width: 300,
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                  child: Image.network(
+                    imageUrl,
+                    height: 150.0,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    const SizedBox(height: 8.0),
-                    Expanded(
-                      child: Text(
-                        title,
-                        style: heading2Style,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      const SizedBox(height: 8.0),
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: heading2Style,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8.0),
-                    Text(
-                      dateTime,
-                      style: const TextStyle(
-                        color: kPrimaryColor,
-                      ),
-                    ),
-                    const SizedBox(height: 8.0),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.location_on_rounded,
+                      const SizedBox(height: 8.0),
+                      Text(
+                        dateTime,
+                        style: const TextStyle(
                           color: kPrimaryColor,
-                          size: 20,
                         ),
-                        const SizedBox(
-                          width: 8.0,
-                        ),
-                        Text(
-                          location,
-                          style: TextStyle(
-                            color: Colors.grey[600],
+                      ),
+                      const SizedBox(height: 8.0),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.location_on_rounded,
+                            color: kPrimaryColor,
+                            size: 20,
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          const SizedBox(
+                            width: 8.0,
+                          ),
+                          Text(
+                            location,
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
