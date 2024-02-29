@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sharing_cafe/constants.dart';
-import 'package:sharing_cafe/view/screens/create_event/create_event_screen.dart';
-import 'package:sharing_cafe/view/screens/event_detail/event_detail_screen.dart';
-import 'package:sharing_cafe/view/screens/event_list/components/event_card.dart';
+import 'package:sharing_cafe/view/screens/events/create_event/create_event_screen.dart';
+import 'package:sharing_cafe/view/screens/events/event_detail/event_detail_screen.dart';
+import 'package:sharing_cafe/view/screens/events/event_list/components/event_card.dart';
 
 class MyEventScreen extends StatefulWidget {
   static String routeName = "/my-event";

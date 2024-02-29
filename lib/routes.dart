@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
-import 'package:sharing_cafe/view/screens/create_event/create_event_screen.dart';
-import 'package:sharing_cafe/view/screens/event_detail/event_detail_screen.dart';
-import 'package:sharing_cafe/view/screens/event_list/event_list_screen.dart';
-import 'package:sharing_cafe/view/screens/my_event/my_event_screen.dart';
-import 'package:sharing_cafe/view/screens/search/search_screen.dart';
+import 'package:sharing_cafe/view/screens/events/create_event/create_event_screen.dart';
+import 'package:sharing_cafe/view/screens/events/event_detail/event_detail_screen.dart';
+import 'package:sharing_cafe/view/screens/events/event_list/event_list_screen.dart';
+import 'package:sharing_cafe/view/screens/events/my_event/my_event_screen.dart';
+import 'package:sharing_cafe/view/screens/events/search/search_screen.dart';
 //import 'package:sharing_cafe/view/screens/home/home_screen.dart';
 
 import 'view/screens/complete_profile/complete_profile_screen.dart';

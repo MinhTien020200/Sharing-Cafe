@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sharing_cafe/constants.dart';
-import 'package:sharing_cafe/view/screens/create_event/create_event_screen.dart';
-import 'package:sharing_cafe/view/screens/event_detail/event_detail_screen.dart';
-import 'package:sharing_cafe/view/screens/event_list/components/event_card_2.dart';
-import 'package:sharing_cafe/view/screens/my_event/my_event_screen.dart';
-import 'package:sharing_cafe/view/screens/search/search_screen.dart';
+import 'package:sharing_cafe/view/screens/events/create_event/create_event_screen.dart';
+import 'package:sharing_cafe/view/screens/events/event_detail/event_detail_screen.dart';
+import 'package:sharing_cafe/view/screens/events/event_list/components/event_card_2.dart';
+import 'package:sharing_cafe/view/screens/events/my_event/my_event_screen.dart';
+import 'package:sharing_cafe/view/screens/events/search/search_screen.dart';
 
 import 'components/event_card.dart';
 
