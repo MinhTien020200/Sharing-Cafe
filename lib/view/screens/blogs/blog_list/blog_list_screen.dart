@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/view/screens/blogs/all_blog/all_blog_screen.dart';
+import 'package:sharing_cafe/view/screens/blogs/blog_categories.dart/blog_categories_screen.dart';
+import 'package:sharing_cafe/view/screens/blogs/blog_category.dart/blog_category_screen.dart';
 import 'package:sharing_cafe/view/screens/blogs/blog_list/components/blog_card_2.dart';
 import 'package:sharing_cafe/view/screens/blogs/blog_list/components/blog_card_3.dart';
 import 'package:sharing_cafe/view/screens/events/create_event/create_event_screen.dart';
@@ -122,7 +124,8 @@ class BlogListScreen extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, AllBlogScreen.routeName);
+                      Navigator.pushNamed(
+                          context, BlogCategoriesScreen.routeName);
                     },
                     child: const Text(
                       "Xem tất cả",
@@ -144,7 +147,7 @@ class BlogListScreen extends StatelessWidget {
                   title: 'Du lịch',
                   number: 323,
                   onTap: () {
-                    Navigator.pushNamed(context, EventDetailScreen.routeName);
+                    Navigator.pushNamed(context, BlogCategoryScreen.routeName);
                   },
                 ),
                 BlogCard3(
@@ -152,7 +155,7 @@ class BlogListScreen extends StatelessWidget {
                   title: 'Sức khỏe',
                   number: 323,
                   onTap: () {
-                    Navigator.pushNamed(context, EventDetailScreen.routeName);
+                    Navigator.pushNamed(context, BlogCategoryScreen.routeName);
                   },
                 ),
                 BlogCard3(
@@ -160,7 +163,7 @@ class BlogListScreen extends StatelessWidget {
                   title: 'Đời sống',
                   number: 323,
                   onTap: () {
-                    Navigator.pushNamed(context, EventDetailScreen.routeName);
+                    Navigator.pushNamed(context, BlogCategoryScreen.routeName);
                   },
                 ),
               ]),

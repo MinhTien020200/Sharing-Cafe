@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:sharing_cafe/view/screens/blogs/all_blog/all_blog_screen.dart';
+import 'package:sharing_cafe/view/screens/blogs/blog_categories.dart/blog_categories_screen.dart';
+import 'package:sharing_cafe/view/screens/blogs/blog_category.dart/blog_category_screen.dart';
 import 'package:sharing_cafe/view/screens/blogs/blog_list/blog_list_screen.dart';
 import 'package:sharing_cafe/view/screens/events/create_event/create_event_screen.dart';
 import 'package:sharing_cafe/view/screens/events/event_detail/event_detail_screen.dart';
@@ -36,4 +38,6 @@ final Map<String, WidgetBuilder> routes = {
   SearchScreen.routeName: (context) => const SearchScreen(),
   BlogListScreen.routeName: (context) => const BlogListScreen(),
   AllBlogScreen.routeName: (context) => const AllBlogScreen(),
+  BlogCategoriesScreen.routeName: (context) => const BlogCategoriesScreen(),
+  BlogCategoryScreen.routeName: (context) => const BlogCategoryScreen(),
 };
