@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sharing_cafe/constants.dart';
+import 'package:sharing_cafe/view/screens/blogs/all_blog/all_blog_screen.dart';
 import 'package:sharing_cafe/view/screens/blogs/blog_list/components/blog_card_2.dart';
 import 'package:sharing_cafe/view/screens/blogs/blog_list/components/blog_card_3.dart';
 import 'package:sharing_cafe/view/screens/events/create_event/create_event_screen.dart';
@@ -120,7 +121,9 @@ class BlogListScreen extends StatelessWidget {
                     style: heading2Style,
                   ),
                   GestureDetector(
-                    onTap: () {/* ... */},
+                    onTap: () {
+                      Navigator.pushNamed(context, AllBlogScreen.routeName);
+                    },
                     child: const Text(
                       "Xem tất cả",
                       style: TextStyle(
@@ -172,7 +175,9 @@ class BlogListScreen extends StatelessWidget {
                     style: heading2Style,
                   ),
                   GestureDetector(
-                    onTap: () {/* ... */},
+                    onTap: () {
+                      Navigator.pushNamed(context, AllBlogScreen.routeName);
+                    },
                     child: const Text(
                       "Xem tất cả",
                       style: TextStyle(
