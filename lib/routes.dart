@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:sharing_cafe/view/screens/blogs/blog_list/blog_list_screen.dart';
 import 'package:sharing_cafe/view/screens/events/create_event/create_event_screen.dart';
 import 'package:sharing_cafe/view/screens/events/event_detail/event_detail_screen.dart';
 import 'package:sharing_cafe/view/screens/events/event_list/event_list_screen.dart';
@@ -32,4 +33,5 @@ final Map<String, WidgetBuilder> routes = {
   CreateEventScreen.routeName: (context) => const CreateEventScreen(),
   MyEventScreen.routeName: (context) => const MyEventScreen(),
   SearchScreen.routeName: (context) => const SearchScreen(),
+  BlogListScreen.routeName: (context) => const BlogListScreen(),
 };

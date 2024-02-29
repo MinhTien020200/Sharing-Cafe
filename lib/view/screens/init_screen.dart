@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sharing_cafe/constants.dart';
+import 'package:sharing_cafe/view/screens/blogs/blog_list/blog_list_screen.dart';
 import 'package:sharing_cafe/view/screens/events/event_list/event_list_screen.dart';
 //import 'package:sharing_cafe/view/screens/home/home_screen.dart';
 //import 'package:sharing_cafe/screens/profile/profile_screen.dart';
@@ -34,9 +35,7 @@ class _InitScreenState extends State<InitScreen> {
     const Center(
       child: Text("Kết nối"),
     ),
-    const Center(
-      child: Text("Blog"),
-    ),
+    const BlogListScreen(),
     const Center(
       child: Text("Trang cá nhân"),
     ),
