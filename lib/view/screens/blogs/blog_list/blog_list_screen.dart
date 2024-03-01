@@ -1,13 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/view/screens/blogs/all_blog/all_blog_screen.dart';
 import 'package:sharing_cafe/view/screens/blogs/blog_categories.dart/blog_categories_screen.dart';
 import 'package:sharing_cafe/view/screens/blogs/blog_category.dart/blog_category_screen.dart';
+import 'package:sharing_cafe/view/screens/blogs/blog_detail/blog_detail_screen.dart';
 import 'package:sharing_cafe/view/screens/blogs/blog_list/components/blog_card_2.dart';
 import 'package:sharing_cafe/view/screens/blogs/blog_list/components/blog_card_3.dart';
-import 'package:sharing_cafe/view/screens/events/create_event/create_event_screen.dart';
-import 'package:sharing_cafe/view/screens/events/event_detail/event_detail_screen.dart';
+import 'package:sharing_cafe/view/screens/blogs/create_blog/create_blog_screen.dart';
 import 'package:sharing_cafe/view/screens/events/search/search_screen.dart';
 
 import 'components/blog_card.dart';
@@ -39,7 +38,7 @@ class BlogListScreen extends StatelessWidget {
               size: 24,
             ),
             onPressed: () {
-              Navigator.pushNamed(context, CreateEventScreen.routeName);
+              Navigator.pushNamed(context, CreateBlogScreen.routeName);
             },
           ),
           IconButton(
@@ -80,7 +79,7 @@ class BlogListScreen extends StatelessWidget {
                     ownerName: "Thịnh",
                     time: "2 ngày trước",
                     onTap: () {
-                      Navigator.pushNamed(context, EventDetailScreen.routeName);
+                      Navigator.pushNamed(context, BlogDetailScreen.routeName);
                     },
                   ),
                   BlogCard2(
@@ -93,7 +92,7 @@ class BlogListScreen extends StatelessWidget {
                     ownerName: "Kiều",
                     time: "6 ngày trước",
                     onTap: () {
-                      Navigator.pushNamed(context, EventDetailScreen.routeName);
+                      Navigator.pushNamed(context, BlogDetailScreen.routeName);
                     },
                   ),
                   BlogCard2(
@@ -107,7 +106,7 @@ class BlogListScreen extends StatelessWidget {
                     ownerName: "An",
                     time: "10 ngày trước",
                     onTap: () {
-                      Navigator.pushNamed(context, EventDetailScreen.routeName);
+                      Navigator.pushNamed(context, BlogDetailScreen.routeName);
                     },
                   ),
                 ],
@@ -207,7 +206,7 @@ class BlogListScreen extends StatelessWidget {
                   ownerName: 'Bùi Hoàng Việt Anh',
                   time: '5 phút trước',
                   onTap: () {
-                    Navigator.pushNamed(context, EventDetailScreen.routeName);
+                    Navigator.pushNamed(context, BlogDetailScreen.routeName);
                   },
                 ),
                 BlogCard(
@@ -220,7 +219,7 @@ class BlogListScreen extends StatelessWidget {
                   ownerName: 'Phạm Hải Yến',
                   time: '8 phút trước',
                   onTap: () {
-                    Navigator.pushNamed(context, EventDetailScreen.routeName);
+                    Navigator.pushNamed(context, BlogDetailScreen.routeName);
                   },
                 ),
                 BlogCard(
@@ -234,7 +233,7 @@ class BlogListScreen extends StatelessWidget {
                   ownerName: 'Khuất Văn Khang',
                   time: '12 phút trước',
                   onTap: () {
-                    Navigator.pushNamed(context, EventDetailScreen.routeName);
+                    Navigator.pushNamed(context, BlogDetailScreen.routeName);
                   },
                 ),
               ],
