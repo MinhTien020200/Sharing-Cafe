@@ -1,3 +1,5 @@
+import 'package:sharing_cafe/helper/datetime_helper.dart';
+
 class EventModel {
   final String eventId;
   final String organizerId;
@@ -28,12 +30,12 @@ class EventModel {
       organizerId: json['organizer_id'],
       title: json['title'],
       description: json['description'],
-      timeOfEvent: DateTime.parse(json['time_of_event']),
+      timeOfEvent: DateTimeHelper.parseToLocal(json['time_of_event']),
       location: json['location'],
       participantsCount: json['participants_count'],
       isAprrove: json['is_approve'],
       backgroundImage: json['background_img'],
-      createdAt: DateTime.parse(json['created_at']),
+      createdAt: DateTimeHelper.parseToLocal(json['created_at']),
     );
   }
 }

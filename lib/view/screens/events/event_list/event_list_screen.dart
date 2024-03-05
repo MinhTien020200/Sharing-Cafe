@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
+import 'package:sharing_cafe/helper/datetime_helper.dart';
 import 'package:sharing_cafe/provider/event_provider.dart';
 import 'package:sharing_cafe/view/screens/events/create_event/create_event_screen.dart';
 import 'package:sharing_cafe/view/screens/events/event_detail/event_detail_screen.dart';
@@ -122,12 +123,16 @@ class _EventListScreenState extends State<EventListScreen> {
                             return EventCard2(
                               imageUrl: event.backgroundImage,
                               title: event.title,
-                              dateTime: 'T2, 20 THÁNG 5 LÚC 18.00',
+                              dateTime: DateTimeHelper.formatDateTime(
+                                  event.createdAt),
                               location: event.location,
                               attendeeCount: event.participantsCount,
                               onTap: () {
                                 Navigator.pushNamed(
-                                    context, EventDetailScreen.routeName);
+                                    context, EventDetailScreen.routeName,
+                                    arguments: {
+                                      'id': event.eventId,
+                                    });
                               },
                             );
                           },
@@ -167,7 +172,10 @@ class _EventListScreenState extends State<EventListScreen> {
                             attendeeCount: event.participantsCount,
                             onTap: () {
                               Navigator.pushNamed(
-                                  context, EventDetailScreen.routeName);
+                                  context, EventDetailScreen.routeName,
+                                  arguments: {
+                                    'id': event.eventId,
+                                  });
                             },
                           );
                         },

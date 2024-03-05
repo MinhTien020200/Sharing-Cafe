@@ -24,4 +24,19 @@ class EventService {
     }
     return [];
   }
+
+  Future<EventModel?> getEventDetails(String eventId) async {
+    try {
+      var response = await ApiHelper().get('event/$eventId');
+      if (response.statusCode == HttpStatus.ok) {
+        return EventModel.fromJson(json.decode(response.body));
+      } else {
+        ErrorHelper.showError(
+            message: "Lỗi ${response.statusCode}: Không thể lấy sự kiện");
+      }
+    } on Exception catch (_, e) {
+      print(e);
+    }
+    return null;
+  }
 }
