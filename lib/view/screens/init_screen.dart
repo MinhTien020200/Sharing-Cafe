@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/view/screens/blogs/blog_list/blog_list_screen.dart';
 import 'package:sharing_cafe/view/screens/events/event_list/event_list_screen.dart';
+import 'package:sharing_cafe/view/screens/matching/swipe_screen.dart';
 //import 'package:sharing_cafe/view/screens/home/home_screen.dart';
 //import 'package:sharing_cafe/screens/profile/profile_screen.dart';
 
@@ -32,9 +33,7 @@ class _InitScreenState extends State<InitScreen> {
       child: Text("Trang chủ"),
     ),
     const EventListScreen(),
-    const Center(
-      child: Text("Kết nối"),
-    ),
+    const SwipeScreen(),
     const BlogListScreen(),
     const Center(
       child: Text("Trang cá nhân"),
