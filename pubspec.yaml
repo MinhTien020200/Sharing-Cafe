@@ -16,6 +16,8 @@ dependencies:
   provider: ^6.1.1 # for State management
   flutter_html: ^3.0.0-beta.2
   flutter_quill: ^9.3.1
+  http: ^1.2.1
+  fluttertoast: ^8.2.4
 
 dev_dependencies:
   flutter_test:
