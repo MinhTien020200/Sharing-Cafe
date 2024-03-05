@@ -5,8 +5,6 @@ class BlogCard extends StatelessWidget {
   final String imageUrl;
   final String title;
   final String dateTime;
-  final String location;
-  final int attendeeCount;
   final String avtUrl;
   final String ownerName;
   final String time;
@@ -17,8 +15,6 @@ class BlogCard extends StatelessWidget {
       required this.imageUrl,
       required this.title,
       required this.dateTime,
-      required this.location,
-      required this.attendeeCount,
       required this.onTap,
       required this.avtUrl,
       required this.ownerName,

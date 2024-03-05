@@ -120,8 +120,6 @@ class _BlogCategoryScreenState extends State<BlogCategoryScreen> {
                     title:
                         'Hội thảo nghệ thuật "Sell Yourself" - Hành trình Khởi lửa hành trang',
                     dateTime: 'T2, 20 THÁNG 5 LÚC 18.00',
-                    location: 'Quận 1, TP.Hồ Chí Minh',
-                    attendeeCount: 88,
                     avtUrl: 'https://picsum.photos/id/43/200/300',
                     ownerName: 'Bùi Hoàng Việt Anh',
                     time: '5 phút trước',
@@ -133,8 +131,6 @@ class _BlogCategoryScreenState extends State<BlogCategoryScreen> {
                     imageUrl: 'https://picsum.photos/id/765/200/300',
                     title: 'Lễ hội âm nhạc Infinity Street Festival 2024',
                     dateTime: 'T2, 20 THÁNG 5 LÚC 18.00',
-                    location: 'Quận 1, TP.Hồ Chí Minh',
-                    attendeeCount: 88,
                     avtUrl: 'https://picsum.photos/id/215/200/300',
                     ownerName: 'Phạm Hải Yến',
                     time: '8 phút trước',
@@ -147,8 +143,6 @@ class _BlogCategoryScreenState extends State<BlogCategoryScreen> {
                     title:
                         'M\'aRTISaN Workshop: Workshop vẽ tranh Canvas - THE WORLD AT YOUR FINGERTIPS',
                     dateTime: 'T2, 20 THÁNG 5 LÚC 18.00',
-                    location: 'Quận 1, TP.Hồ Chí Minh',
-                    attendeeCount: 88,
                     avtUrl: 'https://picsum.photos/id/23/200/300',
                     ownerName: 'Khuất Văn Khang',
                     time: '12 phút trước',
@@ -161,8 +155,6 @@ class _BlogCategoryScreenState extends State<BlogCategoryScreen> {
                     title:
                         'M\'aRTISaN Workshop: Workshop vẽ tranh Canvas - THE WORLD AT YOUR FINGERTIPS',
                     dateTime: 'T2, 20 THÁNG 5 LÚC 18.00',
-                    location: 'Quận 1, TP.Hồ Chí Minh',
-                    attendeeCount: 88,
                     avtUrl: 'https://picsum.photos/id/23/200/300',
                     ownerName: 'Khuất Văn Khang',
                     time: '12 phút trước',
@@ -175,8 +167,6 @@ class _BlogCategoryScreenState extends State<BlogCategoryScreen> {
                     title:
                         'M\'aRTISaN Workshop: Workshop vẽ tranh Canvas - THE WORLD AT YOUR FINGERTIPS',
                     dateTime: 'T2, 20 THÁNG 5 LÚC 18.00',
-                    location: 'Quận 1, TP.Hồ Chí Minh',
-                    attendeeCount: 88,
                     avtUrl: 'https://picsum.photos/id/23/200/300',
                     ownerName: 'Khuất Văn Khang',
                     time: '12 phút trước',
