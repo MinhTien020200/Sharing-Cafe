@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sharing_cafe/provider/blog_provider.dart';
+import 'package:sharing_cafe/provider/event_provider.dart';
 import 'package:sharing_cafe/view/screens/init_screen.dart';
 import 'package:sharing_cafe/view/screens/splash/splash_screen.dart';
 
@@ -15,12 +18,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Sharing Cafe',
-      theme: AppTheme.lightTheme(context),
-      initialRoute: InitScreen.routeName,
-      routes: routes,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => EventProvider()),
+        ChangeNotifierProvider(create: (_) => BlogProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Sharing Cafe',
+        theme: AppTheme.lightTheme(context),
+        initialRoute: InitScreen.routeName,
+        routes: routes,
+      ),
     );
   }
 }
