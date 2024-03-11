@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/helper/datetime_helper.dart';
+import 'package:sharing_cafe/provider/account_provider.dart';
 import 'package:sharing_cafe/provider/event_provider.dart';
 import 'package:sharing_cafe/view/screens/events/create_event/create_event_screen.dart';
 import 'package:sharing_cafe/view/screens/events/event_detail/event_detail_screen.dart';
@@ -52,6 +53,11 @@ class _EventListScreenState extends State<EventListScreen> {
         _isLoadingSuggestEvents = false;
       });
     });
+  }
+
+  Future login() async {
+    await Provider.of<AccountProvider>(context, listen: false)
+        .login("janedoe@gmail.com", "pass");
   }
 
   @override
@@ -105,6 +111,12 @@ class _EventListScreenState extends State<EventListScreen> {
             padding: const EdgeInsets.all(16.0),
             child: ListView(
               children: [
+                TextButton(
+                  onPressed: () async {
+                    await login();
+                  },
+                  child: Text("Đăng nhập"),
+                ),
                 const Text(
                   "Đề xuất",
                   style: heading2Style,

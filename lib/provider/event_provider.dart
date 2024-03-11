@@ -6,11 +6,13 @@ class EventProvider extends ChangeNotifier {
   // private variables
   List<EventModel> _newEvents = [];
   List<EventModel> _suggestEvents = [];
+  List<EventModel> _myEvents = [];
   EventModel? _eventDetails;
 
   // public
   List<EventModel> get newEvents => _newEvents;
   List<EventModel> get suggestEvents => _suggestEvents;
+  List<EventModel> get myEvents => _myEvents;
   EventModel get eventDetails => _eventDetails!;
 
   Future getNewEvents() async {
@@ -25,6 +27,11 @@ class EventProvider extends ChangeNotifier {
 
   Future getEventDetails(String id) async {
     _eventDetails = await EventService().getEventDetails(id);
+    notifyListeners();
+  }
+
+  Future getMyEvents() async {
+    _myEvents = await EventService().getMyEvents();
     notifyListeners();
   }
 }
