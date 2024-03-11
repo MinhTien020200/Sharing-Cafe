@@ -66,6 +66,9 @@ class _SwipeScreenState extends State<SwipeScreen> {
                 itemWidth: MediaQuery.of(context).size.width,
                 itemHeight: MediaQuery.of(context).size.height,
                 loop: true,
+                onIndexChanged: (value) {
+                  print("Changed index: $value");
+                },
               ),
             ),
             const SizedBox(

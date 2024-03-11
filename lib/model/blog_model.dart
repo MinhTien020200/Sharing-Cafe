@@ -10,17 +10,22 @@ class BlogModel {
   final DateTime createdAt;
   final String image;
   final String title;
+  final String ownerName;
+  final String category;
 
-  BlogModel(
-      {required this.blogId,
-      required this.userId,
-      required this.content,
-      required this.likesCount,
-      required this.commentsCount,
-      required this.isApprove,
-      required this.createdAt,
-      required this.image,
-      required this.title});
+  BlogModel({
+    required this.blogId,
+    required this.userId,
+    required this.content,
+    required this.likesCount,
+    required this.commentsCount,
+    required this.isApprove,
+    required this.createdAt,
+    required this.image,
+    required this.title,
+    required this.ownerName,
+    required this.category,
+  });
 
   factory BlogModel.fromJson(Map<String, dynamic> json) {
     return BlogModel(
@@ -33,6 +38,8 @@ class BlogModel {
       createdAt: DateTimeHelper.parseToLocal(json["created_at"]),
       image: json["image"],
       title: json["title"],
+      ownerName: json['user_name'],
+      category: json['name'],
     );
   }
 }

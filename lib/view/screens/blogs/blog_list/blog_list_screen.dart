@@ -121,7 +121,10 @@ class _BlogListScreenState extends State<BlogListScreen> {
                             time: howOldFrom(blog.createdAt),
                             onTap: () {
                               Navigator.pushNamed(
-                                  context, BlogDetailScreen.routeName);
+                                  context, BlogDetailScreen.routeName,
+                                  arguments: {
+                                    'id': blog.blogId,
+                                  });
                             },
                           );
                         },
@@ -227,7 +230,10 @@ class _BlogListScreenState extends State<BlogListScreen> {
                           time: howOldFrom(blog.createdAt),
                           onTap: () {
                             Navigator.pushNamed(
-                                context, BlogDetailScreen.routeName);
+                                context, BlogDetailScreen.routeName,
+                                arguments: {
+                                  'id': blog.blogId,
+                                });
                           },
                         );
                       },
