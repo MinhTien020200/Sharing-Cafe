@@ -14,7 +14,47 @@ class EventService {
       var response = await ApiHelper().get('/event');
       if (response.statusCode == HttpStatus.ok) {
         var jsonList = json.decode(response.body) as List;
-        return jsonList.map<EventModel>((e) => EventModel.fromJson(e)).toList();
+        return jsonList
+            .map<EventModel>((e) => EventModel.fromListsJson(e))
+            .toList();
+      } else {
+        ErrorHelper.showError(
+            message:
+                "Lỗi ${response.statusCode}: Không thể lấy danh sách sự kiện");
+      }
+    } on Exception catch (_, e) {
+      print(e);
+    }
+    return [];
+  }
+
+  Future<List<EventModel>> getSuggestEvents() async {
+    try {
+      var response = await ApiHelper().get('/event/popular/events');
+      if (response.statusCode == HttpStatus.ok) {
+        var jsonList = json.decode(response.body) as List;
+        return jsonList
+            .map<EventModel>((e) => EventModel.fromListsJson(e))
+            .toList();
+      } else {
+        ErrorHelper.showError(
+            message:
+                "Lỗi ${response.statusCode}: Không thể lấy danh sách sự kiện");
+      }
+    } on Exception catch (_, e) {
+      print(e);
+    }
+    return [];
+  }
+
+  Future<List<EventModel>> getNewEvents() async {
+    try {
+      var response = await ApiHelper().get('/event/new/events');
+      if (response.statusCode == HttpStatus.ok) {
+        var jsonList = json.decode(response.body) as List;
+        return jsonList
+            .map<EventModel>((e) => EventModel.fromListsJson(e))
+            .toList();
       } else {
         ErrorHelper.showError(
             message:
@@ -47,7 +87,9 @@ class EventService {
       var response = await ApiHelper().get('/user/events/$userId');
       if (response.statusCode == HttpStatus.ok) {
         var jsonList = json.decode(response.body) as List;
-        return jsonList.map<EventModel>((e) => EventModel.fromJson(e)).toList();
+        return jsonList
+            .map<EventModel>((e) => EventModel.fromListsJson(e))
+            .toList();
       } else {
         ErrorHelper.showError(
             message:

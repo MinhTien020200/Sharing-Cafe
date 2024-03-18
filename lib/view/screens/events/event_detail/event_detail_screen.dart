@@ -176,10 +176,10 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                 ),
                                 contentPadding: EdgeInsets.zero,
                                 title: Text(
-                                  eventDetails.location,
+                                  eventDetails.location ?? "",
                                 ),
                                 subtitle: Text(
-                                  eventDetails.location,
+                                  eventDetails.location ?? "",
                                   style: const TextStyle(
                                     color: kSecondaryColor,
                                   ),
@@ -205,7 +205,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                eventDetails.description,
+                                eventDetails.description ?? "",
                                 style: const TextStyle(
                                   fontSize: 16.0,
                                 ),
