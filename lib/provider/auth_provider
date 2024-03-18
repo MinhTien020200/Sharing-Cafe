@@ -1,0 +1,43 @@
+import 'package:flutter/material.dart';
+import 'package:sharing_cafe/service/auth_service.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class AuthProvider extends ChangeNotifier {
+  final AuthService _authService = AuthService();
+  bool _isLoggedIn = false;
+
+  bool get isLoggedIn => _isLoggedIn;
+
+  Future<void> login(String email, String password) async {
+    final success = await _authService.login(email, password);
+    if (success) {
+      _isLoggedIn = true;
+    } else {
+      _isLoggedIn = false;
+    }
+    notifyListeners();
+  }
+}
+
+// class AccountProvider extends ChangeNotifier {
+//   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+//   Future login(String userName, String password) async {
+//     var pref = await _prefs;
+//     var result = await AccountService().login(userName, password);
+//     pref.setString("accessToken", result.token);
+//     pref.setString("userId", result.userId);
+//     pref.setString("email", result.email);
+//     pref.setString("userName", result.userName);
+//     Fluttertoast.showToast(
+//         msg: "Login successfully. Token: ${result.token}"); // remove later
+//     print(result.token +
+//         ": " +
+//         result.userId +
+//         ": " +
+//         result.email +
+//         ": " +
+//         result.userName);
+//   }
+// }

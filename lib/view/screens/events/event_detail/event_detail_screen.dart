@@ -154,6 +154,17 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                       eventDetails.timeOfEvent),
                                 ),
                               ),
+                              ListTile(
+                                leading: const Icon(
+                                  Icons.access_time_filled,
+                                  color: kSecondaryColor,
+                                ),
+                                contentPadding: EdgeInsets.zero,
+                                title: Text(
+                                  DateTimeHelper.formatDateTime2(
+                                      eventDetails.endOfEvent),
+                                ),
+                              ),
                               const ListTile(
                                 leading: Icon(
                                   Icons.person,
@@ -176,7 +187,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                 ),
                                 contentPadding: EdgeInsets.zero,
                                 title: Text(
-                                  eventDetails.location,
+                                  eventDetails.adress,
                                 ),
                                 subtitle: Text(
                                   eventDetails.location,

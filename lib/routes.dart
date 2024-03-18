@@ -11,7 +11,7 @@ import 'package:sharing_cafe/view/screens/events/event_list/event_list_screen.da
 import 'package:sharing_cafe/view/screens/events/my_event/my_event_screen.dart';
 import 'package:sharing_cafe/view/screens/events/search/search_screen.dart';
 import 'package:sharing_cafe/view/screens/matching/swipe_screen.dart';
-//import 'package:sharing_cafe/view/screens/home/home_screen.dart';
+import 'package:sharing_cafe/view/screens/home/home_screen.dart';
 
 import 'view/screens/complete_profile/complete_profile_screen.dart';
 import 'view/screens/forgot_password/forgot_password_screen.dart';
@@ -32,7 +32,7 @@ final Map<String, WidgetBuilder> routes = {
   SignUpScreen.routeName: (context) => const SignUpScreen(),
   CompleteProfileScreen.routeName: (context) => const CompleteProfileScreen(),
   OtpScreen.routeName: (context) => const OtpScreen(),
-  //HomeScreen.routeName: (context) => const HomeScreen(),
+  HomeScreen.routeName: (context) => const HomeScreen(),
   //ProfileScreen.routeName: (context) => const ProfileScreen(),
   EventListScreen.routeName: (context) => const EventListScreen(),
   EventDetailScreen.routeName: (context) => const EventDetailScreen(),

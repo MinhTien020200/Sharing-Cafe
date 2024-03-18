@@ -137,7 +137,7 @@ class _EventListScreenState extends State<EventListScreen> {
                               title: event.title,
                               dateTime: DateTimeHelper.formatDateTime(
                                   event.createdAt),
-                              location: event.location,
+                              location: event.adress,
                               attendeeCount: event.participantsCount,
                               onTap: () {
                                 Navigator.pushNamed(
@@ -180,7 +180,7 @@ class _EventListScreenState extends State<EventListScreen> {
                             imageUrl: event.backgroundImage,
                             title: event.title,
                             dateTime: 'T2, 20 THÁNG 5 LÚC 18.00',
-                            location: event.location,
+                            location: event.adress,
                             attendeeCount: event.participantsCount,
                             onTap: () {
                               Navigator.pushNamed(
