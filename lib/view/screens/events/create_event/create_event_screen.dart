@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sharing_cafe/constants.dart';
+import 'package:sharing_cafe/helper/image_helper.dart';
+import 'package:sharing_cafe/service/image_service.dart';
 import 'package:sharing_cafe/view/components/date_time_picker.dart';
 import 'package:sharing_cafe/view/components/form_field.dart';
 
@@ -12,7 +14,32 @@ class CreateEventScreen extends StatefulWidget {
 }
 
 class _CreateEventScreenState extends State<CreateEventScreen> {
-  // You will need to manage the state for the inputs and selections
+  String? _imageUrl;
+
+  uploadImage() async {
+    var imageFile = await ImageHelper.pickImage();
+    if (imageFile != null) {
+      var url = await ImageService().uploadImage(imageFile);
+      setState(() {
+        _imageUrl = url;
+      });
+    }
+  }
+
+  showImageTypeSelector() {
+    var screenSize = MediaQuery.of(context).size;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Container(
+          height: screenSize.height * 0.1,
+          width: screenSize.width * 0.1,
+          decoration: const BoxDecoration(color: Colors.white),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +82,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
           children: <Widget>[
             GestureDetector(
               onTap: () {
-                // Open image picker
+                showImageTypeSelector();
               },
               child: Container(
                 height: 300,
@@ -63,25 +90,27 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     color: kFormFieldColor,
                     borderRadius: BorderRadius.all(Radius.circular(16))),
                 alignment: Alignment.center,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.image,
-                      color: Colors.grey[600],
-                      size: 48,
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      "Thêm ảnh bìa bài viết",
-                      style: TextStyle(
-                        color: Colors.grey[600],
+                child: _imageUrl != null
+                    ? Image.network(_imageUrl!)
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.image,
+                            color: Colors.grey[600],
+                            size: 48,
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          Text(
+                            "Thêm ảnh bìa bài viết",
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                            ),
+                          )
+                        ],
                       ),
-                    )
-                  ],
-                ),
               ),
             ),
             const SizedBox(height: 16),
