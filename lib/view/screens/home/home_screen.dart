@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/helper/datetime_helper.dart';
-import 'package:sharing_cafe/provider/blog_provider.dart';
 import 'package:sharing_cafe/provider/home_provider.dart';
 import 'package:sharing_cafe/view/screens/blogs/blog_detail/blog_detail_screen.dart';
 
@@ -142,8 +141,8 @@ class _HomeScreen extends State<HomeScreen> {
                                     imageUrl: event.backgroundImage,
                                     title: event.title,
                                     dateTime: DateTimeHelper.formatDateTime(
-                                        event.createdAt),
-                                    location: event.adress,
+                                        event.timeOfEvent),
+                                    location: event.location ?? "",
                                     attendeeCount: event.participantsCount,
                                     onTap: () {
                                       Navigator.pushNamed(

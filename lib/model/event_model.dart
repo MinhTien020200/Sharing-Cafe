@@ -2,45 +2,51 @@ import 'package:sharing_cafe/helper/datetime_helper.dart';
 
 class EventModel {
   final String eventId;
-  final String organizerId;
+  final String? organizerId;
   final String title;
-  final String description;
+  final String? description;
   final DateTime timeOfEvent;
-  final String adress;
-  final String location;
+  final String? location;
   final int participantsCount;
-  final bool isAprrove;
+  final bool? isAprrove;
   final String backgroundImage;
-  final DateTime createdAt;
-  final DateTime endOfEvent;
+  final DateTime? createdAt;
 
   EventModel(
       {required this.eventId,
-      required this.organizerId,
+      this.organizerId,
       required this.title,
-      required this.description,
+      this.description,
       required this.timeOfEvent,
-      required this.adress,
-      required this.location,
+      this.location,
       required this.participantsCount,
-      required this.isAprrove,
+      this.isAprrove,
       required this.backgroundImage,
-      required this.createdAt,
-      required this.endOfEvent});
+      this.createdAt});
 
   factory EventModel.fromJson(Map<String, dynamic> json) {
     return EventModel(
-        eventId: json['event_id'],
-        organizerId: json['organizer_id'],
-        title: json['title'],
-        description: json['description'],
-        timeOfEvent: DateTimeHelper.parseToLocal(json['time_of_event']),
-        adress: json['adress'],
-        location: json['location'],
-        participantsCount: json['participants_count'],
-        isAprrove: json['is_approve'],
-        backgroundImage: json['background_img'],
-        createdAt: DateTimeHelper.parseToLocal(json['created_at']),
-        endOfEvent: DateTimeHelper.parseToLocal(json['end_of_event']));
+      eventId: json['event_id'],
+      organizerId: json['organizer_id'],
+      title: json['title'],
+      description: json['description'],
+      timeOfEvent: DateTimeHelper.parseToLocal(json['time_of_event']),
+      location: json['location'],
+      participantsCount: json['participants_count'],
+      isAprrove: json['is_approve'],
+      backgroundImage: json['background_img'],
+      createdAt: DateTimeHelper.parseToLocal(json['created_at']),
+    );
+  }
+
+  factory EventModel.fromListsJson(Map<String, dynamic> json) {
+    return EventModel(
+      eventId: json['event_id'],
+      title: json['title'],
+      timeOfEvent: DateTimeHelper.parseToLocal(json['time_of_event']),
+      participantsCount: json['participants_count'] ?? 0,
+      backgroundImage: json['background_img'],
+      location: json['address'],
+    );
   }
 }

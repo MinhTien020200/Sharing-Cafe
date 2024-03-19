@@ -154,17 +154,6 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                       eventDetails.timeOfEvent),
                                 ),
                               ),
-                              ListTile(
-                                leading: const Icon(
-                                  Icons.access_time_filled,
-                                  color: kSecondaryColor,
-                                ),
-                                contentPadding: EdgeInsets.zero,
-                                title: Text(
-                                  DateTimeHelper.formatDateTime2(
-                                      eventDetails.endOfEvent),
-                                ),
-                              ),
                               const ListTile(
                                 leading: Icon(
                                   Icons.person,
@@ -187,10 +176,10 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                 ),
                                 contentPadding: EdgeInsets.zero,
                                 title: Text(
-                                  eventDetails.adress,
+                                  eventDetails.location ?? "",
                                 ),
                                 subtitle: Text(
-                                  eventDetails.location,
+                                  eventDetails.location ?? "",
                                   style: const TextStyle(
                                     color: kSecondaryColor,
                                   ),
@@ -216,7 +205,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                eventDetails.description,
+                                eventDetails.description ?? "",
                                 style: const TextStyle(
                                   fontSize: 16.0,
                                 ),

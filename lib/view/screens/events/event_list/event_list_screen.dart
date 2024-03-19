@@ -57,7 +57,7 @@ class _EventListScreenState extends State<EventListScreen> {
 
   Future login() async {
     await Provider.of<AccountProvider>(context, listen: false)
-        .login("janedoe@gmail.com", "pass");
+        .loginDemo("tienpm.user@gmail.com", "User@123");
   }
 
   @override
@@ -136,8 +136,8 @@ class _EventListScreenState extends State<EventListScreen> {
                               imageUrl: event.backgroundImage,
                               title: event.title,
                               dateTime: DateTimeHelper.formatDateTime(
-                                  event.createdAt),
-                              location: event.adress,
+                                  event.timeOfEvent),
+                              location: event.location ?? "",
                               attendeeCount: event.participantsCount,
                               onTap: () {
                                 Navigator.pushNamed(
@@ -180,7 +180,7 @@ class _EventListScreenState extends State<EventListScreen> {
                             imageUrl: event.backgroundImage,
                             title: event.title,
                             dateTime: 'T2, 20 THÁNG 5 LÚC 18.00',
-                            location: event.adress,
+                            location: event.location ?? "",
                             attendeeCount: event.participantsCount,
                             onTap: () {
                               Navigator.pushNamed(

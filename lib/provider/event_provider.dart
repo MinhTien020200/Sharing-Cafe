@@ -16,12 +16,12 @@ class EventProvider extends ChangeNotifier {
   EventModel get eventDetails => _eventDetails!;
 
   Future getNewEvents() async {
-    _newEvents = await EventService().getEvents();
+    _newEvents = await EventService().getNewEvents();
     notifyListeners();
   }
 
   Future getSuggestEvents() async {
-    _suggestEvents = await EventService().getEvents();
+    _suggestEvents = await EventService().getSuggestEvents();
     notifyListeners();
   }
 

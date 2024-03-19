@@ -173,9 +173,9 @@ class _SignInScreen extends State<SignInScreen> {
                         ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
+                              _formKey.currentState!.save();
                               accountProvider.login(emailController.text,
                                   passwordController.text);
-                              _formKey.currentState!.save();
                               // if all are valid then go to success screen
                               KeyboardUtil.hideKeyboard(context);
                               Navigator.pushNamed(
