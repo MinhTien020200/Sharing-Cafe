@@ -57,7 +57,7 @@ class _EventListScreenState extends State<EventListScreen> {
 
   Future login() async {
     await Provider.of<AccountProvider>(context, listen: false)
-        .loginDemo("tienpm.user@gmail.com", "User@123");
+        .login("tienpm.user@gmail.com", "User@123");
   }
 
   @override

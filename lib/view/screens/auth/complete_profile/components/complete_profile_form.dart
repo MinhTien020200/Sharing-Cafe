@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../components/custom_surfix_icon.dart';
-import '../../../components/form_error.dart';
-import '../../../../constants.dart';
+import '../../../../components/custom_surfix_icon.dart';
+import '../../../../components/form_error.dart';
+import '../../../../../constants.dart';
 import '../../otp/otp_screen.dart';
 
 class CompleteProfileForm extends StatefulWidget {
@@ -60,8 +60,6 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             decoration: const InputDecoration(
               //labelText: "First Name",
               hintText: "Họ",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
             ),
@@ -72,8 +70,6 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             decoration: const InputDecoration(
               //labelText: "Last Name",
               hintText: "Tên",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
             ),
@@ -98,8 +94,6 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             decoration: const InputDecoration(
               //labelText: "Phone Number",
               hintText: "Số di động",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
             ),
@@ -123,8 +117,6 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             decoration: const InputDecoration(
               //labelText: "Address",
               hintText: "Địa chỉ",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon:
                   CustomSurffixIcon(svgIcon: "assets/icons/Location point.svg"),

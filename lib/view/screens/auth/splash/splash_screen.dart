@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
-import '../sign_in/sign_in_screen.dart';
+import '../../../../constants.dart';
+import '../login/login_screen.dart';
 import 'components/splash_content.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -84,7 +84,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       const Spacer(flex: 3),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, SignInScreen.routeName);
+                          Navigator.pushNamed(context, LoginScreen.routeName);
                         },
                         child: const Text("Tiếp tục"),
                       ),

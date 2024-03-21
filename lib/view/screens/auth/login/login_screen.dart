@@ -5,21 +5,20 @@ import 'package:sharing_cafe/helper/keyboard.dart';
 import 'package:sharing_cafe/provider/account_provider.dart';
 import 'package:sharing_cafe/view/components/custom_surfix_icon.dart';
 import 'package:sharing_cafe/view/components/form_error.dart';
-import 'package:sharing_cafe/view/screens/forgot_password/forgot_password_screen.dart';
+import 'package:sharing_cafe/view/screens/auth/forgot_password/forgot_password_screen.dart';
 import 'package:sharing_cafe/view/screens/init_screen.dart';
 
-import '../../components/no_account_text.dart';
-import '../../components/socal_card.dart';
+import '../../../components/no_account_text.dart';
 
-class SignInScreen extends StatefulWidget {
-  static String routeName = "/sign_in";
-  const SignInScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  static String routeName = "/login";
+  const LoginScreen({super.key});
 
   @override
-  _SignInScreen createState() => _SignInScreen();
+  _LoginScreen createState() => _LoginScreen();
 }
 
-class _SignInScreen extends State<SignInScreen> {
+class _LoginScreen extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   String? email;
   String? password;
@@ -44,7 +43,7 @@ class _SignInScreen extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final accountProvider = Provider.of<AccountProvider>(context);
+    final AccountService = Provider.of<AccountProvider>(context);
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
 
@@ -174,7 +173,7 @@ class _SignInScreen extends State<SignInScreen> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               _formKey.currentState!.save();
-                              accountProvider.login(emailController.text,
+                              AccountService.login(emailController.text,
                                   passwordController.text);
                               // if all are valid then go to success screen
                               KeyboardUtil.hideKeyboard(context);
@@ -187,16 +186,16 @@ class _SignInScreen extends State<SignInScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SocalCard(
-                        icon: "assets/icons/google-icon.svg",
-                        press: () {},
-                      ),
-                    ],
-                  ),
+                  // const SizedBox(height: 16),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     SocalCard(
+                  //       icon: "assets/icons/google-icon.svg",
+                  //       press: () {},
+                  //     ),
+                  //   ],
+                  // ),
                   const SizedBox(height: 20),
                   const NoAccountText(),
                 ],
