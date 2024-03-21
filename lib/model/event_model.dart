@@ -48,4 +48,15 @@ class EventModel {
       address: json['address'],
     );
   }
+
+  factory EventModel.fromListsJson(Map<String, dynamic> json) {
+    return EventModel(
+      eventId: json['event_id'],
+      title: json['title'],
+      timeOfEvent: DateTimeHelper.parseToLocal(json['time_of_event']),
+      participantsCount: json['participants_count'] ?? 0,
+      backgroundImage: json['background_img'],
+      location: json['address'],
+    );
+  }
 }
