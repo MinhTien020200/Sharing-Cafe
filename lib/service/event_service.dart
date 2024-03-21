@@ -9,9 +9,9 @@ import 'package:sharing_cafe/helper/shared_prefs_helper.dart';
 import 'package:sharing_cafe/model/event_model.dart';
 
 class EventService {
-  Future<List<EventModel>> getEvents() async {
+  Future<List<EventModel>> getEvents(String? search) async {
     try {
-      var response = await ApiHelper().get('/event');
+      var response = await ApiHelper().get('/event?title=$search');
       if (response.statusCode == HttpStatus.ok) {
         var jsonList = json.decode(response.body) as List;
         return jsonList
@@ -99,5 +99,37 @@ class EventService {
       print(e);
     }
     return [];
+  }
+
+  Future<bool> createEvent({
+    String? title,
+    String? interestId,
+    String? description,
+    String? timeOfEvent,
+    String? location,
+    String? backgroundImage,
+  }) async {
+    try {
+      var endpoint = "/event";
+      var userId = await SharedPrefHelper.getUserId();
+      var data = {
+        "organizer_id": userId,
+        "interest_id": interestId,
+        "title": title,
+        "description": description,
+        "time_of_event": timeOfEvent,
+        "location": location,
+        "background_img": backgroundImage,
+      };
+      var response = await ApiHelper().post(endpoint, data);
+      if (response.statusCode == HttpStatus.ok) {
+        return true;
+      }
+      ErrorHelper.showError(
+          message: "Lỗi ${response.statusCode}: Không thể tạo sự kiện");
+    } catch (e) {
+      print(e);
+    }
+    return false;
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,6 +29,21 @@ class ApiHelper {
         "Authorization": token,
       },
       body: json.encode(data),
+    );
+    return response;
+  }
+
+  Future<dynamic> postFormData(String endpoint, FormData data) async {
+    var token = await getToken();
+    var dio = Dio();
+    final response = await dio.post(
+      baseUrl + endpoint,
+      options: Options(
+        headers: {
+          "Authorization": token,
+        },
+      ),
+      data: data,
     );
     return response;
   }

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/provider/account_provider.dart';
 import 'package:sharing_cafe/provider/blog_provider.dart';
+import 'package:sharing_cafe/provider/categories_provider.dart';
 import 'package:sharing_cafe/provider/event_provider.dart';
+import 'package:sharing_cafe/provider/friends_provider.dart';
+import 'package:sharing_cafe/provider/match_provider.dart';
 import 'package:sharing_cafe/provider/home_provider.dart';
 import 'package:sharing_cafe/view/screens/init_screen.dart';
 import 'package:sharing_cafe/view/screens/sign_in/sign_in_screen.dart';
@@ -27,6 +30,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => HomeProvider()),
         ChangeNotifierProvider(create: (_) => EventProvider()),
         ChangeNotifierProvider(create: (_) => BlogProvider()),
+        ChangeNotifierProvider(create: (_) => AccountProvider()),
+        ChangeNotifierProvider(create: (_) => MatchProvider()),
+        ChangeNotifierProvider(create: (_) => FriendsProvider()),
+        ChangeNotifierProvider(create: (_) => CategoriesProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sharing_cafe/constants.dart';
 
 class EventCard2 extends StatelessWidget {
@@ -72,10 +73,13 @@ class EventCard2 extends StatelessWidget {
                           const SizedBox(
                             width: 8.0,
                           ),
-                          Text(
-                            location,
-                            style: TextStyle(
-                              color: Colors.grey[600],
+                          Expanded(
+                            child: Text(
+                              location,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                              ),
                             ),
                           ),
                         ],
