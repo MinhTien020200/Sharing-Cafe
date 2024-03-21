@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/view/components/form_field.dart';
+import 'package:sharing_cafe/view/components/select_form.dart';
 import 'package:sharing_cafe/view/screens/blogs/create_blog/components/blog_editor.dart';
-import 'package:sharing_cafe/view/screens/events/create_event/create_event_screen.dart';
 
 class CreateBlogScreen extends StatefulWidget {
   static String routeName = "/create-blog";
@@ -106,7 +106,7 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
             ),
             const KSelectForm(
               hintText: 'Chọn chủ đề',
-              options: ['Option 1', 'Option 2', 'Option 3'],
+              options: [],
             )
           ],
         ),

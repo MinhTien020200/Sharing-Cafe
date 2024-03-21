@@ -3,9 +3,13 @@ import 'package:sharing_cafe/constants.dart';
 
 class KFormField extends StatelessWidget {
   final String? hintText;
+  final int? maxLines;
+  final Function(String)? onChanged;
   const KFormField({
     super.key,
     required this.hintText,
+    this.maxLines = 1,
+    this.onChanged,
   });
 
   @override
@@ -22,9 +26,8 @@ class KFormField extends StatelessWidget {
             border: InputBorder.none,
             enabledBorder: InputBorder.none,
             focusedBorder: InputBorder.none),
-        onChanged: (value) {
-          // Update event name
-        },
+        onChanged: onChanged,
+        maxLines: maxLines,
       ),
     );
   }

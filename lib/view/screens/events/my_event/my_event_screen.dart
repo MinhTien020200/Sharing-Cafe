@@ -71,7 +71,10 @@ class _MyEventScreenState extends State<MyEventScreen> {
                         attendeeCount: events[index].participantsCount,
                         onTap: () {
                           Navigator.pushNamed(
-                              context, EventDetailScreen.routeName);
+                              context, EventDetailScreen.routeName,
+                              arguments: {
+                                'id': events[index].eventId,
+                              });
                         },
                       );
                     },

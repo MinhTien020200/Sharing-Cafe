@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:sharing_cafe/constants.dart';
+import 'package:sharing_cafe/helper/key_value_pair.dart';
 
 class KSelectForm extends StatefulWidget {
   final String hintText;
-  final List<String> options;
+  final List<KeyValuePair<String, String>> options;
+  final Function(KeyValuePair<String, String>?)? onChanged;
+  final KeyValuePair<String, String>? selectedValue;
   const KSelectForm({
     super.key,
     required this.hintText,
     required this.options,
+    this.onChanged,
+    this.selectedValue,
   });
 
   @override
@@ -15,16 +20,14 @@ class KSelectForm extends StatefulWidget {
 }
 
 class _KSelectFormState extends State<KSelectForm> {
-  String? selectedValue;
-
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(16.0)),
           color: kFormFieldColor),
-      child: DropdownButtonFormField<String>(
-        value: selectedValue,
+      child: DropdownButtonFormField<KeyValuePair<String, String>>(
+        value: widget.selectedValue,
         icon: const Icon(Icons.arrow_drop_down),
         hint: Text(widget.hintText),
         decoration: const InputDecoration(
@@ -34,15 +37,19 @@ class _KSelectFormState extends State<KSelectForm> {
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
         ),
-        onChanged: (String? newValue) {
-          setState(() {
-            selectedValue = newValue!;
-          });
-        },
-        items: widget.options.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
+        onChanged: widget.onChanged,
+        items: widget.options
+            .map<DropdownMenuItem<KeyValuePair<String, String>>>(
+                (KeyValuePair<String, String> value) {
+          return DropdownMenuItem<KeyValuePair<String, String>>(
             value: value,
-            child: Text(value),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width - 90,
+              child: Text(
+                value.value,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           );
         }).toList(),
       ),
