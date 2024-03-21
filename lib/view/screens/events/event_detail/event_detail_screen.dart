@@ -151,19 +151,20 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                 contentPadding: EdgeInsets.zero,
                                 title: Text(
                                   DateTimeHelper.formatDateTime2(
-                                      eventDetails.timeOfEvent),
+                                          eventDetails.timeOfEvent) +
+                                      " - ${DateTimeHelper.formatDateTime2(eventDetails.endOfEvent!)}",
                                 ),
                               ),
-                              const ListTile(
-                                leading: Icon(
+                              ListTile(
+                                leading: const Icon(
                                   Icons.person,
                                   color: kSecondaryColor,
                                 ),
                                 title: Text.rich(
                                   TextSpan(text: 'Sự kiện của ', children: [
                                     TextSpan(
-                                        text: 'CLB Nghệ thuật',
-                                        style: TextStyle(
+                                        text: eventDetails.organizationName,
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold))
                                   ]),
                                 ),
@@ -179,7 +180,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                   eventDetails.location ?? "",
                                 ),
                                 subtitle: Text(
-                                  eventDetails.location ?? "",
+                                  eventDetails.address ?? "",
                                   style: const TextStyle(
                                     color: kSecondaryColor,
                                   ),

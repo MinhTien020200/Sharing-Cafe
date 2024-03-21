@@ -9,9 +9,9 @@ import 'package:sharing_cafe/helper/shared_prefs_helper.dart';
 import 'package:sharing_cafe/model/event_model.dart';
 
 class EventService {
-  Future<List<EventModel>> getEvents() async {
+  Future<List<EventModel>> getEvents(String? search) async {
     try {
-      var response = await ApiHelper().get('/event');
+      var response = await ApiHelper().get('/event?title=$search');
       if (response.statusCode == HttpStatus.ok) {
         var jsonList = json.decode(response.body) as List;
         return jsonList

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:sharing_cafe/enums.dart';
 import 'package:sharing_cafe/helper/api_helper.dart';
+import 'package:sharing_cafe/model/matched_model.dart';
 import 'package:sharing_cafe/model/profile_model.dart';
 
 class MatchService {
@@ -32,5 +33,18 @@ class MatchService {
     } else {
       throw Exception("Action error: ${response.statusCode}");
     }
+  }
+
+  Future<List<MatchedModel>> getListFriends() async {
+    var endpoint = "/auth/matched";
+    var response = await ApiHelper().get(endpoint);
+    if (response.statusCode == HttpStatus.ok) {
+      var result = json.decode(response.body);
+      var jsonList = result as List;
+      return jsonList
+          .map<MatchedModel>((e) => MatchedModel.fromJson(e))
+          .toList();
+    }
+    return List.empty();
   }
 }

@@ -179,7 +179,8 @@ class _EventListScreenState extends State<EventListScreen> {
                           return EventCard(
                             imageUrl: event.backgroundImage,
                             title: event.title,
-                            dateTime: 'T2, 20 THÁNG 5 LÚC 18.00',
+                            dateTime: DateTimeHelper.formatDateTime(
+                                event.timeOfEvent),
                             location: event.location ?? "",
                             attendeeCount: event.participantsCount,
                             onTap: () {
