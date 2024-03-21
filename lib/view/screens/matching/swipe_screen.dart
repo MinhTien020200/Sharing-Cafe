@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/enums.dart';
 import 'package:sharing_cafe/provider/match_provider.dart';
-import 'package:sharing_cafe/view/screens/chat/chat_screen.dart';
 import 'package:sharing_cafe/view/screens/friends/friends_screen.dart';
 import 'package:sharing_cafe/view/screens/matching/components/profile_card.dart';
 

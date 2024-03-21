@@ -3,7 +3,9 @@ import 'package:intl/intl.dart';
 import 'package:sharing_cafe/constants.dart';
 
 class DateTimePicker extends StatefulWidget {
-  const DateTimePicker({super.key});
+  final Function(DateTime) onDateTimeChanged;
+  const DateTimePicker({Key? key, required this.onDateTimeChanged})
+      : super(key: key);
 
   @override
   State<DateTimePicker> createState() => _DateTimePickerState();
@@ -37,6 +39,8 @@ class _DateTimePickerState extends State<DateTimePicker> {
         pickedTime.minute,
       );
     });
+
+    widget.onDateTimeChanged(selectedDateTime);
   }
 
   @override

@@ -8,11 +8,12 @@ class ImageService {
     var endpoint = "/image";
     String fileName = DateTime.now().toString();
     FormData formData = FormData.fromMap({
-      'file': await MultipartFile.fromFile(imageFile.path, filename: fileName),
+      'background_img':
+          await MultipartFile.fromFile(imageFile.path, filename: fileName),
     });
     var response = await ApiHelper().postFormData(endpoint, formData);
     if (response.statusCode == 200) {
-      print(response);
+      return response.data["background_img"];
     }
     return "";
   }

@@ -100,4 +100,36 @@ class EventService {
     }
     return [];
   }
+
+  Future<bool> createEvent({
+    String? title,
+    String? interestId,
+    String? description,
+    String? timeOfEvent,
+    String? location,
+    String? backgroundImage,
+  }) async {
+    try {
+      var endpoint = "/event";
+      var userId = await SharedPrefHelper.getUserId();
+      var data = {
+        "organizer_id": userId,
+        "interest_id": interestId,
+        "title": title,
+        "description": description,
+        "time_of_event": timeOfEvent,
+        "location": location,
+        "background_img": backgroundImage,
+      };
+      var response = await ApiHelper().post(endpoint, data);
+      if (response.statusCode == HttpStatus.ok) {
+        return true;
+      }
+      ErrorHelper.showError(
+          message: "Lỗi ${response.statusCode}: Không thể tạo sự kiện");
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
 }
