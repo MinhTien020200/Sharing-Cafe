@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Sharing Cafe',
         theme: AppTheme.lightTheme(context),
-        initialRoute: RegisterScreen.routeName,
+        initialRoute: LoginScreen.routeName,
         routes: routes,
       ),
     );

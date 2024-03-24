@@ -170,15 +170,19 @@ class _LoginScreen extends State<LoginScreen> {
                         FormError(errors: errors),
                         const SizedBox(height: 16),
                         ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               _formKey.currentState!.save();
-                              AccountService.login(emailController.text,
-                                  passwordController.text);
-                              // if all are valid then go to success screen
-                              KeyboardUtil.hideKeyboard(context);
-                              Navigator.pushNamed(
-                                  context, InitScreen.routeName);
+                              try {
+                                await AccountService.login(emailController.text,
+                                    passwordController.text);
+                                // if all are valid then go to success screen
+                                KeyboardUtil.hideKeyboard(context);
+                              } catch (e) {
+                                return;
+                              }
+                              Navigator.pushNamedAndRemoveUntil(context,
+                                  InitScreen.routeName, (route) => false);
                             }
                           },
                           child: const Text("Đăng nhập"),
