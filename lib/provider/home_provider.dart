@@ -14,7 +14,7 @@ class HomeProvider extends ChangeNotifier {
   List<BlogModel> get blogs => _blogs;
 
   Future getSuggestEvents() async {
-    _suggestEvents = await EventService().getEvents(null);
+    _suggestEvents = await EventService().getEvents("");
     notifyListeners();
   }
 
