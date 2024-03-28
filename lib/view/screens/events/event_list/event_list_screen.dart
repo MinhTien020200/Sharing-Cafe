@@ -115,7 +115,7 @@ class _EventListScreenState extends State<EventListScreen> {
                   onPressed: () async {
                     await login();
                   },
-                  child: Text("Đăng nhập"),
+                  child: const Text("Đăng nhập"),
                 ),
                 const Text(
                   "Đề xuất",

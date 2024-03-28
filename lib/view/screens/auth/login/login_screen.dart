@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
@@ -15,7 +17,7 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  _LoginScreen createState() => _LoginScreen();
+  State<LoginScreen> createState() => _LoginScreen();
 }
 
 class _LoginScreen extends State<LoginScreen> {
@@ -43,7 +45,7 @@ class _LoginScreen extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AccountService = Provider.of<AccountProvider>(context);
+    final accountService = Provider.of<AccountProvider>(context);
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
 
@@ -174,7 +176,7 @@ class _LoginScreen extends State<LoginScreen> {
                             if (_formKey.currentState!.validate()) {
                               _formKey.currentState!.save();
                               try {
-                                await AccountService.login(emailController.text,
+                                await accountService.login(emailController.text,
                                     passwordController.text);
                                 // if all are valid then go to success screen
                                 KeyboardUtil.hideKeyboard(context);

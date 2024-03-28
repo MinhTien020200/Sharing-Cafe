@@ -1,14 +1,12 @@
 // ignore_for_file: avoid_print
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/helper/api_helper.dart';
 import 'package:sharing_cafe/helper/shared_prefs_helper.dart';
 import 'package:sharing_cafe/model/chat_message_model.dart';
 import 'package:sharing_cafe/provider/chat_provider.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class ChatScreen extends StatefulWidget {
   static String routeName = "/chat";
@@ -23,10 +21,10 @@ class _ChatScreenState extends State<ChatScreen> {
   bool _isLoading = true;
   late String _userId;
   late String _loggedUserId;
-  late IO.Socket socket;
+  late io.Socket socket;
 
   void connectAndListen() {
-    socket = IO.io(ApiHelper().socketBaseUrl, <String, dynamic>{
+    socket = io.io(ApiHelper().socketBaseUrl, <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false,
     });

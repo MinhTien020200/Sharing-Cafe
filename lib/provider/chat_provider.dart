@@ -16,7 +16,8 @@ class ChatProvider extends ChangeNotifier {
   }
 
   List<ChatMessageModel> getUserMessages(String userId) {
-    return _mapUserMessages[userId] ?? [];
+    var userMessages = _mapUserMessages[userId] ?? [];
+    return userMessages.reversed.toList();
   }
 
   void addMessage(ChatMessageModel chatMessageModel) {
