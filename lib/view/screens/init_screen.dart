@@ -5,7 +5,7 @@ import 'package:sharing_cafe/view/screens/blogs/blog_list/blog_list_screen.dart'
 import 'package:sharing_cafe/view/screens/events/event_list/event_list_screen.dart';
 import 'package:sharing_cafe/view/screens/matching/swipe_screen.dart';
 import 'package:sharing_cafe/view/screens/home/home_screen.dart';
-//import 'package:sharing_cafe/screens/profile/profile_screen.dart';
+import 'package:sharing_cafe/view/screens/profiles/profile_page/profile_screen.dart';
 
 const Color inActiveIconColor = Color(0xFFB6B6B6);
 
@@ -32,10 +32,7 @@ class _InitScreenState extends State<InitScreen> {
     const EventListScreen(),
     const SwipeScreen(),
     const BlogListScreen(),
-    const Center(
-      child: Text("Trang cá nhân"),
-    ),
-    //const ProfileScreen()
+    const ProfileScreen()
   ];
   @override
   Widget build(BuildContext context) {

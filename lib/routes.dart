@@ -14,12 +14,14 @@ import 'package:sharing_cafe/view/screens/events/search/search_screen.dart';
 import 'package:sharing_cafe/view/screens/friends/friends_screen.dart';
 import 'package:sharing_cafe/view/screens/matching/swipe_screen.dart';
 import 'package:sharing_cafe/view/screens/home/home_screen.dart';
+import 'package:sharing_cafe/view/screens/profiles/profile_page/profile_screen.dart';
+import 'package:sharing_cafe/view/screens/profiles/update_profile/body.dart';
+import 'package:sharing_cafe/view/screens/profiles/update_profile/update_profile_screen.dart';
 
 import 'view/screens/auth/complete_profile/complete_profile_screen.dart';
 import 'view/screens/auth/forgot_password/forgot_password_screen.dart';
 import 'view/screens/init_screen.dart';
 import 'view/screens/auth/otp/otp_screen.dart';
-//import 'view/screens/profile/profile_screen.dart';
 import 'view/screens/auth/login/login_screen.dart';
 import 'view/screens/auth/register/register_screen.dart';
 import 'view/screens/auth/splash/splash_screen.dart';
@@ -27,6 +29,7 @@ import 'view/screens/auth/splash/splash_screen.dart';
 // We use name route
 // All our routes will be available here
 final Map<String, WidgetBuilder> routes = {
+  Test.routeName: (context) => const Test(),
   InitScreen.routeName: (context) => const InitScreen(),
   SplashScreen.routeName: (context) => const SplashScreen(),
   LoginScreen.routeName: (context) => const LoginScreen(),
@@ -35,7 +38,8 @@ final Map<String, WidgetBuilder> routes = {
   CompleteProfileScreen.routeName: (context) => const CompleteProfileScreen(),
   OtpScreen.routeName: (context) => const OtpScreen(),
   HomeScreen.routeName: (context) => const HomeScreen(),
-  //ProfileScreen.routeName: (context) => const ProfileScreen(),
+  ProfileScreen.routeName: (context) => const ProfileScreen(),
+  UpdateProfileScreen.routeName: (context) => const UpdateProfileScreen(),
   EventListScreen.routeName: (context) => const EventListScreen(),
   EventDetailScreen.routeName: (context) => const EventDetailScreen(),
   CreateEventScreen.routeName: (context) => const CreateEventScreen(),

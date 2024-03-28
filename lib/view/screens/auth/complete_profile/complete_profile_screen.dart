@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sharing_cafe/model/interest_model.dart';
 import 'package:sharing_cafe/provider/interest_provider.dart';
 import 'package:sharing_cafe/view/screens/auth/otp/otp_screen.dart';
 
@@ -15,40 +16,7 @@ class CompleteProfileScreen extends StatefulWidget {
 
 class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
   bool _isLoadingListInterests = false;
-  List<String> hobbyList = [
-    'Shopping',
-    'Comedy',
-    'Brunch',
-    'Music',
-    'Road Trips',
-    'Tea',
-    'Trivia',
-    'Clubbing',
-    'Drinking',
-    'Wine',
-    'Hiking',
-    'Yoga',
-    'Volleyball',
-    'Craft Beer',
-    'Dogs',
-    'Cats',
-    'Activism',
-    'Vlogging',
-    'Museum',
-    'Dancing',
-    'Running',
-    'Singing',
-    'Make-Up',
-    'Concert',
-    'Cafe',
-    'Theater',
-    'Baking',
-    'Gardening',
-    'Cooking',
-    'Video Games',
-    'Camping'
-  ];
-  List<String>? selectedHobby = [];
+  List<InterestModel>? selectedHobby = [];
 
   @override
   void initState() {
@@ -80,7 +48,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                 child: CircularProgressIndicator.adaptive(),
               )
             : Consumer<InterestProvider>(builder: (context, value, child) {
-                //var listInterests = value.listInterests;
+                var listInterests = value.listInterests;
                 return SafeArea(
                   child: SizedBox(
                     width: double.infinity,
@@ -99,15 +67,16 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                             ),
                             const SizedBox(height: 16),
                             Wrap(
-                              children: hobbyList.map(
+                              children: listInterests.map(
                                 (hobby) {
                                   bool isSelected = false;
-                                  if (selectedHobby!.contains(hobby)) {
+                                  if (selectedHobby!.contains(hobby.name)) {
                                     isSelected = true;
                                   }
                                   return GestureDetector(
                                     onTap: () {
-                                      if (!selectedHobby!.contains(hobby)) {
+                                      if (!selectedHobby!
+                                          .contains(hobby.name)) {
                                         if (selectedHobby!.length < 5) {
                                           selectedHobby!.add(hobby);
                                           setState(() {});
@@ -115,7 +84,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                                         }
                                       } else {
                                         selectedHobby!.removeWhere(
-                                            (element) => element == hobby);
+                                            (element) => element == hobby.name);
                                         setState(() {});
                                         print(selectedHobby);
                                       }
@@ -138,7 +107,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                                                       : kPrimaryColor,
                                                   width: 2)),
                                           child: Text(
-                                            hobby,
+                                            hobby.name,
                                             style: TextStyle(
                                                 color: isSelected
                                                     ? Colors.white

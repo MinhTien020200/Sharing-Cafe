@@ -10,8 +10,12 @@ import 'package:sharing_cafe/provider/home_provider.dart';
 import 'package:sharing_cafe/provider/interest_provider.dart';
 import 'package:sharing_cafe/view/screens/auth/complete_profile/complete_profile_screen.dart';
 import 'package:sharing_cafe/view/screens/auth/login/login_screen.dart';
+import 'package:sharing_cafe/view/screens/events/event_list/event_list_screen.dart';
 import 'package:sharing_cafe/view/screens/init_screen.dart';
 import 'package:sharing_cafe/view/screens/auth/register/register_screen.dart';
+import 'package:sharing_cafe/view/screens/profiles/profile_page/profile_screen.dart';
+import 'package:sharing_cafe/view/screens/profiles/update_profile/body.dart';
+import 'package:sharing_cafe/view/screens/profiles/update_profile/update_profile_screen.dart';
 
 import 'routes.dart';
 import 'theme.dart';
@@ -42,7 +46,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Sharing Cafe',
         theme: AppTheme.lightTheme(context),
-        initialRoute: LoginScreen.routeName,
+        initialRoute: UpdateProfileScreen.routeName,
         routes: routes,
       ),
     );

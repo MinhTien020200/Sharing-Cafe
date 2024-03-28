@@ -7,7 +7,6 @@ import 'package:sharing_cafe/helper/api_helper.dart';
 import 'package:sharing_cafe/helper/stream_socket.dart';
 import 'package:sharing_cafe/model/chat_message_model.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:socket_io_client/socket_io_client.dart';
 
 class ChatScreen extends StatefulWidget {
   static String routeName = "/chat";
