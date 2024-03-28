@@ -218,6 +218,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             const SizedBox(height: 16),
             DateTimePicker(
               onDateTimeChanged: _handleDateTimeChange,
+              label: "Ngày và giờ bắt đầu",
             ),
             // const SizedBox(height: 16),
             // Row(

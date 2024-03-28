@@ -8,29 +8,29 @@ import 'package:sharing_cafe/service/match_service.dart';
 
 class MatchProvider extends ChangeNotifier {
   List<ProfileModel> _profiles = [];
-  late ProfileModel _currentProfile;
+  ProfileModel? _currentProfile;
   final int _limit = 5;
   final int _offset = 0;
 
   List<ProfileModel> get profiles => _profiles;
-  ProfileModel get currentProfile => _currentProfile;
+  ProfileModel? get currentProfile => _currentProfile;
 
   Future initListProfiles() async {
     _profiles = await MatchService().getListProfiles(_limit, _offset);
-    _currentProfile = _profiles.first;
+    _currentProfile = _profiles.firstOrNull;
     notifyListeners();
   }
 
   Future likeOrUnlike(MatchStatus status) async {
     try {
-      var userId = _currentProfile.userId;
+      var userId = _currentProfile!.userId;
       var result = await MatchService().updateMatchStatus(userId, status);
       if (result == true) {
         var selectedIndex = _profiles.indexWhere((e) => e.userId == userId);
         _getNextProfileThenAddDistinct();
         _replaceProfile(selectedIndex);
         _currentProfile = _profiles.first;
-        print("Current: ${_currentProfile.name}");
+        print("Current: ${_currentProfile!.name}");
         notifyListeners();
       }
     } on Exception catch (e) {
@@ -40,7 +40,7 @@ class MatchProvider extends ChangeNotifier {
 
   int getCurrentIndex() {
     return _profiles
-        .indexWhere((element) => element.userId == _currentProfile.userId);
+        .indexWhere((element) => element.userId == _currentProfile!.userId);
   }
 
   setCurrentProfileByIndex(int index) {
