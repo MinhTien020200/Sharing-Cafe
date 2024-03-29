@@ -29,4 +29,34 @@ class ChatProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void addAppointment(
+      String title,
+      String location,
+      DateTime dateTime,
+      String senderId,
+      String receiverId,
+      String senderAvt,
+      String senderName,
+      String receiverName,
+      String receiverAvt) {
+    var appointment = ChatMessageModel(
+      messageId: "",
+      senderId: senderId,
+      receiverId: receiverId,
+      messageContent: "",
+      createdAt: DateTime.now(),
+      senderAvt: senderAvt,
+      senderName: senderName,
+      receiverName: receiverName,
+      receiverAvt: receiverAvt,
+      appointment: Appointment(
+        title: title,
+        location: location,
+        dateTime: dateTime,
+      ),
+      isAppointment: true,
+    );
+    addMessage(appointment);
+  }
 }

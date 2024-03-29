@@ -9,6 +9,8 @@ class ChatMessageModel {
   final String messageContent;
   final DateTime createdAt;
   bool? messageType;
+  final Appointment? appointment;
+  final bool isAppointment;
 
   ChatMessageModel({
     required this.messageId,
@@ -20,7 +22,9 @@ class ChatMessageModel {
     required this.senderName,
     required this.receiverName,
     required this.receiverAvt,
+    this.appointment,
     this.messageType,
+    this.isAppointment = false,
   });
 
   factory ChatMessageModel.fromJson(Map<String, dynamic> json) {
@@ -45,4 +49,16 @@ class ChatMessageModel {
       'timestamp': createdAt.toIso8601String(),
     };
   }
+}
+
+class Appointment {
+  String title;
+  String location;
+  DateTime dateTime;
+
+  Appointment({
+    required this.title,
+    required this.location,
+    required this.dateTime,
+  });
 }

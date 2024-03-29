@@ -6,7 +6,9 @@ import 'package:sharing_cafe/constants.dart';
 
 class DateTimePicker extends StatefulWidget {
   final Function(DateTime) onDateTimeChanged;
-  const DateTimePicker({Key? key, required this.onDateTimeChanged})
+  final String label;
+  const DateTimePicker(
+      {Key? key, required this.onDateTimeChanged, required this.label})
       : super(key: key);
 
   @override
@@ -58,9 +60,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Text(
-                  'Ngày và giờ bắt đầu',
-                  style: TextStyle(
+                Text(
+                  widget.label,
+                  style: const TextStyle(
                     fontWeight: FontWeight.normal,
                     fontSize: 16.0,
                     color: Colors.black54,
