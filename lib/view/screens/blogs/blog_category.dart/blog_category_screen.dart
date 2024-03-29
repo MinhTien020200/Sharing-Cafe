@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/view/screens/blogs/blog_list/components/blog_card.dart';
 import 'package:sharing_cafe/view/screens/events/event_detail/event_detail_screen.dart';

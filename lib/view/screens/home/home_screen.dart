@@ -24,6 +24,7 @@ class _HomeScreen extends State<HomeScreen> {
 
   @override
   void initState() {
+    loadSuggestEvents();
     setState(() {
       _isLoading = true;
     });
@@ -32,9 +33,6 @@ class _HomeScreen extends State<HomeScreen> {
         .then((_) => setState(() {
               _isLoading = false;
             }));
-    super.initState();
-
-    loadSuggestEvents();
     super.initState();
   }
 
@@ -97,86 +95,85 @@ class _HomeScreen extends State<HomeScreen> {
             ),
           ],
         ),
-        body: _isLoading
-            ? const Center(
-                child: CircularProgressIndicator.adaptive(),
-              )
-            : Consumer<HomeProvider>(builder: (context, value, child) {
-                var blogs = value.blogs;
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListView(
-                    children: [
-                      //const DiscountBanner(),
-                      // TextButton(
-                      //   onPressed: () {
-                      //     // Handle attend action
-                      //   },
-                      //   style: ButtonStyle(
-                      //     backgroundColor:
-                      //         MaterialStateColor.resolveWith((states) => Colors.white),
-                      //   ),
-                      //   child: const Text(
-                      //     'Tham gia',
-                      //     style: TextStyle(
-                      //         color: kPrimaryColor, fontWeight: FontWeight.bold),
-                      //   ),
-                      // ),
-                      const Text(
-                        "Sự kiện thịnh hành",
-                        style: heading2Style,
-                      ),
-                      SizedBox(
-                        height: 333,
-                        child: _isLoadingSuggestEvents
-                            ? const Center(
-                                child: CircularProgressIndicator.adaptive(),
-                              )
-                            : ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: value.suggestEvents.length,
-                                itemBuilder: (context, index) {
-                                  var event = value.suggestEvents[index];
-                                  return EventCard2(
-                                    imageUrl: event.backgroundImage,
-                                    title: event.title,
-                                    dateTime: DateTimeHelper.formatDateTime(
-                                        event.timeOfEvent),
-                                    location: event.location ?? "",
-                                    attendeeCount: event.participantsCount,
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                          context, EventDetailScreen.routeName,
-                                          arguments: {
-                                            'id': event.eventId,
-                                          });
-                                    },
-                                  );
-                                },
-                              ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            "Blogs phổ biến",
-                            style: heading2Style,
-                          ),
-                          IconButton(
-                              onPressed: () {/* ... */},
-                              icon: const Icon(
-                                Icons.arrow_forward,
-                                size: 24,
-                                color: kPrimaryColor,
-                              ))
-                        ],
-                      ),
-                      ListView.builder(
+        body: Consumer<HomeProvider>(builder: (context, value, child) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView(
+              children: [
+                //const DiscountBanner(),
+                // TextButton(
+                //   onPressed: () {
+                //     // Handle attend action
+                //   },
+                //   style: ButtonStyle(
+                //     backgroundColor:
+                //         MaterialStateColor.resolveWith((states) => Colors.white),
+                //   ),
+                //   child: const Text(
+                //     'Tham gia',
+                //     style: TextStyle(
+                //         color: kPrimaryColor, fontWeight: FontWeight.bold),
+                //   ),
+                // ),
+                const Text(
+                  "Sự kiện thịnh hành",
+                  style: heading2Style,
+                ),
+                SizedBox(
+                  height: 333,
+                  child: _isLoadingSuggestEvents
+                      ? const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        )
+                      : ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: value.suggestEvents.length,
+                          itemBuilder: (context, index) {
+                            var event = value.suggestEvents[index];
+                            return EventCard2(
+                              imageUrl: event.backgroundImage,
+                              title: event.title,
+                              dateTime: DateTimeHelper.formatDateTime(
+                                  event.timeOfEvent),
+                              location: event.location ?? "",
+                              attendeeCount: event.participantsCount,
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, EventDetailScreen.routeName,
+                                    arguments: {
+                                      'id': event.eventId,
+                                    });
+                              },
+                            );
+                          },
+                        ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Blogs phổ biến",
+                      style: heading2Style,
+                    ),
+                    IconButton(
+                        onPressed: () {/* ... */},
+                        icon: const Icon(
+                          Icons.arrow_forward,
+                          size: 24,
+                          color: kPrimaryColor,
+                        ))
+                  ],
+                ),
+                _isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      )
+                    : ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: blogs.length,
+                        itemCount: value.blogs.length,
                         itemBuilder: (context, index) {
-                          var blog = blogs[index];
+                          var blog = value.blogs[index];
                           return BlogCard(
                             imageUrl: blog.image,
                             title: blog.title,
@@ -195,9 +192,9 @@ class _HomeScreen extends State<HomeScreen> {
                           );
                         },
                       ),
-                    ],
-                  ),
-                );
-              }));
+              ],
+            ),
+          );
+        }));
   }
 }

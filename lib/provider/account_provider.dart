@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,15 +15,9 @@ class AccountProvider extends ChangeNotifier {
     pref.setString("userId", result.userId);
     pref.setString("email", result.email);
     pref.setString("userName", result.userName);
-    Fluttertoast.showToast(
-        msg: "Login successfully. Token: ${result.token}"); // remove later
-    print(result.token +
-        ": " +
-        result.userId +
-        ": " +
-        result.email +
-        ": " +
-        result.userName);
+    Fluttertoast.showToast(msg: "Login successfully");
+    print(
+        "${result.token}: ${result.userId}: ${result.email}: ${result.userName}");
   }
 
   Future register(String userName, String email, String password) async {
@@ -32,16 +28,8 @@ class AccountProvider extends ChangeNotifier {
     pref.setString("email", result.email);
     pref.setString("userName", result.userName);
     pref.setString("password", result.password);
-    Fluttertoast.showToast(
-        msg: "Register successfully. Token: ${result.token}"); // remove later
-    print(result.token +
-        ": " +
-        result.userId +
-        ": " +
-        result.email +
-        ": " +
-        result.userName +
-        ": " +
-        result.password);
+    Fluttertoast.showToast(msg: "Register successfully");
+    print(
+        "${result.token}: ${result.userId}: ${result.email}: ${result.userName}: ${result.password}");
   }
 }

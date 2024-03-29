@@ -3,18 +3,15 @@ import 'package:provider/provider.dart';
 import 'package:sharing_cafe/provider/account_provider.dart';
 import 'package:sharing_cafe/provider/blog_provider.dart';
 import 'package:sharing_cafe/provider/categories_provider.dart';
+import 'package:sharing_cafe/provider/chat_provider.dart';
 import 'package:sharing_cafe/provider/event_provider.dart';
 import 'package:sharing_cafe/provider/friends_provider.dart';
 import 'package:sharing_cafe/provider/match_provider.dart';
 import 'package:sharing_cafe/provider/home_provider.dart';
 import 'package:sharing_cafe/provider/interest_provider.dart';
-import 'package:sharing_cafe/view/screens/auth/complete_profile/complete_profile_screen.dart';
 import 'package:sharing_cafe/view/screens/auth/login/login_screen.dart';
-import 'package:sharing_cafe/view/screens/events/event_list/event_list_screen.dart';
 import 'package:sharing_cafe/view/screens/init_screen.dart';
 import 'package:sharing_cafe/view/screens/auth/register/register_screen.dart';
-import 'package:sharing_cafe/view/screens/profiles/profile_page/profile_screen.dart';
-import 'package:sharing_cafe/view/screens/profiles/update_profile/body.dart';
 import 'package:sharing_cafe/view/screens/profiles/update_profile/update_profile_screen.dart';
 
 import 'routes.dart';
@@ -41,6 +38,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => MatchProvider()),
         ChangeNotifierProvider(create: (_) => FriendsProvider()),
         ChangeNotifierProvider(create: (_) => CategoriesProvider()),
+        ChangeNotifierProvider(create: (_) => ChatProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

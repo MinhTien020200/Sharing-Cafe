@@ -9,21 +9,6 @@ import 'package:sharing_cafe/service/image_service.dart';
 import 'package:sharing_cafe/view/components/form_field.dart';
 import 'package:sharing_cafe/view/screens/profiles/profile_page/profile_screen.dart';
 
-// DropdownMenuEntry labels and values for the second dropdown menu.
-enum IconLabel {
-  smile('Smile', Icons.sentiment_satisfied_outlined),
-  cloud(
-    'Cloud',
-    Icons.cloud_outlined,
-  ),
-  brush('Brush', Icons.brush_outlined),
-  heart('Heart', Icons.favorite);
-
-  const IconLabel(this.label, this.icon);
-  final String label;
-  final IconData icon;
-}
-
 class UpdateProfileScreen extends StatefulWidget {
   static String routeName = "/update_profile";
   const UpdateProfileScreen({Key? key}) : super(key: key);
@@ -33,9 +18,6 @@ class UpdateProfileScreen extends StatefulWidget {
 }
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
-  final TextEditingController colorController = TextEditingController();
-  final TextEditingController iconController = TextEditingController();
-  IconLabel? selectedIcon;
   String? _imageUrl;
   String? _fullname;
   String? _phonenumber;
@@ -134,6 +116,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 Form(
                     child: Column(
                   children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text('THÔNG TIN CÁ NHÂN',
+                          style: heading2Style, textAlign: TextAlign.left),
+                    ),
                     KFormField(
                       hintText: "Họ và tên",
                       onChanged: (p0) {
@@ -153,17 +140,16 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     ),
                     const SizedBox(height: 10),
                     KFormField(
-                      hintText: "Hãy câu chuyện của bạn",
-                      maxLines: 3,
+                      hintText: "Địa chỉ",
                       onChanged: (p0) {
                         setState(() {
-                          _story = p0;
+                          _location = p0;
                         });
                       },
                     ),
                     const SizedBox(height: 10),
                     KFormField(
-                      hintText: "Địa chỉ",
+                      hintText: "Giới tính",
                       onChanged: (p0) {
                         setState(() {
                           _location = p0;
@@ -173,31 +159,200 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     const SizedBox(height: 10),
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text('Tóm tắt', style: heading2Style),
+                      child: Text('CÂU CHUYỆN',
+                          style: heading2Style, textAlign: TextAlign.left),
                     ),
                     KFormField(
-                      hintText: "Sở thích",
+                      hintText: "",
+                      maxLines: 3,
                       onChanged: (p0) {
                         setState(() {
-                          _location = p0;
+                          _story = p0;
                         });
                       },
                     ),
                     const SizedBox(height: 10),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text('SỞ THÍCH',
+                          style: heading2Style, textAlign: TextAlign.left),
+                    ),
                     MultiSelectDropDown(
+                      selectedOptionTextColor: kPrimaryColor,
+                      hint: 'Thêm sở thích',
                       onOptionSelected: (options) {
                         debugPrint(options.toString());
                       },
                       options: const <ValueItem>[
-                        ValueItem(label: 'Option 1', value: '1'),
-                        ValueItem(label: 'Option 2', value: '2'),
-                        ValueItem(label: 'Option 3', value: '3'),
-                        ValueItem(label: 'Option 4', value: '4'),
-                        ValueItem(label: 'Option 5', value: '5'),
-                        ValueItem(label: 'Option 6', value: '6'),
+                        ValueItem(label: 'Du lịch', value: '1'),
+                        ValueItem(label: 'Thể thao', value: '2'),
+                        ValueItem(label: 'Đi dạo', value: '3'),
+                        ValueItem(label: 'Bóng đá', value: '4'),
+                        ValueItem(label: 'Cosplay', value: '5'),
+                        ValueItem(label: 'Mua sắm', value: '6'),
                       ],
                       selectionType: SelectionType.multi,
-                      chipConfig: const ChipConfig(wrapType: WrapType.scroll),
+                      chipConfig: const ChipConfig(
+                          wrapType: WrapType.scroll,
+                          backgroundColor: kPrimaryColor),
+                      dropdownHeight: 400,
+                      optionTextStyle: const TextStyle(fontSize: 16),
+                      selectedOptionIcon: const Icon(Icons.check_circle),
+                    ),
+                    const SizedBox(height: 10),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text('MỤC ĐÍCH HẸN CAFE',
+                          style: heading2Style, textAlign: TextAlign.left),
+                    ),
+                    MultiSelectDropDown(
+                      selectedOptionTextColor: kPrimaryColor,
+                      hint: 'Thêm mục đích hẹn',
+                      onOptionSelected: (options) {
+                        debugPrint(options.toString());
+                      },
+                      options: const <ValueItem>[
+                        ValueItem(label: 'Du lịch', value: '1'),
+                        ValueItem(label: 'Thể thao', value: '2'),
+                        ValueItem(label: 'Đi dạo', value: '3'),
+                        ValueItem(label: 'Bóng đá', value: '4'),
+                        ValueItem(label: 'Cosplay', value: '5'),
+                        ValueItem(label: 'Mua sắm', value: '6'),
+                      ],
+                      selectionType: SelectionType.single,
+                      chipConfig: const ChipConfig(
+                          wrapType: WrapType.scroll,
+                          backgroundColor: kPrimaryColor),
+                      dropdownHeight: 400,
+                      optionTextStyle: const TextStyle(fontSize: 16),
+                      selectedOptionIcon: const Icon(Icons.check_circle),
+                    ),
+                    const SizedBox(height: 10),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text('THÔNG TIN THÊM',
+                          style: heading2Style, textAlign: TextAlign.left),
+                    ),
+                    const Text("Bạn đang gặp khó khăn với điều gì?"),
+                    MultiSelectDropDown(
+                      selectedOptionTextColor: kPrimaryColor,
+                      hint: 'Thêm sở thích',
+                      onOptionSelected: (options) {
+                        debugPrint(options.toString());
+                      },
+                      options: const <ValueItem>[
+                        ValueItem(label: 'Du lịch', value: '1'),
+                        ValueItem(label: 'Thể thao', value: '2'),
+                        ValueItem(label: 'Đi dạo', value: '3'),
+                        ValueItem(label: 'Bóng đá', value: '4'),
+                        ValueItem(label: 'Cosplay', value: '5'),
+                        ValueItem(label: 'Mua sắm', value: '6'),
+                      ],
+                      selectionType: SelectionType.multi,
+                      chipConfig: const ChipConfig(
+                          wrapType: WrapType.scroll,
+                          backgroundColor: kPrimaryColor),
+                      dropdownHeight: 400,
+                      optionTextStyle: const TextStyle(fontSize: 16),
+                      selectedOptionIcon: const Icon(Icons.check_circle),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                        "Khi trò chuyện, bạn không muốn đề cập tới điều gì?"),
+                    MultiSelectDropDown(
+                      selectedOptionTextColor: kPrimaryColor,
+                      hint: 'Thêm sở thích',
+                      onOptionSelected: (options) {
+                        debugPrint(options.toString());
+                      },
+                      options: const <ValueItem>[
+                        ValueItem(label: 'Du lịch', value: '1'),
+                        ValueItem(label: 'Thể thao', value: '2'),
+                        ValueItem(label: 'Đi dạo', value: '3'),
+                        ValueItem(label: 'Bóng đá', value: '4'),
+                        ValueItem(label: 'Cosplay', value: '5'),
+                        ValueItem(label: 'Mua sắm', value: '6'),
+                      ],
+                      selectionType: SelectionType.multi,
+                      chipConfig: const ChipConfig(
+                          wrapType: WrapType.scroll,
+                          backgroundColor: kPrimaryColor),
+                      dropdownHeight: 400,
+                      optionTextStyle: const TextStyle(fontSize: 16),
+                      selectedOptionIcon: const Icon(Icons.check_circle),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text("Thức uống yêu thích"),
+                    MultiSelectDropDown(
+                      selectedOptionTextColor: kPrimaryColor,
+                      hint: 'Thêm sở thích',
+                      onOptionSelected: (options) {
+                        debugPrint(options.toString());
+                      },
+                      options: const <ValueItem>[
+                        ValueItem(label: 'Du lịch', value: '1'),
+                        ValueItem(label: 'Thể thao', value: '2'),
+                        ValueItem(label: 'Đi dạo', value: '3'),
+                        ValueItem(label: 'Bóng đá', value: '4'),
+                        ValueItem(label: 'Cosplay', value: '5'),
+                        ValueItem(label: 'Mua sắm', value: '6'),
+                      ],
+                      selectionType: SelectionType.multi,
+                      chipConfig: const ChipConfig(
+                          wrapType: WrapType.scroll,
+                          backgroundColor: kPrimaryColor),
+                      dropdownHeight: 400,
+                      optionTextStyle: const TextStyle(fontSize: 16),
+                      selectedOptionIcon: const Icon(Icons.check_circle),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text("Địa điểm yêu thích"),
+                    MultiSelectDropDown(
+                      selectedOptionTextColor: kPrimaryColor,
+                      hint: 'Thêm sở thích',
+                      onOptionSelected: (options) {
+                        debugPrint(options.toString());
+                      },
+                      options: const <ValueItem>[
+                        ValueItem(label: 'Du lịch', value: '1'),
+                        ValueItem(label: 'Thể thao', value: '2'),
+                        ValueItem(label: 'Đi dạo', value: '3'),
+                        ValueItem(label: 'Bóng đá', value: '4'),
+                        ValueItem(label: 'Cosplay', value: '5'),
+                        ValueItem(label: 'Mua sắm', value: '6'),
+                      ],
+                      selectionType: SelectionType.multi,
+                      chipConfig: const ChipConfig(
+                          wrapType: WrapType.scroll,
+                          backgroundColor: kPrimaryColor),
+                      dropdownHeight: 400,
+                      optionTextStyle: const TextStyle(fontSize: 16),
+                      selectedOptionIcon: const Icon(Icons.check_circle),
+                    ),
+                    const SizedBox(height: 10),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text('ĐANG SỐNG TẠI',
+                          style: heading2Style, textAlign: TextAlign.left),
+                    ),
+                    MultiSelectDropDown(
+                      selectedOptionTextColor: kPrimaryColor,
+                      hint: 'Thêm địa điểm',
+                      onOptionSelected: (options) {
+                        debugPrint(options.toString());
+                      },
+                      options: const <ValueItem>[
+                        ValueItem(label: 'Du lịch', value: '1'),
+                        ValueItem(label: 'Thể thao', value: '2'),
+                        ValueItem(label: 'Đi dạo', value: '3'),
+                        ValueItem(label: 'Bóng đá', value: '4'),
+                        ValueItem(label: 'Cosplay', value: '5'),
+                        ValueItem(label: 'Mua sắm', value: '6'),
+                      ],
+                      selectionType: SelectionType.single,
+                      chipConfig: const ChipConfig(
+                          wrapType: WrapType.scroll,
+                          backgroundColor: kPrimaryColor),
                       dropdownHeight: 400,
                       optionTextStyle: const TextStyle(fontSize: 16),
                       selectedOptionIcon: const Icon(Icons.check_circle),

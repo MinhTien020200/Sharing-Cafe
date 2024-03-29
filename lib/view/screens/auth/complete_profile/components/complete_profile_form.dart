@@ -9,7 +9,7 @@ class CompleteProfileForm extends StatefulWidget {
   const CompleteProfileForm({super.key});
 
   @override
-  _CompleteProfileFormState createState() => _CompleteProfileFormState();
+  State<CompleteProfileForm> createState() => _CompleteProfileFormState();
 }
 
 class _CompleteProfileFormState extends State<CompleteProfileForm> {

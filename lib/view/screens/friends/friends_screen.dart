@@ -50,7 +50,10 @@ class _FriendsScreenState extends State<FriendsScreen> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
-                          Navigator.pushNamed(context, ChatScreen.routeName);
+                          Navigator.pushNamed(context, ChatScreen.routeName,
+                              arguments: {
+                                'id': matches[index].userId,
+                              });
                         },
                         child: Card(
                           child: ListTile(

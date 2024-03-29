@@ -12,15 +12,15 @@ class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  _RegisterScreen createState() => _RegisterScreen();
+  State<RegisterScreen> createState() => _RegisterScreen();
 }
 
 class _RegisterScreen extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
-  String? user_name;
+  String? userName;
   String? email;
   String? password;
-  String? conform_password;
+  String? confirmPassword;
   bool remember = false;
   final List<String?> errors = [];
 
@@ -42,7 +42,7 @@ class _RegisterScreen extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AccountService = Provider.of<AccountProvider>(context);
+    final accountService = Provider.of<AccountProvider>(context);
     final TextEditingController userNameController = TextEditingController();
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
@@ -71,7 +71,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                       children: [
                         TextFormField(
                           controller: userNameController,
-                          onSaved: (newValue) => user_name = newValue,
+                          onSaved: (newValue) => userName = newValue,
                           onChanged: (value) {
                             if (value.isNotEmpty) {
                               removeError(error: kNamelNullError);
@@ -158,15 +158,15 @@ class _RegisterScreen extends State<RegisterScreen> {
                         const SizedBox(height: 20),
                         TextFormField(
                           obscureText: true,
-                          onSaved: (newValue) => conform_password = newValue,
+                          onSaved: (newValue) => confirmPassword = newValue,
                           onChanged: (value) {
                             if (value.isNotEmpty) {
                               removeError(error: kPassNullError);
                             } else if (value.isNotEmpty &&
-                                password == conform_password) {
+                                password == confirmPassword) {
                               removeError(error: kMatchPassError);
                             }
-                            conform_password = value;
+                            confirmPassword = value;
                           },
                           validator: (value) {
                             if (value!.isEmpty) {
@@ -193,7 +193,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
-                                AccountService.register(
+                                accountService.register(
                                     userNameController.text.toString(),
                                     emailController.text.toString(),
                                     passwordController.text.toString());
