@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
+import 'package:sharing_cafe/provider/account_provider.dart';
+import 'package:sharing_cafe/view/screens/auth/login/login_screen.dart';
+import 'package:sharing_cafe/view/screens/events/my_event/my_event_screen.dart';
 import 'package:sharing_cafe/view/screens/profiles/profile_page/components/profile_menu.dart';
 import 'package:sharing_cafe/view/screens/profiles/update_profile/update_profile_screen.dart';
 
@@ -15,6 +19,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    final accountService = Provider.of<AccountProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -46,7 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 10),
               Text("Minh Tiến",
                   style: Theme.of(context).textTheme.headlineMedium),
-              Text("tienpmse140988@fpt.edu.vn",
+              Text("tienpm.user@gmail.com",
                   style: Theme.of(context).textTheme.bodyMedium),
               const SizedBox(height: 20),
               SizedBox(
@@ -69,32 +74,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               //MENU
               ProfileMenu(
-                  title: "Settings",
-                  icon: LineAwesomeIcons.cog,
-                  onPress: () {}),
+                  title: "Sự kiện của bạn",
+                  icon: LineAwesomeIcons.calendar_check,
+                  onPress: () {
+                    Navigator.pushNamed(context, MyEventScreen.routeName);
+                  }),
               ProfileMenu(
-                  title: "Settings",
-                  icon: LineAwesomeIcons.cog,
-                  onPress: () {}),
-              ProfileMenu(
-                  title: "Settings",
-                  icon: LineAwesomeIcons.cog,
-                  onPress: () {}),
-              ProfileMenu(
-                  title: "Settings",
-                  icon: LineAwesomeIcons.cog,
+                  title: "Blog của bạn",
+                  icon: LineAwesomeIcons.blog,
                   onPress: () {}),
               const Divider(color: Colors.grey),
               ProfileMenu(
-                  title: "Settings",
-                  icon: LineAwesomeIcons.cog,
+                  title: "Thời tiết",
+                  icon: LineAwesomeIcons.cloud_with_sun,
                   onPress: () {}),
               ProfileMenu(
                   title: "Logout",
                   icon: LineAwesomeIcons.alternate_sign_out,
                   textColor: Colors.red,
                   endIcon: false,
-                  onPress: () {}),
+                  onPress: () async {
+                    try {
+                      await accountService.logout();
+                    } catch (e) {
+                      return;
+                    }
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, LoginScreen.routeName, (route) => false);
+                  }),
             ],
           ),
         ),

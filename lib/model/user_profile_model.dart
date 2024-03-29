@@ -1,9 +1,9 @@
-class ProfileModel {
+class UserProfileModel {
   final String userId;
   final String image;
   final String name;
   final String phone;
-  // final String address;
+  final String address;
   final String? description;
   final String gender;
   final String age;
@@ -14,12 +14,12 @@ class ProfileModel {
   final String favoriteDrink;
   final String freeTime;
 
-  ProfileModel({
+  UserProfileModel({
     required this.userId,
     required this.image,
     required this.name,
     required this.phone,
-    // required this.address,
+    required this.address,
     this.description,
     required this.gender,
     required this.age,
@@ -31,13 +31,13 @@ class ProfileModel {
     required this.freeTime,
   });
 
-  factory ProfileModel.fromJson(Map<String, dynamic> json) {
-    return ProfileModel(
+  factory UserProfileModel.fromJson(Map<String, dynamic> json) {
+    return UserProfileModel(
       userId: json["user_id"],
       image: json["profile_avatar"],
       name: json["user_name"],
       phone: json["phone"],
-      // address: json["address"],
+      address: json["address"],
       description: json["story"],
       gender: json["gender"],
       age: json["age"],

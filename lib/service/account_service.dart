@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:sharing_cafe/helper/api_helper.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/model/account_model.dart';
+import 'package:sharing_cafe/model/user_profile_model.dart';
 
 class AccountService {
   Future<AccountModel> login(String email, String password) async {
@@ -50,5 +51,20 @@ class AccountService {
       }
       rethrow;
     }
+  }
+
+  Future<UserProfileModel?> getUserProfile(String userId) async {
+    try {
+      var response = await ApiHelper().get('/user/$userId');
+      if (response.statusCode == HttpStatus.ok) {
+        return UserProfileModel.fromJson(json.decode(response.body)[0]);
+      } else {
+        ErrorHelper.showError(
+            message: "Lỗi ${response.statusCode}: Không thể lấy thông tin");
+      }
+    } on Exception catch (_, e) {
+      print(e);
+    }
+    return null;
   }
 }
