@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/enums.dart';
@@ -100,28 +99,28 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                     .adaptive(),
                                               );
                                             }
-                                            var _info = snapshot.data;
-                                            if (_info == null) {
+                                            var info = snapshot.data;
+                                            if (info == null) {
                                               return const Center(
                                                 child:
                                                     Text("Không có thông tin"),
                                               );
                                             }
                                             // create jobs string with ,
-                                            var jobs = _info.problem.isNotEmpty
-                                                ? _info.problem.join(", ")
+                                            var jobs = info.problem.isNotEmpty
+                                                ? info.problem.join(", ")
                                                 : "Không có";
-                                            var unlikeTopics = _info
+                                            var unlikeTopics = info
                                                     .problem.isNotEmpty
-                                                ? _info.unlikeTopic.join(", ")
+                                                ? info.unlikeTopic.join(", ")
                                                 : "Không có";
-                                            var favoriteDrinks = _info
+                                            var favoriteDrinks = info
                                                     .problem.isNotEmpty
-                                                ? _info.favoriteDrink.join(", ")
+                                                ? info.favoriteDrink.join(", ")
                                                 : "Không có";
                                             var freeTime =
-                                                _info.problem.isNotEmpty
-                                                    ? _info.freeTime.join(", ")
+                                                info.problem.isNotEmpty
+                                                    ? info.freeTime.join(", ")
                                                     : "Không có";
 
                                             return SizedBox(
@@ -177,20 +176,20 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                             ],
                                                           ),
                                                           Text(
-                                                            _info.purpose,
+                                                            info.purpose,
                                                             style:
                                                                 heading2Style,
                                                           )
                                                         ],
                                                       ),
                                                     ),
-                                                    if (_info.story != null)
+                                                    if (info.story != null)
                                                       const SizedBox(
                                                         height: 8,
                                                       ),
                                                     Visibility(
                                                       visible:
-                                                          _info.story != null,
+                                                          info.story != null,
                                                       child: Container(
                                                         decoration:
                                                             const BoxDecoration(
@@ -227,7 +226,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                               ],
                                                             ),
                                                             Text(
-                                                              _info.story ?? "",
+                                                              info.story ?? "",
                                                             )
                                                           ],
                                                         ),
@@ -284,7 +283,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                                 width: 4,
                                                               ),
                                                               Text(
-                                                                  "Cách xa ${_info.distance}")
+                                                                  "Cách xa ${info.distance}")
                                                             ],
                                                           ),
                                                           Row(
@@ -295,7 +294,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                                 width: 4,
                                                               ),
                                                               Text(
-                                                                  "Đang sống tại ${_info.address}"),
+                                                                  "Đang sống tại ${info.address}"),
                                                             ],
                                                           ),
                                                         ],
@@ -448,7 +447,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                               const SizedBox(
                                                                 width: 27,
                                                               ),
-                                                              Text(_info
+                                                              Text(info
                                                                   .favoriteLocation),
                                                             ],
                                                           ),
@@ -529,7 +528,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                           Wrap(
                                                             spacing: 6,
                                                             runSpacing: 0,
-                                                            children: _info
+                                                            children: info
                                                                 .interest
                                                                 .map((e) => Chip(
                                                                     label: Text(e

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:sharing_cafe/enums.dart';
 import 'package:sharing_cafe/helper/api_helper.dart';
+import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/shared_prefs_helper.dart';
 import 'package:sharing_cafe/model/matched_model.dart';
 import 'package:sharing_cafe/model/profile_info_model.dart';
@@ -10,14 +11,18 @@ import 'package:sharing_cafe/model/profile_model.dart';
 
 class MatchService {
   Future<List<ProfileModel>> getListProfiles(int limit, int offset) async {
-    var endpoint = "/auth/matches-interest?limit=$limit&offset=$offset";
-    var response = await ApiHelper().get(endpoint);
-    if (response.statusCode == HttpStatus.ok) {
-      var result = json.decode(response.body);
-      var jsonList = result["data"] as List;
-      return jsonList
-          .map<ProfileModel>((e) => ProfileModel.fromJson(e))
-          .toList();
+    try {
+      var endpoint = "/auth/matches-interest?limit=$limit&offset=$offset";
+      var response = await ApiHelper().get(endpoint);
+      if (response.statusCode == HttpStatus.ok) {
+        var result = json.decode(response.body);
+        var jsonList = result["data"] as List;
+        return jsonList
+            .map<ProfileModel>((e) => ProfileModel.fromJson(e))
+            .toList();
+      }
+    } catch (e) {
+      ErrorHelper.showError(message: "Không thể lấy danh sách người dùng");
     }
     return List.empty();
   }
@@ -38,7 +43,7 @@ class MatchService {
   }
 
   Future<List<MatchedModel>> getListFriends() async {
-    var endpoint = "/auth/matched";
+    var endpoint = "/auth/matched?status=Matched";
     var response = await ApiHelper().get(endpoint);
     if (response.statusCode == HttpStatus.ok) {
       var result = json.decode(response.body);

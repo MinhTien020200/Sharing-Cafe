@@ -8,7 +8,7 @@ class ProfileInfoModel {
   String purpose;
   String favoriteLocation;
   String address;
-  String distance;
+  String? distance;
   List<Interest> interest;
   List<Problem> problem;
   List<UnlikeTopic> unlikeTopic;
@@ -20,7 +20,7 @@ class ProfileInfoModel {
     required this.userName,
     required this.profileAvatar,
     this.story,
-    required this.distance,
+    this.distance,
     required this.gender,
     required this.age,
     required this.purpose,
