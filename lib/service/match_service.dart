@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:sharing_cafe/enums.dart';
 import 'package:sharing_cafe/helper/api_helper.dart';
 import 'package:sharing_cafe/model/matched_model.dart';
+import 'package:sharing_cafe/model/profile_info_model.dart';
 import 'package:sharing_cafe/model/profile_model.dart';
 
 class MatchService {
@@ -46,5 +47,15 @@ class MatchService {
           .toList();
     }
     return List.empty();
+  }
+
+  Future<ProfileInfoModel> getProfileInfo(String userId) async {
+    var endpoint = "/user/profile/$userId";
+    var response = await ApiHelper().get(endpoint);
+    if (response.statusCode == HttpStatus.ok) {
+      var result = json.decode(response.body);
+      return ProfileInfoModel.fromJson(result);
+    }
+    throw Exception("Get profile info error: ${response.statusCode}");
   }
 }

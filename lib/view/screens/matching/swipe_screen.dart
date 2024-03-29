@@ -88,372 +88,467 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                   context: context,
                                   shape: const Border(top: BorderSide.none),
                                   builder: (context) {
-                                    return SizedBox(
-                                      height: 800,
-                                      child: SingleChildScrollView(
-                                        child: Column(
-                                          children: [
-                                            SizedBox(
-                                              height: 500,
-                                              child: ProfileCard(
-                                                image: profiles.first.image,
-                                                name: profiles.first.name,
-                                                description:
-                                                    profiles.first.description,
-                                                age: profiles.first.age,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            Container(
-                                              decoration: const BoxDecoration(
-                                                color: kPrimaryLightColor,
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(10),
-                                                ),
-                                              ),
-                                              padding: const EdgeInsets.all(16),
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8),
-                                              child: const Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Icon(Icons.search),
-                                                      SizedBox(
-                                                        width: 4,
+                                    return Consumer<MatchProvider>(
+                                        builder: (context, value, child) {
+                                      return FutureBuilder(
+                                          future: value.getProfileInfo(),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return const Center(
+                                                child: CircularProgressIndicator
+                                                    .adaptive(),
+                                              );
+                                            }
+                                            var _info = snapshot.data;
+                                            if (_info == null) {
+                                              return const Center(
+                                                child:
+                                                    Text("Không có thông tin"),
+                                              );
+                                            }
+                                            // create jobs string with ,
+                                            var jobs = _info.problem.isNotEmpty
+                                                ? _info.problem.join(", ")
+                                                : "Không có";
+                                            var unlikeTopics = _info
+                                                    .problem.isNotEmpty
+                                                ? _info.unlikeTopic.join(", ")
+                                                : "Không có";
+                                            var favoriteDrinks = _info
+                                                    .problem.isNotEmpty
+                                                ? _info.favoriteDrink.join(", ")
+                                                : "Không có";
+                                            var freeTime =
+                                                _info.problem.isNotEmpty
+                                                    ? _info.freeTime.join(", ")
+                                                    : "Không có";
+
+                                            return SizedBox(
+                                              height: 800,
+                                              child: SingleChildScrollView(
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 500,
+                                                      child: ProfileCard(
+                                                        image: profiles
+                                                            .first.image,
+                                                        name:
+                                                            profiles.first.name,
+                                                        description: profiles
+                                                            .first.description,
+                                                        age: profiles.first.age,
                                                       ),
-                                                      Text("Đang tìm kiếm")
-                                                    ],
-                                                  ),
-                                                  Text(
-                                                    "Mối quan hệ lâu dài",
-                                                    style: heading2Style,
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            Container(
-                                              decoration: const BoxDecoration(
-                                                color: kPrimaryLightColor,
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(10),
-                                                ),
-                                              ),
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8),
-                                              padding: const EdgeInsets.all(16),
-                                              child: const Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Icon(Icons
-                                                          .format_quote_rounded),
-                                                      SizedBox(
-                                                        width: 4,
-                                                      ),
-                                                      Text("Câu chuyện",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold))
-                                                    ],
-                                                  ),
-                                                  Text(
-                                                    "Câu chuyện về cuộc sống ",
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            Container(
-                                              decoration: const BoxDecoration(
-                                                color: kPrimaryLightColor,
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(10),
-                                                ),
-                                              ),
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8),
-                                              padding: const EdgeInsets.all(16),
-                                              child: const Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Icon(Icons.info_outline),
-                                                      SizedBox(
-                                                        width: 4,
-                                                      ),
-                                                      Text(
-                                                        "Thông tin chính",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 4,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Icon(Icons
-                                                          .location_on_outlined),
-                                                      SizedBox(
-                                                        width: 4,
-                                                      ),
-                                                      Text("Cách xa 16km")
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Icon(Icons.home_outlined),
-                                                      SizedBox(
-                                                        width: 4,
-                                                      ),
-                                                      Text(
-                                                          "Đang sống tại Hà Nội"),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            Container(
-                                              decoration: const BoxDecoration(
-                                                color: kPrimaryLightColor,
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(10),
-                                                ),
-                                              ),
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8),
-                                              padding: const EdgeInsets.all(16),
-                                              child: const Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Icon(Icons.info_outline),
-                                                      SizedBox(
-                                                        width: 4,
-                                                      ),
-                                                      Text(
-                                                        "Thông tin cơ bản",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 4,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Icon(Icons
-                                                          .question_mark_outlined),
-                                                      SizedBox(
-                                                        width: 4,
-                                                      ),
-                                                      Text(
-                                                        "Bạn đang gặp khó khăn",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      SizedBox(
-                                                        width: 27,
-                                                      ),
-                                                      Text("Công việc"),
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Icon(Icons
-                                                          .question_mark_outlined),
-                                                      SizedBox(
-                                                        width: 4,
-                                                      ),
-                                                      Expanded(
-                                                        child: Text(
-                                                          "Khi trò chuyện, bạn không muốn đề cập",
-                                                          maxLines: 2,
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                    Container(
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        color:
+                                                            kPrimaryLightColor,
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(10),
                                                         ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      SizedBox(
-                                                        width: 27,
                                                       ),
-                                                      Text("Hôn nhân"),
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Icon(Icons
-                                                          .local_drink_outlined),
-                                                      SizedBox(
-                                                        width: 4,
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              16),
+                                                      margin: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 8),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          const Row(
+                                                            children: [
+                                                              Icon(
+                                                                  Icons.search),
+                                                              SizedBox(
+                                                                width: 4,
+                                                              ),
+                                                              Text(
+                                                                  "Đang tìm kiếm")
+                                                            ],
+                                                          ),
+                                                          Text(
+                                                            _info.purpose,
+                                                            style:
+                                                                heading2Style,
+                                                          )
+                                                        ],
                                                       ),
-                                                      Expanded(
-                                                        child: Text(
-                                                          "Thức uống yêu thích",
-                                                          maxLines: 2,
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
+                                                    ),
+                                                    if (_info.story != null)
+                                                      const SizedBox(
+                                                        height: 8,
+                                                      ),
+                                                    Visibility(
+                                                      visible:
+                                                          _info.story != null,
+                                                      child: Container(
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          color:
+                                                              kPrimaryLightColor,
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                            Radius.circular(10),
+                                                          ),
                                                         ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      SizedBox(
-                                                        width: 27,
-                                                      ),
-                                                      Text("Cafe"),
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Icon(Icons.park_outlined),
-                                                      SizedBox(
-                                                        width: 4,
-                                                      ),
-                                                      Expanded(
-                                                        child: Text(
-                                                          "Địa điểm yêu thích",
-                                                          maxLines: 2,
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
+                                                        margin: const EdgeInsets
+                                                            .symmetric(
+                                                            horizontal: 8),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(16),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            const Row(
+                                                              children: [
+                                                                Icon(Icons
+                                                                    .format_quote_rounded),
+                                                                SizedBox(
+                                                                  width: 4,
+                                                                ),
+                                                                Text(
+                                                                    "Câu chuyện",
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold))
+                                                              ],
+                                                            ),
+                                                            Text(
+                                                              _info.story ?? "",
+                                                            )
+                                                          ],
                                                         ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      SizedBox(
-                                                        width: 27,
                                                       ),
-                                                      Text("Bamos coffe"),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            Container(
-                                              decoration: const BoxDecoration(
-                                                color: kPrimaryLightColor,
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(10),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                    Container(
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        color:
+                                                            kPrimaryLightColor,
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(10),
+                                                        ),
+                                                      ),
+                                                      margin: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 8),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              16),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          const Row(
+                                                            children: [
+                                                              Icon(Icons
+                                                                  .info_outline),
+                                                              SizedBox(
+                                                                width: 4,
+                                                              ),
+                                                              Text(
+                                                                "Thông tin chính",
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 4,
+                                                          ),
+                                                          const Row(
+                                                            children: [
+                                                              Icon(Icons
+                                                                  .location_on_outlined),
+                                                              SizedBox(
+                                                                width: 4,
+                                                              ),
+                                                              Text(
+                                                                  "Cách xa 16km")
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              const Icon(Icons
+                                                                  .home_outlined),
+                                                              const SizedBox(
+                                                                width: 4,
+                                                              ),
+                                                              Text(
+                                                                  "Đang sống tại ${_info.address}"),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                    Container(
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        color:
+                                                            kPrimaryLightColor,
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(10),
+                                                        ),
+                                                      ),
+                                                      margin: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 8),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              16),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          const Row(
+                                                            children: [
+                                                              Icon(Icons
+                                                                  .info_outline),
+                                                              SizedBox(
+                                                                width: 4,
+                                                              ),
+                                                              Text(
+                                                                "Thông tin cơ bản",
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 4,
+                                                          ),
+                                                          const Row(
+                                                            children: [
+                                                              Icon(Icons
+                                                                  .question_mark_outlined),
+                                                              SizedBox(
+                                                                width: 4,
+                                                              ),
+                                                              Text(
+                                                                "Bạn đang gặp khó khăn",
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              const SizedBox(
+                                                                width: 27,
+                                                              ),
+                                                              Text(jobs),
+                                                            ],
+                                                          ),
+                                                          const Row(
+                                                            children: [
+                                                              Icon(Icons
+                                                                  .question_mark_outlined),
+                                                              SizedBox(
+                                                                width: 4,
+                                                              ),
+                                                              Expanded(
+                                                                child: Text(
+                                                                  "Khi trò chuyện, bạn không muốn đề cập",
+                                                                  maxLines: 2,
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              const SizedBox(
+                                                                width: 27,
+                                                              ),
+                                                              Text(
+                                                                  unlikeTopics),
+                                                            ],
+                                                          ),
+                                                          const Row(
+                                                            children: [
+                                                              Icon(Icons
+                                                                  .local_drink_outlined),
+                                                              SizedBox(
+                                                                width: 4,
+                                                              ),
+                                                              Expanded(
+                                                                child: Text(
+                                                                  "Thức uống yêu thích",
+                                                                  maxLines: 2,
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              const SizedBox(
+                                                                width: 27,
+                                                              ),
+                                                              Text(
+                                                                  favoriteDrinks),
+                                                            ],
+                                                          ),
+                                                          const Row(
+                                                            children: [
+                                                              Icon(Icons
+                                                                  .park_outlined),
+                                                              SizedBox(
+                                                                width: 4,
+                                                              ),
+                                                              Expanded(
+                                                                child: Text(
+                                                                  "Địa điểm yêu thích",
+                                                                  maxLines: 2,
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              const SizedBox(
+                                                                width: 27,
+                                                              ),
+                                                              Text(_info
+                                                                  .favoriteLocation),
+                                                            ],
+                                                          ),
+                                                          const Row(
+                                                            children: [
+                                                              Icon(Icons
+                                                                  .free_breakfast_outlined),
+                                                              SizedBox(
+                                                                width: 4,
+                                                              ),
+                                                              Expanded(
+                                                                child: Text(
+                                                                  "Thời gian rảnh rỗi",
+                                                                  maxLines: 2,
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              const SizedBox(
+                                                                width: 27,
+                                                              ),
+                                                              Text(freeTime),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                    Container(
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        color:
+                                                            kPrimaryLightColor,
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(10),
+                                                        ),
+                                                      ),
+                                                      margin: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 8),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              16),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          const Row(
+                                                            children: [
+                                                              Icon(Icons
+                                                                  .interests_outlined),
+                                                              SizedBox(
+                                                                width: 4,
+                                                              ),
+                                                              Expanded(
+                                                                child: Text(
+                                                                  "Sở thích",
+                                                                  maxLines: 2,
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          // List chip
+                                                          Wrap(
+                                                            spacing: 6,
+                                                            runSpacing: 0,
+                                                            children: _info
+                                                                .interest
+                                                                .map((e) => Chip(
+                                                                    label: Text(e
+                                                                        .interestName
+                                                                        .toString())))
+                                                                .toList(),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8),
-                                              padding: const EdgeInsets.all(16),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const Row(
-                                                    children: [
-                                                      Icon(Icons
-                                                          .interests_outlined),
-                                                      SizedBox(
-                                                        width: 4,
-                                                      ),
-                                                      Expanded(
-                                                        child: Text(
-                                                          "Sở thích",
-                                                          maxLines: 2,
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  // List chip
-                                                  Wrap(
-                                                    spacing: 6,
-                                                    runSpacing: 0,
-                                                    children: [
-                                                      {
-                                                        "name": "Du lịch",
-                                                      },
-                                                      {
-                                                        "name": "Thể thao",
-                                                      },
-                                                      {
-                                                        "name": "Đọc sách",
-                                                      },
-                                                      {
-                                                        "name": "Nghe nhạc",
-                                                      },
-                                                      {
-                                                        "name": "Xem phim",
-                                                      },
-                                                      {
-                                                        "name": "Nấu ăn",
-                                                      }
-                                                    ]
-                                                        .map((e) => Chip(
-                                                            label: Text(e[
-                                                                    "name"]
-                                                                .toString())))
-                                                        .toList(),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
+                                            );
+                                          });
+                                    });
                                   },
                                 );
                               },
