@@ -276,15 +276,15 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                           const SizedBox(
                                                             height: 4,
                                                           ),
-                                                          const Row(
+                                                          Row(
                                                             children: [
-                                                              Icon(Icons
+                                                              const Icon(Icons
                                                                   .location_on_outlined),
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                 width: 4,
                                                               ),
                                                               Text(
-                                                                  "Cách xa 16km")
+                                                                  "Cách xa ${_info.distance}")
                                                             ],
                                                           ),
                                                           Row(

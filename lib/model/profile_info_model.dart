@@ -8,6 +8,7 @@ class ProfileInfoModel {
   String purpose;
   String favoriteLocation;
   String address;
+  String distance;
   List<Interest> interest;
   List<Problem> problem;
   List<UnlikeTopic> unlikeTopic;
@@ -19,6 +20,7 @@ class ProfileInfoModel {
     required this.userName,
     required this.profileAvatar,
     this.story,
+    required this.distance,
     required this.gender,
     required this.age,
     required this.purpose,
@@ -39,6 +41,7 @@ class ProfileInfoModel {
       story: json['story'],
       gender: json['gender'],
       age: json['age'],
+      distance: json['distance'],
       purpose: json['purpose'],
       favoriteLocation: json['favorite_location'],
       address: json['address'],
