@@ -52,6 +52,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
     return InkWell(
       onTap: () => _pickDateTime(context),
       child: Container(
+        width: double.infinity,
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(16.0)),
             color: kFormFieldColor),

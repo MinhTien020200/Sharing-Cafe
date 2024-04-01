@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:sharing_cafe/helper/api_helper.dart';
 import 'package:sharing_cafe/model/chat_message_model.dart';
+import 'package:sharing_cafe/model/recommend_cafe.dart';
+import 'package:sharing_cafe/model/schedule_model.dart';
 
 class ChatService {
   Future<List<ChatMessageModel>> getHistory(String userId) async {
@@ -20,6 +22,36 @@ class ChatService {
         return list;
       } else {
         throw Exception("Failed to load chat history: ${response.statusCode}");
+      }
+    });
+  }
+
+  Future<List<RecommendCafeModel>> getRecommendCafe(
+      String userId, String currentUserId) async {
+    var endpoint =
+        "/location/getRecommendCafe?userIdA=$userId&userIdB=$currentUserId";
+    return ApiHelper().get(endpoint).then((response) {
+      if (response.statusCode == HttpStatus.ok) {
+        var jsonList = json.decode(response.body);
+        var list = jsonList["predictions"]
+            .map<RecommendCafeModel>((e) => RecommendCafeModel.fromJson(e))
+            .toList();
+        return list;
+      } else {
+        throw Exception(
+            "Failed to load recommend cafe: ${response.statusCode}");
+      }
+    });
+  }
+
+  Future<ScheduleModel> createSchedule(ScheduleModel scheduleModel) async {
+    var endpoint = "/user/schedule";
+    return ApiHelper().post(endpoint, scheduleModel.toJson()).then((response) {
+      if (response.statusCode == HttpStatus.ok) {
+        var jsonMap = json.decode(response.body);
+        return ScheduleModel.fromJson(jsonMap);
+      } else {
+        throw Exception("Failed to create schedule: ${response.statusCode}");
       }
     });
   }

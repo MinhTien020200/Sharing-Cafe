@@ -293,8 +293,14 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                               const SizedBox(
                                                                 width: 4,
                                                               ),
-                                                              Text(
-                                                                  "Đang sống tại ${info.address}"),
+                                                              Expanded(
+                                                                child: Text(
+                                                                  "Đang sống tại ${info.address}",
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
+                                                              ),
                                                             ],
                                                           ),
                                                         ],
