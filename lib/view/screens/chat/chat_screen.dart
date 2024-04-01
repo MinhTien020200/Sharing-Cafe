@@ -298,8 +298,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      if (message.appointment!.isApproved !=
-                                          false)
+                                      if (message.appointment != null &&
+                                          message.appointment!.isApproved !=
+                                              false)
                                         TextButton(
                                           style: TextButton.styleFrom(
                                               backgroundColor: kErrorColor,
