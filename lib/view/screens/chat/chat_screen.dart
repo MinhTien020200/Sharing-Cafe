@@ -313,10 +313,12 @@ class _ChatScreenState extends State<ChatScreen> {
                                                 message:
                                                     "Hủy lịch hẹn thành công");
                                             setState(() {
-                                              _schedules.removeWhere(
-                                                  (element) =>
+                                              _schedules
+                                                  .where((element) =>
                                                       element.scheduleId ==
-                                                      message.appointment!.id);
+                                                      message.appointment!.id)
+                                                  .first
+                                                  .isAccept = false;
                                             });
                                           },
                                           child: const Text(

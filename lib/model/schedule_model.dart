@@ -17,7 +17,7 @@ class ScheduleModel {
   final DateTime date;
   final String senderId;
   final String receiverId;
-  final bool? isAccept;
+  bool? isAccept;
 
   factory ScheduleModel.fromJson(Map<String, dynamic> json) => ScheduleModel(
         createdAt: DateTime.parse(json["created_at"]),

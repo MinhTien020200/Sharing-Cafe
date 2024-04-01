@@ -71,10 +71,9 @@ class ChatService {
   }
 
   Future changeStatusSchedule(String scheduleId, bool isAccept) {
-    var endpoint = "/user/schedule/status";
-    return ApiHelper()
-        .put(endpoint, {"is_accept": isAccept, "schedule_id": scheduleId}).then(
-            (response) {
+    var endpoint =
+        "/user/schedule/status?is_accept=$isAccept&schedule_id=$scheduleId";
+    return ApiHelper().put(endpoint, {}).then((response) {
       if (response.statusCode != HttpStatus.ok) {
         throw Exception(
             "Failed to change status schedule: ${response.statusCode}");
