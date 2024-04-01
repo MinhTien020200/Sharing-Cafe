@@ -55,4 +55,30 @@ class ChatService {
       }
     });
   }
+
+  Future<List<ScheduleModel>> getSchedule(String userId) {
+    var endpoint = "/auth/user/schedule/$userId";
+    return ApiHelper().get(endpoint).then((response) {
+      if (response.statusCode == HttpStatus.ok) {
+        var jsonList = json.decode(response.body) as List;
+        return jsonList
+            .map<ScheduleModel>((e) => ScheduleModel.fromJson(e))
+            .toList();
+      } else {
+        return [];
+      }
+    });
+  }
+
+  Future changeStatusSchedule(String scheduleId, bool isAccept) {
+    var endpoint = "/user/schedule/status";
+    return ApiHelper()
+        .put(endpoint, {"is_accept": isAccept, "schedule_id": scheduleId}).then(
+            (response) {
+      if (response.statusCode != HttpStatus.ok) {
+        throw Exception(
+            "Failed to change status schedule: ${response.statusCode}");
+      }
+    });
+  }
 }

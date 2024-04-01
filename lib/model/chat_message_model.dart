@@ -52,13 +52,17 @@ class ChatMessageModel {
 }
 
 class Appointment {
+  String? id;
   String title;
   String location;
   DateTime dateTime;
+  bool? isApproved;
 
   Appointment({
+    this.id,
     required this.title,
     required this.location,
     required this.dateTime,
+    required this.isApproved,
   });
 }

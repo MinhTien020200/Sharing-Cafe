@@ -24,7 +24,7 @@ class ScheduleModel {
         scheduleId: json["schedule_id"],
         content: json["content"],
         location: json["location"],
-        date: DateTime.parse(json["date"]),
+        date: DateTime.parse(json["schedule_time"]),
         senderId: json["sender_id"],
         receiverId: json["receiver_id"],
         isAccept: json["is_accept"],

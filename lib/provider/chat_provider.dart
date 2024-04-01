@@ -102,6 +102,7 @@ class ChatProvider extends ChangeNotifier {
         title: title,
         location: location,
         dateTime: dateTime,
+        isApproved: null,
       ),
       isAppointment: true,
     );
@@ -116,7 +117,8 @@ class ChatProvider extends ChangeNotifier {
         receiverId: _userId,
         isAccept: false);
     try {
-      await ChatService().createSchedule(schedule);
+      var res = await ChatService().createSchedule(schedule);
+      appointment.appointment!.id = res.scheduleId;
       addMessage(appointment);
     } catch (e) {
       ErrorHelper.showError(message: "Không thể tạo lịch hẹn: 500");
@@ -132,5 +134,17 @@ class ChatProvider extends ChangeNotifier {
 
   Future<ScheduleModel> createSchedule(ScheduleModel scheduleModel) async {
     return ChatService().createSchedule(scheduleModel);
+  }
+
+  Future<List<ScheduleModel>> getSchedule() async {
+    var listSchedule = await ChatService().getSchedule(_userId);
+    if (listSchedule.isNotEmpty) {
+      return listSchedule;
+    }
+    return [];
+  }
+
+  Future changeStatusSchedule(String scheduleId, bool isAccept) async {
+    await ChatService().changeStatusSchedule(scheduleId, isAccept);
   }
 }

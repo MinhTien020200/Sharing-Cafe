@@ -9,7 +9,9 @@ import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/key_value_pair.dart';
 import 'package:sharing_cafe/model/chat_message_model.dart';
 import 'package:sharing_cafe/model/recommend_cafe.dart';
+import 'package:sharing_cafe/model/schedule_model.dart';
 import 'package:sharing_cafe/provider/chat_provider.dart';
+import 'package:sharing_cafe/service/chat_service.dart';
 import 'package:sharing_cafe/view/components/date_time_picker.dart';
 import 'package:sharing_cafe/view/components/form_field.dart';
 import 'package:sharing_cafe/view/components/select_form.dart';
@@ -25,7 +27,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
   bool _isLoading = true;
-
+  List<ScheduleModel> _schedules = [];
   @override
   void initState() {
     super.initState();
@@ -42,7 +44,10 @@ class _ChatScreenState extends State<ChatScreen> {
             .getUserMessagesHistory(value))
         .then((_) => Provider.of<ChatProvider>(context, listen: false)
             .connectAndListen())
-        .then((_) => setState(() {
+        .then((_) async {
+      _schedules =
+          await Provider.of<ChatProvider>(context, listen: false).getSchedule();
+    }).then((_) => setState(() {
               _isLoading = false;
             }));
   }
@@ -200,6 +205,28 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: Consumer<ChatProvider>(
                       builder: (context, provider, child) {
                     var messages = provider.getUserMessages(provider.userId);
+                    if (_schedules.isNotEmpty) {
+                      messages.addAll(_schedules
+                          .map((e) => ChatMessageModel(
+                              messageId: e.scheduleId,
+                              senderId: e.senderId,
+                              senderAvt: "",
+                              senderName: "",
+                              receiverId: e.receiverId,
+                              receiverAvt: "",
+                              receiverName: "",
+                              messageContent: e.content,
+                              createdAt: e.date,
+                              messageType: false,
+                              appointment: Appointment(
+                                  id: e.scheduleId,
+                                  title: e.content,
+                                  location: e.location,
+                                  dateTime: e.date,
+                                  isApproved: e.isAccept),
+                              isAppointment: true))
+                          .toList());
+                    }
                     return ListView.builder(
                         itemCount: messages.length,
                         reverse: true,
@@ -271,21 +298,35 @@ class _ChatScreenState extends State<ChatScreen> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      TextButton(
-                                        style: TextButton.styleFrom(
-                                            backgroundColor: kErrorColor,
-                                            fixedSize: const Size(100, 20)),
-                                        onPressed: () {
-                                          ////////////////////////////////
-                                        },
-                                        child: const Text(
-                                          "Hủy",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
+                                      if (message.appointment!.isApproved !=
+                                          false)
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                              backgroundColor: kErrorColor,
+                                              fixedSize: const Size(100, 20)),
+                                          onPressed: () async {
+                                            await ChatService()
+                                                .changeStatusSchedule(
+                                                    message.appointment!.id!,
+                                                    false);
+                                            ErrorHelper.showError(
+                                                message:
+                                                    "Hủy lịch hẹn thành công");
+                                            setState(() {
+                                              _schedules.removeWhere(
+                                                  (element) =>
+                                                      element.scheduleId ==
+                                                      message.appointment!.id);
+                                            });
+                                          },
+                                          child: const Text(
+                                            "Hủy",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
-                                      ),
                                       Visibility(
                                         visible: false,
                                         child: TextButton(
