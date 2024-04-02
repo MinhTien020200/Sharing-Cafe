@@ -45,7 +45,6 @@ class ChatProvider extends ChangeNotifier {
         'message': message,
         'timestamp': DateTime.now().toIso8601String(),
       };
-      connectAndListen();
       socket.emit('message', data);
     }
   }
@@ -71,10 +70,16 @@ class ChatProvider extends ChangeNotifier {
 
   void addMessage(ChatMessageModel chatMessageModel) {
     if (_mapUserMessages.containsKey(chatMessageModel.senderId)) {
-      _mapUserMessages[chatMessageModel.senderId]!.add(chatMessageModel);
+      if (!_mapUserMessages[chatMessageModel.senderId]!
+          .any((element) => element.messageId == chatMessageModel.messageId)) {
+        _mapUserMessages[chatMessageModel.senderId]!.add(chatMessageModel);
+      }
     }
     if (_mapUserMessages.containsKey(chatMessageModel.receiverId)) {
-      _mapUserMessages[chatMessageModel.receiverId]!.add(chatMessageModel);
+      if (!_mapUserMessages[chatMessageModel.receiverId]!
+          .any((element) => element.messageId == chatMessageModel.messageId)) {
+        _mapUserMessages[chatMessageModel.receiverId]!.add(chatMessageModel);
+      }
     }
     notifyListeners();
   }
