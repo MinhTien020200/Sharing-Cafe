@@ -53,6 +53,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
                           Navigator.pushNamed(context, ChatScreen.routeName,
                               arguments: {
                                 'id': matches[index].userId,
+                                'name': matches[index].userName,
                               });
                         },
                         child: Card(

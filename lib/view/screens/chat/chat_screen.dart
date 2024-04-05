@@ -28,6 +28,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
   bool _isLoading = true;
   List<ScheduleModel> _schedules = [];
+  String _userName = "Chat";
   @override
   void initState() {
     super.initState();
@@ -37,6 +38,9 @@ class _ChatScreenState extends State<ChatScreen> {
     Future.delayed(Duration.zero, () {
       final Map arguments = ModalRoute.of(context)!.settings.arguments as Map;
       var id = arguments['id'];
+      setState(() {
+        _userName = arguments['name'];
+      });
       Provider.of<ChatProvider>(context, listen: false).setUserId(id);
       return id;
     })
@@ -77,7 +81,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Chat"),
+        title: Text(_userName),
         actions: [
           IconButton(
               onPressed: () {
@@ -206,26 +210,29 @@ class _ChatScreenState extends State<ChatScreen> {
                       builder: (context, provider, child) {
                     var messages = provider.getUserMessages(provider.userId);
                     if (_schedules.isNotEmpty) {
-                      messages.addAll(_schedules
-                          .map((e) => ChatMessageModel(
-                              messageId: e.scheduleId,
-                              senderId: e.senderId,
-                              senderAvt: "",
-                              senderName: "",
-                              receiverId: e.receiverId,
-                              receiverAvt: "",
-                              receiverName: "",
-                              messageContent: e.content,
-                              createdAt: e.date,
-                              messageType: false,
-                              appointment: Appointment(
-                                  id: e.scheduleId,
-                                  title: e.content,
-                                  location: e.location,
-                                  dateTime: e.date,
-                                  isApproved: e.isAccept),
-                              isAppointment: true))
-                          .toList());
+                      // add all schedule to head of message list
+                      messages.insertAll(
+                          0,
+                          _schedules
+                              .map((e) => ChatMessageModel(
+                                  messageId: e.scheduleId,
+                                  senderId: e.senderId,
+                                  senderAvt: "",
+                                  senderName: "",
+                                  receiverId: e.receiverId,
+                                  receiverAvt: "",
+                                  receiverName: "",
+                                  messageContent: e.content,
+                                  createdAt: e.date,
+                                  messageType: false,
+                                  appointment: Appointment(
+                                      id: e.scheduleId,
+                                      title: e.content,
+                                      location: e.location,
+                                      dateTime: e.date,
+                                      isApproved: e.isAccept),
+                                  isAppointment: true))
+                              .toList());
                     }
                     return ListView.builder(
                         itemCount: messages.length,
@@ -298,8 +305,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      if (message.appointment!.isApproved !=
-                                          false)
+                                      if (message.appointment != null &&
+                                          message.appointment!.isApproved !=
+                                              false)
                                         TextButton(
                                           style: TextButton.styleFrom(
                                               backgroundColor: kErrorColor,
