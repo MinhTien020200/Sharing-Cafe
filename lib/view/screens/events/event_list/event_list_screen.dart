@@ -111,12 +111,6 @@ class _EventListScreenState extends State<EventListScreen> {
             padding: const EdgeInsets.all(16.0),
             child: ListView(
               children: [
-                TextButton(
-                  onPressed: () async {
-                    await login();
-                  },
-                  child: const Text("Đăng nhập"),
-                ),
                 const Text(
                   "Đề xuất",
                   style: heading2Style,
