@@ -18,7 +18,7 @@ class InterestModel {
       imageUrl: json["image"] == null || json["image"] == ""
           ? "https://picsum.photos/id/200/200/300"
           : json["image"],
-      numOfBlog: json["num_of_blog"],
+      numOfBlog: json["num_of_blog"] ?? "0",
     );
   }
 }

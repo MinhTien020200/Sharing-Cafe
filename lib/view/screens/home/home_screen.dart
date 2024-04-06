@@ -124,10 +124,8 @@ class _HomeScreen extends State<HomeScreen> {
                         child: CircularProgressIndicator.adaptive(),
                       );
                     }
-                    if (snapshot.hasError) {
-                      return const Center(
-                        child: Text("Không thể lấy thông tin thời tiết"),
-                      );
+                    if (snapshot.hasError || snapshot.data == null) {
+                      return const Text("Không thể lấy thông tin thời tiết");
                     }
                     var weatherData = snapshot.data;
                     return Container(

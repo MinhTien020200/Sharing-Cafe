@@ -9,7 +9,6 @@ import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/key_value_pair.dart';
 import 'package:sharing_cafe/model/chat_message_model.dart';
 import 'package:sharing_cafe/model/recommend_cafe.dart';
-import 'package:sharing_cafe/model/schedule_model.dart';
 import 'package:sharing_cafe/provider/chat_provider.dart';
 import 'package:sharing_cafe/service/chat_service.dart';
 import 'package:sharing_cafe/view/components/date_time_picker.dart';
@@ -27,7 +26,6 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
   bool _isLoading = true;
-  List<ScheduleModel> _schedules = [];
   String _userName = "Chat";
   @override
   void initState() {
@@ -48,10 +46,7 @@ class _ChatScreenState extends State<ChatScreen> {
             .getUserMessagesHistory(value))
         .then((_) => Provider.of<ChatProvider>(context, listen: false)
             .connectAndListen())
-        .then((_) async {
-      _schedules =
-          await Provider.of<ChatProvider>(context, listen: false).getSchedule();
-    }).then((_) => setState(() {
+        .then((_) => setState(() {
               _isLoading = false;
             }));
   }
@@ -209,31 +204,6 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: Consumer<ChatProvider>(
                       builder: (context, provider, child) {
                     var messages = provider.getUserMessages(provider.userId);
-                    if (_schedules.isNotEmpty) {
-                      // add all schedule to head of message list
-                      messages.insertAll(
-                          0,
-                          _schedules
-                              .map((e) => ChatMessageModel(
-                                  messageId: e.scheduleId,
-                                  senderId: e.senderId,
-                                  senderAvt: "",
-                                  senderName: "",
-                                  receiverId: e.receiverId,
-                                  receiverAvt: "",
-                                  receiverName: "",
-                                  messageContent: e.content,
-                                  createdAt: e.date,
-                                  messageType: false,
-                                  appointment: Appointment(
-                                      id: e.scheduleId,
-                                      title: e.content,
-                                      location: e.location,
-                                      dateTime: e.date,
-                                      isApproved: e.isAccept),
-                                  isAppointment: true))
-                              .toList());
-                    }
                     return ListView.builder(
                         itemCount: messages.length,
                         reverse: true,
@@ -321,12 +291,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                                 message:
                                                     "Hủy lịch hẹn thành công");
                                             setState(() {
-                                              _schedules
-                                                  .where((element) =>
-                                                      element.scheduleId ==
-                                                      message.appointment!.id)
-                                                  .first
-                                                  .isAccept = false;
+                                              message.appointment!.isApproved =
+                                                  false;
                                             });
                                           },
                                           child: const Text(

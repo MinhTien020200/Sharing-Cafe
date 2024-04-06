@@ -8,6 +8,8 @@ class EventCard extends StatelessWidget {
   final String location;
   final int attendeeCount;
   final Function() onTap;
+  final Function()? onMoreButtonClick;
+  final GlobalKey? moreButtonKey;
 
   const EventCard(
       {super.key,
@@ -16,7 +18,9 @@ class EventCard extends StatelessWidget {
       required this.dateTime,
       required this.location,
       required this.attendeeCount,
-      required this.onTap});
+      required this.onTap,
+      this.onMoreButtonClick,
+      this.moreButtonKey});
 
   @override
   Widget build(BuildContext context) {
@@ -69,11 +73,25 @@ class EventCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 8.0),
-                  Text(
-                    '$attendeeCount người sẽ tham gia',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        '$attendeeCount người sẽ tham gia',
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      // 3 dot button
+                      const Spacer(),
+                      IconButton(
+                        key: moreButtonKey,
+                        icon: const Icon(
+                          Icons.more_vert,
+                          color: kPrimaryColor,
+                        ),
+                        onPressed: onMoreButtonClick,
+                      ),
+                    ],
                   ),
                 ],
               ),

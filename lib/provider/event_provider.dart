@@ -127,4 +127,6 @@ class EventProvider extends ChangeNotifier {
       }
     }
   }
+
+  deleteEvent(String eventId) {}
 }

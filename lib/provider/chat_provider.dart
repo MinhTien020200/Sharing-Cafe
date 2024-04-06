@@ -60,6 +60,36 @@ class ChatProvider extends ChangeNotifier {
     } else {
       _mapUserMessages.putIfAbsent(userId, () => history);
     }
+    var schedules = await getSchedule();
+    if (schedules.isNotEmpty) {
+      // add all schedule to head of message list
+      _mapUserMessages[userId]?.addAll(schedules
+          .map((e) => ChatMessageModel(
+              messageId: e.scheduleId,
+              senderId: e.senderId,
+              senderAvt: "",
+              senderName: "",
+              receiverId: e.receiverId,
+              receiverAvt: "",
+              receiverName: "",
+              messageContent: e.content,
+              createdAt: e.date,
+              messageType: false,
+              appointment: Appointment(
+                  id: e.scheduleId,
+                  title: e.content,
+                  location: e.location,
+                  dateTime: e.date,
+                  isApproved: e.isAccept),
+              isAppointment: true))
+          .toList());
+    }
+    notifyListeners();
+  }
+
+  void removeSchedule(String appointmentId) {
+    _mapUserMessages[_userId]?.removeWhere((element) =>
+        element.isAppointment && element.appointment?.id == appointmentId);
     notifyListeners();
   }
 
@@ -144,6 +174,8 @@ class ChatProvider extends ChangeNotifier {
   Future<List<ScheduleModel>> getSchedule() async {
     var listSchedule = await ChatService().getSchedule(_userId);
     if (listSchedule.isNotEmpty) {
+      listSchedule.removeWhere((element) => element.isAccept == false);
+      listSchedule.sort((a, b) => a.date.compareTo(b.date));
       return listSchedule;
     }
     return [];

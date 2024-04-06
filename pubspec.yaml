@@ -27,7 +27,6 @@ dependencies:
   line_awesome_flutter: ^2.0.0
   multi_dropdown: ^2.1.4
   geolocator: ^11.0.0
-  firebase_messaging: ^14.8.0
 
 dev_dependencies:
   flutter_test:

@@ -8,10 +8,11 @@ import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/model/account_model.dart';
 
 class AccountService {
-  Future<AccountModel> login(String email, String password) async {
+  Future<AccountModel> login(
+      String email, String password, String? token) async {
     try {
       var endpoint = "/user/login";
-      var data = {"email": email, "password": password};
+      var data = {"email": email, "password": password, "token": token};
       var response = await ApiHelper().post(endpoint, data);
       if (response.statusCode == HttpStatus.ok) {
         var json = jsonDecode(response.body);
