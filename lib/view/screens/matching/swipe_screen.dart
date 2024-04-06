@@ -35,13 +35,21 @@ class _SwipeScreenState extends State<SwipeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Sharing Coffee",
-          style: heading2Style,
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/images/cafe.png',
+              height: 20,
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            const Text('Kết nối', style: heading2Style),
+          ],
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.messenger_outline),
+            icon: const Icon(Icons.supervisor_account),
             onPressed: () {
               Navigator.pushNamed(context, FriendsScreen.routeName);
             },

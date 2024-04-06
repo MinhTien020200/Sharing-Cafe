@@ -32,7 +32,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Tương hợp',
+          'Bạn bè',
           style: heading2Style,
         ),
       ),
