@@ -87,7 +87,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   }
 
   bool _isEdit = false;
-  late String _id;
+  String _id = "";
 
   Future initPage(String id, bool isEdit) async {
     if (isEdit) {
@@ -111,10 +111,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Map arguments = ModalRoute.of(context)!.settings.arguments as Map;
-    var id = arguments['id'];
-    _isEdit = id != null;
-    _id = id ?? "";
+    if (ModalRoute.of(context)!.settings.arguments != null) {
+      final Map arguments = ModalRoute.of(context)!.settings.arguments as Map;
+      var id = arguments['id'];
+      _isEdit = id != null;
+      _id = id ?? "";
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(

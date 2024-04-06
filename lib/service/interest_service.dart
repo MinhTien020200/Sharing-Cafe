@@ -10,7 +10,7 @@ import 'package:sharing_cafe/model/interest_model.dart';
 class InterestService {
   Future<List<InterestModel>> getListInterests() async {
     try {
-      var response = await ApiHelper().get('/interest');
+      var response = await ApiHelper().get('/interests/parent');
       if (response.statusCode == HttpStatus.ok) {
         var jsonList = json.decode(response.body) as List;
         return jsonList
@@ -19,7 +19,7 @@ class InterestService {
       } else {
         ErrorHelper.showError(
             message:
-                "Lỗi ${response.statusCode}: Không thể lấy danh sách sự kiện");
+                "Lỗi ${response.statusCode}: Không thể lấy danh sách interest");
       }
     } on Exception catch (_, e) {
       print(e);

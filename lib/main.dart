@@ -59,32 +59,36 @@ class _MyAppState extends State<MyApp> {
 
     ///forground work
     FirebaseMessaging.onMessage.listen((message) {
-      if (message.notification != null) {
-        var title = message.notification!.title.toString();
-        var body = message.notification!.body.toString();
-        if (kDebugMode) {
-          print(message.notification!.body);
-          print(message.notification!.title);
-        }
-        Get.snackbar(title, body,
-            icon: Image.asset(
-              'assets/images/cafe.png',
-              height: 30,
-              width: 30,
-            ),
-            duration: const Duration(seconds: 5),
-            backgroundColor: Colors.white.withOpacity(0.5),
-            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15));
-      }
+      showNotification(message);
     });
 
     ///When the app is in background but opened and user taps
     ///on the notification
     FirebaseMessaging.onMessageOpenedApp.listen((message) async {
       if (kDebugMode) {
-        print(message);
+        showNotification(message);
       }
     });
+  }
+
+  void showNotification(RemoteMessage message) {
+    if (message.notification != null) {
+      var title = message.notification!.title.toString();
+      var body = message.notification!.body.toString();
+      if (kDebugMode) {
+        print(message.notification!.body);
+        print(message.notification!.title);
+      }
+      Get.snackbar(title, body,
+          icon: Image.asset(
+            'assets/images/cafe.png',
+            height: 30,
+            width: 30,
+          ),
+          duration: const Duration(seconds: 5),
+          backgroundColor: Colors.white.withOpacity(0.5),
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15));
+    }
   }
 
   @override
@@ -102,7 +106,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => CategoriesProvider()),
         ChangeNotifierProvider(create: (_) => ChatProvider()),
       ],
-      child: MaterialApp(
+      child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Sharing Cafe',
         theme: AppTheme.lightTheme(context),
