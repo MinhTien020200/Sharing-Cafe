@@ -7,6 +7,7 @@ import 'package:sharing_cafe/helper/image_helper.dart';
 import 'package:sharing_cafe/helper/key_value_pair.dart';
 import 'package:sharing_cafe/provider/categories_provider.dart';
 import 'package:sharing_cafe/provider/event_provider.dart';
+import 'package:sharing_cafe/service/event_service.dart';
 import 'package:sharing_cafe/service/image_service.dart';
 import 'package:sharing_cafe/view/components/date_time_picker.dart';
 import 'package:sharing_cafe/view/components/form_field.dart';
@@ -81,11 +82,43 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  bool _isEdit = false;
+  late String _id;
+
+  Future initPage(String id, bool isEdit) async {
+    if (isEdit) {
+      // load event data
+      return await EventService()
+          .getEventDetails(id)
+          .then((value) => setState(() {
+                if (value != null) {
+                  _title = value.title;
+                  _description = value.description;
+                  _timeOfEvent = value.timeOfEvent.toString();
+                  _location = value.location;
+                  _imageUrl = value.backgroundImage;
+                } else {
+                  ErrorHelper.showError(message: "Không tìm thấy sự kiện.");
+                }
+              }));
+    }
+    return null;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final Map arguments = ModalRoute.of(context)!.settings.arguments as Map;
+    var id = arguments['id'];
+    _isEdit = id != null;
+    _id = id ?? "";
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Tạo sự kiện',
+        title: Text(
+          _isEdit ? 'Sửa sự kiện' : 'Tạo sự kiện',
           style: heading2Style,
         ),
         leading: IconButton(
@@ -166,147 +199,156 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
           ),
         ],
       ),
-      body: Form(
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                showImageTypeSelector();
-              },
-              child: Container(
-                height: 300,
-                decoration: const BoxDecoration(
-                    color: kFormFieldColor,
-                    borderRadius: BorderRadius.all(Radius.circular(16))),
-                alignment: Alignment.center,
-                child: _imageUrl != null && _imageUrl!.isNotEmpty
-                    ? Image.network(
-                        _imageUrl!,
-                        fit: BoxFit.cover,
-                      )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.image,
-                            color: Colors.grey[600],
-                            size: 48,
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          Text(
-                            "Thêm ảnh bìa bài viết",
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                            ),
-                          )
-                        ],
+      body: FutureBuilder(
+        future: initPage(_id, _isEdit),
+        builder: (context, snapshot) => snapshot.connectionState ==
+                ConnectionState.waiting
+            ? const Center(
+                child: CircularProgressIndicator.adaptive(),
+              )
+            : Form(
+                child: ListView(
+                  padding: const EdgeInsets.all(16),
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        showImageTypeSelector();
+                      },
+                      child: Container(
+                        height: 300,
+                        decoration: const BoxDecoration(
+                            color: kFormFieldColor,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(16))),
+                        alignment: Alignment.center,
+                        child: _imageUrl != null && _imageUrl!.isNotEmpty
+                            ? Image.network(
+                                _imageUrl!,
+                                fit: BoxFit.cover,
+                              )
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.image,
+                                    color: Colors.grey[600],
+                                    size: 48,
+                                  ),
+                                  const SizedBox(
+                                    height: 16,
+                                  ),
+                                  Text(
+                                    "Thêm ảnh bìa bài viết",
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                    ),
+                                  )
+                                ],
+                              ),
                       ),
+                    ),
+                    const SizedBox(height: 16),
+                    KFormField(
+                      hintText: "Tên sự kiện",
+                      onChanged: (value) {
+                        setState(() {
+                          _title = value;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    DateTimePicker(
+                      onDateTimeChanged: _handleDateTimeChange,
+                      label: "Ngày và giờ bắt đầu",
+                    ),
+                    // const SizedBox(height: 16),
+                    // Row(
+                    //   children: <Widget>[
+                    //     Expanded(
+                    //       child: TextButton(
+                    //         onPressed: () {
+                    //           // Handle attend action
+                    //         },
+                    //         style: ButtonStyle(
+                    //           backgroundColor: MaterialStateColor.resolveWith(
+                    //               (states) => kPrimaryLightColor),
+                    //           padding: MaterialStateProperty.resolveWith((states) =>
+                    //               const EdgeInsets.symmetric(horizontal: 24.0)),
+                    //         ),
+                    //         child: const Text(
+                    //           'Thêm thời gian kết thúc',
+                    //           overflow: TextOverflow.ellipsis,
+                    //           style: TextStyle(
+                    //               color: kPrimaryColor, fontWeight: FontWeight.bold),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     const SizedBox(
+                    //       width: 4,
+                    //     ),
+                    //     Expanded(
+                    //       child: TextButton(
+                    //         onPressed: () {
+                    //           // Handle attend action
+                    //         },
+                    //         style: ButtonStyle(
+                    //           backgroundColor: MaterialStateColor.resolveWith(
+                    //               (states) => kPrimaryLightColor),
+                    //           padding: MaterialStateProperty.resolveWith((states) =>
+                    //               const EdgeInsets.symmetric(horizontal: 24.0)),
+                    //         ),
+                    //         child: const Text(
+                    //           'Lặp lại sự kiện',
+                    //           overflow: TextOverflow.ellipsis,
+                    //           style: TextStyle(
+                    //               color: kPrimaryColor, fontWeight: FontWeight.bold),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    const SizedBox(height: 16),
+                    KFormField(
+                      hintText: "Địa điểm tổ chức",
+                      onChanged: (p0) {
+                        setState(() {
+                          _location = p0;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    KFormField(
+                      hintText: "Hãy mô tả chi tiết về sự kiện",
+                      maxLines: 3,
+                      onChanged: (p0) {
+                        setState(() {
+                          _description = p0;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    Consumer<CategoriesProvider>(
+                      builder: (context, categoriesProvider, child) {
+                        if (categoriesProvider.categories.isEmpty) {
+                          categoriesProvider.getCategories();
+                        }
+                        return KSelectForm(
+                          hintText: 'Chọn chủ đề',
+                          options: categoriesProvider.categories
+                              .map((e) => KeyValuePair(e.categoryId, e.title))
+                              .toList(),
+                          onChanged: (p0) {
+                            setState(() {
+                              _interest = p0;
+                            });
+                          },
+                          selectedValue: _interest,
+                        );
+                      },
+                    )
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            KFormField(
-              hintText: "Tên sự kiện",
-              onChanged: (value) {
-                setState(() {
-                  _title = value;
-                });
-              },
-            ),
-            const SizedBox(height: 16),
-            DateTimePicker(
-              onDateTimeChanged: _handleDateTimeChange,
-              label: "Ngày và giờ bắt đầu",
-            ),
-            // const SizedBox(height: 16),
-            // Row(
-            //   children: <Widget>[
-            //     Expanded(
-            //       child: TextButton(
-            //         onPressed: () {
-            //           // Handle attend action
-            //         },
-            //         style: ButtonStyle(
-            //           backgroundColor: MaterialStateColor.resolveWith(
-            //               (states) => kPrimaryLightColor),
-            //           padding: MaterialStateProperty.resolveWith((states) =>
-            //               const EdgeInsets.symmetric(horizontal: 24.0)),
-            //         ),
-            //         child: const Text(
-            //           'Thêm thời gian kết thúc',
-            //           overflow: TextOverflow.ellipsis,
-            //           style: TextStyle(
-            //               color: kPrimaryColor, fontWeight: FontWeight.bold),
-            //         ),
-            //       ),
-            //     ),
-            //     const SizedBox(
-            //       width: 4,
-            //     ),
-            //     Expanded(
-            //       child: TextButton(
-            //         onPressed: () {
-            //           // Handle attend action
-            //         },
-            //         style: ButtonStyle(
-            //           backgroundColor: MaterialStateColor.resolveWith(
-            //               (states) => kPrimaryLightColor),
-            //           padding: MaterialStateProperty.resolveWith((states) =>
-            //               const EdgeInsets.symmetric(horizontal: 24.0)),
-            //         ),
-            //         child: const Text(
-            //           'Lặp lại sự kiện',
-            //           overflow: TextOverflow.ellipsis,
-            //           style: TextStyle(
-            //               color: kPrimaryColor, fontWeight: FontWeight.bold),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            const SizedBox(height: 16),
-            KFormField(
-              hintText: "Địa điểm tổ chức",
-              onChanged: (p0) {
-                setState(() {
-                  _location = p0;
-                });
-              },
-            ),
-            const SizedBox(height: 16),
-            KFormField(
-              hintText: "Hãy mô tả chi tiết về sự kiện",
-              maxLines: 3,
-              onChanged: (p0) {
-                setState(() {
-                  _description = p0;
-                });
-              },
-            ),
-            const SizedBox(height: 16),
-            Consumer<CategoriesProvider>(
-              builder: (context, categoriesProvider, child) {
-                if (categoriesProvider.categories.isEmpty) {
-                  categoriesProvider.getCategories();
-                }
-                return KSelectForm(
-                  hintText: 'Chọn chủ đề',
-                  options: categoriesProvider.categories
-                      .map((e) => KeyValuePair(e.categoryId, e.title))
-                      .toList(),
-                  onChanged: (p0) {
-                    setState(() {
-                      _interest = p0;
-                    });
-                  },
-                  selectedValue: _interest,
-                );
-              },
-            )
-          ],
-        ),
       ),
     );
   }
