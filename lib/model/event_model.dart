@@ -14,6 +14,7 @@ class EventModel {
   final DateTime? endOfEvent;
   final String? organizationName;
   final String? address;
+  final String? interestId;
 
   EventModel({
     required this.eventId,
@@ -29,6 +30,7 @@ class EventModel {
     this.endOfEvent,
     this.organizationName,
     this.address,
+    this.interestId,
   });
 
   factory EventModel.fromJson(Map<String, dynamic> json) {
@@ -46,6 +48,7 @@ class EventModel {
       endOfEvent: DateTimeHelper.parseToLocal(json['end_of_event']),
       organizationName: json['name'],
       address: json['address'],
+      interestId: json['interest_id'],
     );
   }
 

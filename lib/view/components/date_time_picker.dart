@@ -7,8 +7,12 @@ import 'package:sharing_cafe/constants.dart';
 class DateTimePicker extends StatefulWidget {
   final Function(DateTime) onDateTimeChanged;
   final String label;
+  final DateTime? value;
   const DateTimePicker(
-      {Key? key, required this.onDateTimeChanged, required this.label})
+      {Key? key,
+      required this.onDateTimeChanged,
+      required this.label,
+      this.value})
       : super(key: key);
 
   @override
@@ -45,6 +49,14 @@ class _DateTimePickerState extends State<DateTimePicker> {
     });
 
     widget.onDateTimeChanged(selectedDateTime);
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      selectedDateTime = widget.value ?? DateTime.now();
+    });
+    super.initState();
   }
 
   @override
