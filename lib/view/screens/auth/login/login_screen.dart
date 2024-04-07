@@ -50,9 +50,6 @@ class _LoginScreen extends State<LoginScreen> {
     final TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(""),
-      ),
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,

@@ -70,13 +70,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           height: 120,
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(100),
-                              child: Image.network(
-                                userProfile.profileAvatar,
-                              ))),
+                              child: Image.network(userProfile.profileAvatar,
+                                  fit: BoxFit.cover))),
                       const SizedBox(height: 10),
                       Text(userProfile.userName,
                           style: Theme.of(context).textTheme.headlineMedium),
-                      Text("tienpm.user@gmail.com",
+                      Text(userProfile.story ?? "",
                           style: Theme.of(context).textTheme.bodyMedium),
                       const SizedBox(height: 20),
                       SizedBox(
@@ -110,11 +109,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           title: "Blog của bạn",
                           icon: LineAwesomeIcons.blog,
                           onPress: () {}),
+                      // ProfileMenu(
+                      //     title: "Lịch sử cuộc hẹn",
+                      //     icon: Icons.history,
+                      //     onPress: () {}),
                       const Divider(color: Colors.grey),
-                      ProfileMenu(
-                          title: "Thời tiết",
-                          icon: LineAwesomeIcons.cloud_with_sun,
-                          onPress: () {}),
+                      // ProfileMenu(
+                      //     title: "Thời tiết",
+                      //     icon: LineAwesomeIcons.cloud_with_sun,
+                      //     onPress: () {}),
                       ProfileMenu(
                           title: "Logout",
                           icon: LineAwesomeIcons.alternate_sign_out,

@@ -12,7 +12,10 @@ import 'package:sharing_cafe/provider/friends_provider.dart';
 import 'package:sharing_cafe/provider/match_provider.dart';
 import 'package:sharing_cafe/provider/home_provider.dart';
 import 'package:sharing_cafe/provider/interest_provider.dart';
+import 'package:sharing_cafe/provider/user_profile_provider.dart';
 import 'package:sharing_cafe/view/screens/auth/login/login_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 import 'routes.dart';
 import 'theme.dart';
@@ -96,6 +99,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => AccountProvider()),
         ChangeNotifierProvider(create: (_) => InterestProvider()),
         ChangeNotifierProvider(create: (_) => HomeProvider()),
+        ChangeNotifierProvider(create: (_) => UserProfileProvider()),
         ChangeNotifierProvider(create: (_) => EventProvider()),
         ChangeNotifierProvider(create: (_) => BlogProvider()),
         ChangeNotifierProvider(create: (_) => AccountProvider()),
