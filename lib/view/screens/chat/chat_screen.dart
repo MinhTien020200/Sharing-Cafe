@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
 
@@ -52,20 +53,29 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   DateTime? _selectedDateTime;
-  String? _title;
+  final TextEditingController _titleController = TextEditingController();
   String? _location;
 
-  void _handleDateTimeChange(DateTime dateTime) {
+  void _handleDateTimeChange(DateTime? dateTime) {
+    if (dateTime == null) return;
     setState(() {
       _selectedDateTime = dateTime;
     });
   }
 
   void _createAppointment() {
-    if (_selectedDateTime != null && _title != null && _location != null) {
+    if (_selectedDateTime != null &&
+        _titleController.text.isNotEmpty &&
+        _location != null) {
       print("Create appointment");
       Provider.of<ChatProvider>(context, listen: false).addAppointment(
-          _title!, _location!, _selectedDateTime!, "", "", "", "");
+          _titleController.text,
+          _location!,
+          _selectedDateTime!,
+          "",
+          "",
+          "",
+          "");
       Navigator.of(context).pop();
     } else {
       ErrorHelper.showError(message: "Vui lòng điển đủ thông tin lịch hẹn");
@@ -114,9 +124,10 @@ class _ChatScreenState extends State<ChatScreen> {
                           ),
                           KFormField(
                             hintText: "Tiêu đề",
+                            controller: _titleController,
                             onChanged: (p0) {
                               setState(() {
-                                _title = p0;
+                                _titleController.text = p0;
                               });
                             },
                           ),
@@ -131,7 +142,8 @@ class _ChatScreenState extends State<ChatScreen> {
                             height: 10,
                           ),
                           FutureBuilder(
-                            future: Provider.of<ChatProvider>(context)
+                            future: Provider.of<ChatProvider>(context,
+                                    listen: false)
                                 .getRecommendCafe(),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==

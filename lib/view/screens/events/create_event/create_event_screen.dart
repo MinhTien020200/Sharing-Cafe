@@ -77,9 +77,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     );
   }
 
-  void _handleDateTimeChange(DateTime dateTime) {
+  void _handleDateTimeChange(DateTime? dateTime) {
     setState(() {
-      _timeOfEvent = dateTime.toIso8601String();
+      _timeOfEvent = dateTime?.toIso8601String();
     });
   }
 
