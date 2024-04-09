@@ -1,3 +1,5 @@
+import 'package:sharing_cafe/helper/datetime_helper.dart';
+
 class ScheduleModel {
   ScheduleModel({
     required this.createdAt,
@@ -20,11 +22,11 @@ class ScheduleModel {
   bool? isAccept;
 
   factory ScheduleModel.fromJson(Map<String, dynamic> json) => ScheduleModel(
-        createdAt: DateTime.parse(json["created_at"]),
+        createdAt: DateTimeHelper.parseToLocal(json["created_at"]),
         scheduleId: json["schedule_id"],
         content: json["content"],
         location: json["location"],
-        date: DateTime.parse(json["schedule_time"]),
+        date: DateTimeHelper.parseToLocal(json["schedule_time"]),
         senderId: json["sender_id"],
         receiverId: json["receiver_id"],
         isAccept: json["is_accept"],
