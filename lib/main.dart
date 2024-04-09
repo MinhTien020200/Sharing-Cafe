@@ -12,6 +12,7 @@ import 'package:sharing_cafe/provider/friends_provider.dart';
 import 'package:sharing_cafe/provider/match_provider.dart';
 import 'package:sharing_cafe/provider/home_provider.dart';
 import 'package:sharing_cafe/provider/interest_provider.dart';
+import 'package:sharing_cafe/service/location_service.dart';
 import 'package:sharing_cafe/view/screens/auth/login/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -49,6 +50,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    updateLocation();
     FirebaseMessaging.instance.getInitialMessage().then((message) async {
       if (message != null) {
         if (kDebugMode) {
@@ -69,6 +71,10 @@ class _MyAppState extends State<MyApp> {
         showNotification(message);
       }
     });
+  }
+
+  updateLocation() async {
+    await LocationService().updateLocation();
   }
 
   void showNotification(RemoteMessage message) {
