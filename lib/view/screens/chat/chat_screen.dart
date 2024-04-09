@@ -340,12 +340,10 @@ class _ChatScreenState extends State<ChatScreen> {
                               ),
                             )
                           ];
+                          var avt = message.senderAvt;
                           var chatComponent = <Widget>[
                             CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  !message.messageType!
-                                      ? message.senderAvt
-                                      : message.receiverAvt),
+                              backgroundImage: NetworkImage(avt),
                             ),
                             const SizedBox(
                               width: 8,
@@ -366,6 +364,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           ];
                           if (!message.messageType!) {
                             chatComponent = chatComponent.reversed.toList();
+                            avt = message.receiverAvt;
                           }
                           return Container(
                             padding: const EdgeInsets.all(10),
