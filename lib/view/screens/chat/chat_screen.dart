@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -236,14 +237,14 @@ class _ChatScreenState extends State<ChatScreen> {
                             isAppointment: messages[index].isAppointment,
                           );
                           bool canConfirm =
-                              message.appointment?.isApproved == true &&
+                              message.appointment?.isApproved == null &&
                                   message.isAppointment == true &&
                                   message.senderId == provider.userId;
                           bool canCancel = message.appointment != null &&
                               message.appointment!.isApproved != false;
                           var appointmentComponent = <Widget>[
                             Container(
-                              height: 250,
+                              height: 270,
                               padding: const EdgeInsets.all(16),
                               width: MediaQuery.of(context).size.width * 0.8,
                               decoration: BoxDecoration(
@@ -288,7 +289,19 @@ class _ChatScreenState extends State<ChatScreen> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   const SizedBox(
-                                    height: 8,
+                                    height: 4,
+                                  ),
+                                  Visibility(
+                                    visible:
+                                        message.appointment?.isApproved == true,
+                                    child: const Text("Đã xác nhận",
+                                        style: TextStyle(
+                                          color: Colors.green,
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -334,8 +347,18 @@ class _ChatScreenState extends State<ChatScreen> {
                                             style: TextButton.styleFrom(
                                                 backgroundColor: Colors.green,
                                                 fixedSize: const Size(100, 20)),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
+                                            onPressed: () async {
+                                              await ChatService()
+                                                  .changeStatusSchedule(
+                                                      message.appointment!.id!,
+                                                      true);
+                                              ErrorHelper.showError(
+                                                  message:
+                                                      "Xác nhận lịch hẹn thành công");
+                                              setState(() {
+                                                message.appointment!
+                                                    .isApproved = true;
+                                              });
                                             },
                                             child: const Text(
                                               "Xác nhận",
