@@ -27,8 +27,8 @@ class _BlogCategoriesScreenState extends State<BlogCategoriesScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Consumer<InterestProvider>(
           builder: (context, value, child) {
-            if (value.listInterests.isEmpty) {
-              value.getListInterests();
+            if (value.listInterestsParent.isEmpty) {
+              value.getListInterestsParent();
               return const Center(
                 child: CircularProgressIndicator(),
               );
@@ -36,9 +36,9 @@ class _BlogCategoriesScreenState extends State<BlogCategoriesScreen> {
             return GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, mainAxisExtent: 128),
-              itemCount: value.listInterests.length,
+              itemCount: value.listInterestsParent.length,
               itemBuilder: (context, index) {
-                var interest = value.listInterests[index];
+                var interest = value.listInterestsParent[index];
                 return BlogCard3(
                   imageUrl: interest.imageUrl,
                   title: interest.name,

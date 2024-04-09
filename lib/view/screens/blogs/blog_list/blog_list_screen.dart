@@ -64,7 +64,7 @@ class _BlogListScreenState extends State<BlogListScreen> {
             const SizedBox(
               width: 8,
             ),
-            const Text('Blog', style: heading2Style),
+            Text('Blog', style: heading2Style.copyWith(color: kPrimaryColor)),
           ],
         ),
         actions: [
@@ -160,9 +160,9 @@ class _BlogListScreenState extends State<BlogListScreen> {
                       height: 128,
                       child: Consumer<InterestProvider>(
                         builder: (context, value, child) {
-                          var interests = value.listInterests;
+                          var interests = value.listInterestsParent;
                           if (interests.isEmpty) {
-                            value.getListInterests();
+                            value.getListInterestsParent();
                             return const Center(
                               child: CircularProgressIndicator.adaptive(),
                             );

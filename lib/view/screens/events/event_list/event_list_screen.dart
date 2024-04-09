@@ -67,7 +67,8 @@ class _EventListScreenState extends State<EventListScreen> {
               const SizedBox(
                 width: 8,
               ),
-              const Text('Sự kiện', style: heading2Style),
+              Text('Sự kiện',
+                  style: heading2Style.copyWith(color: kPrimaryColor)),
             ],
           ),
           actions: [

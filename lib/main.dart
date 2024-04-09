@@ -13,6 +13,8 @@ import 'package:sharing_cafe/provider/match_provider.dart';
 import 'package:sharing_cafe/provider/home_provider.dart';
 import 'package:sharing_cafe/provider/interest_provider.dart';
 import 'package:sharing_cafe/provider/user_profile_provider.dart';
+import 'package:sharing_cafe/view/screens/auth/complete_profile/complete_profile_screen.dart';
+import 'package:sharing_cafe/view/screens/auth/complete_profile/components/complete_profile_form.dart';
 import 'package:sharing_cafe/view/screens/auth/login/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';

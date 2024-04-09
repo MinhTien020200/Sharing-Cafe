@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/helper/datetime_helper.dart';
@@ -76,17 +77,11 @@ class _HomeScreen extends State<HomeScreen> {
               const SizedBox(
                 width: 8,
               ),
-              const Text('Sharing Café', style: heading2Style),
+              Text('Sharing Café',
+                  style: heading2Style.copyWith(color: kPrimaryColor)),
             ],
           ),
           actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.messenger_outline,
-                size: 24,
-              ),
-              onPressed: () {/* ... */},
-            ),
             IconButton(
               icon: const Icon(
                 Icons.notifications_none_outlined,

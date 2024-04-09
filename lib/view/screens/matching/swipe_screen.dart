@@ -44,7 +44,8 @@ class _SwipeScreenState extends State<SwipeScreen> {
             const SizedBox(
               width: 8,
             ),
-            const Text('Kết nối', style: heading2Style),
+            Text('Kết nối',
+                style: heading2Style.copyWith(color: kPrimaryColor)),
           ],
         ),
         actions: [

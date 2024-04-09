@@ -49,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(
               width: 8,
             ),
-            const Text('Hồ sơ', style: heading2Style),
+            Text('Hồ sơ', style: heading2Style.copyWith(color: kPrimaryColor)),
           ],
         ),
       ),

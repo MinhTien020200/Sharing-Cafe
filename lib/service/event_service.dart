@@ -83,8 +83,8 @@ class EventService {
 
   Future<List<EventModel>> getMyEvents() async {
     try {
-      var userId = await SharedPrefHelper.getUserId();
-      var response = await ApiHelper().get('/user/events/$userId');
+      // var userId = await SharedPrefHelper.getUserId();
+      var response = await ApiHelper().get('/auth/user/my-event');
       if (response.statusCode == HttpStatus.ok) {
         var jsonList = json.decode(response.body) as List;
         return jsonList
