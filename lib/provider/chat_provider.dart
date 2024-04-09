@@ -73,7 +73,7 @@ class ChatProvider extends ChangeNotifier {
               receiverAvt: "",
               receiverName: "",
               messageContent: e.content,
-              createdAt: e.date,
+              createdAt: e.createdAt,
               messageType: false,
               appointment: Appointment(
                   id: e.scheduleId,
@@ -84,6 +84,8 @@ class ChatProvider extends ChangeNotifier {
               isAppointment: true))
           .toList());
     }
+    _mapUserMessages[userId]
+        ?.sort((a, b) => a.createdAt.compareTo(b.createdAt));
     notifyListeners();
   }
 
@@ -174,7 +176,7 @@ class ChatProvider extends ChangeNotifier {
   Future<List<ScheduleModel>> getSchedule() async {
     var listSchedule = await ChatService().getSchedule(_userId);
     if (listSchedule.isNotEmpty) {
-      listSchedule.removeWhere((element) => element.isAccept == false);
+      // listSchedule.removeWhere((element) => element.isAccept == false);
       listSchedule.sort((a, b) => a.date.compareTo(b.date));
       return listSchedule;
     }

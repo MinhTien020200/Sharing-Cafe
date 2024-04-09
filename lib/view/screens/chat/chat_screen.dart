@@ -223,6 +223,12 @@ class _ChatScreenState extends State<ChatScreen> {
                             appointment: messages[index].appointment,
                             isAppointment: messages[index].isAppointment,
                           );
+                          bool canConfirm =
+                              message.appointment?.isApproved == true &&
+                                  message.isAppointment == true &&
+                                  message.senderId == provider.userId;
+                          bool canCancel = message.appointment != null &&
+                              message.appointment!.isApproved != false;
                           var appointmentComponent = <Widget>[
                             Container(
                               height: 250,
@@ -275,43 +281,57 @@ class _ChatScreenState extends State<ChatScreen> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      if (message.appointment != null &&
-                                          message.appointment!.isApproved !=
-                                              false)
-                                        TextButton(
-                                          style: TextButton.styleFrom(
-                                              backgroundColor: kErrorColor,
-                                              fixedSize: const Size(100, 20)),
-                                          onPressed: () async {
-                                            await ChatService()
-                                                .changeStatusSchedule(
-                                                    message.appointment!.id!,
-                                                    false);
-                                            ErrorHelper.showError(
-                                                message:
-                                                    "Hủy lịch hẹn thành công");
-                                            setState(() {
-                                              message.appointment!.isApproved =
-                                                  false;
-                                            });
-                                          },
-                                          child: const Text(
-                                            "Hủy",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
+                                      canCancel
+                                          ? TextButton(
+                                              style: TextButton.styleFrom(
+                                                  backgroundColor: kErrorColor,
+                                                  fixedSize:
+                                                      const Size(100, 20)),
+                                              onPressed: () async {
+                                                await ChatService()
+                                                    .changeStatusSchedule(
+                                                        message
+                                                            .appointment!.id!,
+                                                        false);
+                                                ErrorHelper.showError(
+                                                    message:
+                                                        "Hủy lịch hẹn thành công");
+                                                setState(() {
+                                                  message.appointment!
+                                                      .isApproved = false;
+                                                });
+                                              },
+                                              child: const Text(
+                                                "Hủy",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            )
+                                          : const Text("Đã hủy",
+                                              style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.bold)),
+                                      Visibility(
+                                        visible: canConfirm,
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8),
+                                          child: TextButton(
+                                            style: TextButton.styleFrom(
+                                                backgroundColor: Colors.green,
+                                                fixedSize: const Size(100, 20)),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text(
+                                              "Xác nhận",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                           ),
-                                        ),
-                                      Visibility(
-                                        visible: false,
-                                        child: TextButton(
-                                          style: TextButton.styleFrom(
-                                              backgroundColor: kPrimaryColor),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text("Xác nhận"),
                                         ),
                                       ),
                                     ],
@@ -320,12 +340,10 @@ class _ChatScreenState extends State<ChatScreen> {
                               ),
                             )
                           ];
+                          var avt = message.senderAvt;
                           var chatComponent = <Widget>[
                             CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  !message.messageType!
-                                      ? message.senderAvt
-                                      : message.receiverAvt),
+                              backgroundImage: NetworkImage(avt),
                             ),
                             const SizedBox(
                               width: 8,
@@ -346,6 +364,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           ];
                           if (!message.messageType!) {
                             chatComponent = chatComponent.reversed.toList();
+                            avt = message.receiverAvt;
                           }
                           return Container(
                             padding: const EdgeInsets.all(10),
@@ -354,11 +373,17 @@ class _ChatScreenState extends State<ChatScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: appointmentComponent,
                                   )
-                                : Row(
-                                    mainAxisAlignment: message.messageType!
-                                        ? MainAxisAlignment.start
-                                        : MainAxisAlignment.end,
-                                    children: chatComponent,
+                                : Column(
+                                    children: [
+                                      Text(DateTimeHelper.formatDateTime3(
+                                          message.createdAt)),
+                                      Row(
+                                        mainAxisAlignment: message.messageType!
+                                            ? MainAxisAlignment.start
+                                            : MainAxisAlignment.end,
+                                        children: chatComponent,
+                                      ),
+                                    ],
                                   ),
                           );
                         });

@@ -1,3 +1,5 @@
+import 'package:sharing_cafe/helper/datetime_helper.dart';
+
 class ChatMessageModel {
   final String messageId;
   final String senderId;
@@ -37,7 +39,7 @@ class ChatMessageModel {
       receiverName: json['receiver_name'],
       receiverAvt: json['receiver_avatar'],
       messageContent: json['content'],
-      createdAt: DateTime.parse(json['created_at']),
+      createdAt: DateTimeHelper.parseToLocal(json['created_at']),
     );
   }
 

@@ -10,4 +10,8 @@ final class DateTimeHelper {
   static parseToLocal(String dateTimeString) {
     return DateTime.parse(dateTimeString).toLocal();
   }
+
+  static formatDateTime3(DateTime value) {
+    return '${value.hour.toString().padLeft(2, '0')}:${value.minute.toString().padLeft(2, '0')}, ${value.day} THG ${value.month}';
+  }
 }
