@@ -75,4 +75,21 @@ class BlogService {
           message: "Lỗi ${response.statusCode}: Không thể tạo bình luận");
     }
   }
+
+  Future<List<BlogModel>> getBlogsbyInterestId(interestId) async {
+    try {
+      var response = await ApiHelper().get('/user/blogs/interest/$interestId');
+      if (response.statusCode == HttpStatus.ok) {
+        var jsonList = json.decode(response.body) as List;
+        return jsonList.map<BlogModel>((e) => BlogModel.fromJson(e)).toList();
+      } else {
+        ErrorHelper.showError(
+            message:
+                "Lỗi ${response.statusCode}: Không thể lấy danh sách blog");
+      }
+    } on Exception catch (_, e) {
+      print(e);
+    }
+    return [];
+  }
 }
