@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/enums.dart';
@@ -16,6 +17,7 @@ class SwipeScreen extends StatefulWidget {
 
 class _SwipeScreenState extends State<SwipeScreen> {
   bool _isLoading = false;
+  bool _showIcon = false;
   @override
   void initState() {
     setState(() {
@@ -29,6 +31,17 @@ class _SwipeScreenState extends State<SwipeScreen> {
       });
     });
     super.initState();
+  }
+
+  showIcon({isLike = true}) {
+    setState(() {
+      _showIcon = true;
+    });
+    Future.delayed(const Duration(seconds: 1), () {
+      setState(() {
+        _showIcon = false;
+      });
+    });
   }
 
   @override
@@ -557,11 +570,16 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                   },
                                 );
                               },
-                              child: ProfileCard(
-                                image: profiles.first.image,
-                                name: profiles.first.name,
-                                description: profiles.first.description,
-                                age: profiles.first.age,
+                              child: Stack(
+                                children: [
+                                  Lottie.asset('assets/animations/like.json'),
+                                  ProfileCard(
+                                    image: profiles.first.image,
+                                    name: profiles.first.name,
+                                    description: profiles.first.description,
+                                    age: profiles.first.age,
+                                  ),
+                                ],
                               ),
                             ),
                           ),
