@@ -18,7 +18,7 @@ class CompleteProfileScreen extends StatefulWidget {
 
 class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
   bool _isLoadingListInterests = false;
-  List<InterestModel>? selectedHobby = [];
+  List<InterestModel>? selectedInterest = [];
 
   @override
   void initState() {
@@ -64,31 +64,31 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                                 style: headingStyle),
                             const SizedBox(height: 16),
                             const Text(
-                              "Hãy chọn sở thích của mình để có đề xuất tốt hơn nhé.",
+                              "Hãy chọn sở thích của bạn để có đề xuất tốt hơn.",
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 16),
                             Wrap(
                               children: listInterests.map(
-                                (hobby) {
+                                (interest) {
                                   bool isSelected = false;
-                                  if (selectedHobby!.contains(hobby.name)) {
+                                  if (selectedInterest!.contains(interest)) {
                                     isSelected = true;
                                   }
                                   return GestureDetector(
                                     onTap: () {
-                                      if (!selectedHobby!
-                                          .contains(hobby.name)) {
-                                        if (selectedHobby!.length < 5) {
-                                          selectedHobby!.add(hobby);
+                                      if (!selectedInterest!
+                                          .contains(interest)) {
+                                        if (selectedInterest!.length < 5) {
+                                          selectedInterest!.add(interest);
                                           setState(() {});
-                                          print(selectedHobby);
+                                          print(selectedInterest);
                                         }
                                       } else {
-                                        selectedHobby!.removeWhere(
-                                            (element) => element == hobby.name);
+                                        selectedInterest!.removeWhere(
+                                            (element) => element == interest);
                                         setState(() {});
-                                        print(selectedHobby);
+                                        print(selectedInterest);
                                       }
                                     },
                                     child: Container(
@@ -109,7 +109,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                                                       : kPrimaryColor,
                                                   width: 2)),
                                           child: Text(
-                                            hobby.name,
+                                            interest.name,
                                             style: TextStyle(
                                                 color: isSelected
                                                     ? Colors.white

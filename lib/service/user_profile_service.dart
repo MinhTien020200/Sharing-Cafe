@@ -22,4 +22,22 @@ class UserProfileService {
     }
     return null;
   }
+
+  Future<bool> updateUserProfile({
+    required List<String> interestId,
+  }) async {
+    try {
+      var endpoint = "/auth/user/update-interests";
+      var data = interestId.map((e) => {"interest_id": e}).toList();
+      var response = await ApiHelper().putList(endpoint, data);
+      if (response.statusCode == HttpStatus.ok) {
+        return true;
+      }
+      ErrorHelper.showError(
+          message: "Lỗi ${response.statusCode}: Không thể cập nhật thông tin");
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
 }

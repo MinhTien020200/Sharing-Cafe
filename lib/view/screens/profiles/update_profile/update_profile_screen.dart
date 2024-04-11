@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/image_helper.dart';
-import 'package:sharing_cafe/model/profile_info_model.dart';
-import 'package:sharing_cafe/provider/interest_provider.dart';
+import 'package:sharing_cafe/helper/key_value_pair.dart';
 import 'package:sharing_cafe/provider/user_profile_provider.dart';
 import 'package:sharing_cafe/service/image_service.dart';
-import 'package:sharing_cafe/view/components/form_field.dart';
-import 'package:sharing_cafe/view/screens/profiles/profile_page/profile_screen.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   static String routeName = "/update_profile";
@@ -22,18 +18,19 @@ class UpdateProfileScreen extends StatefulWidget {
 }
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
-  // String? _imageUrl;
-  String? _fullname;
+  String? _imageUrl;
+  String? _userName;
   String? _age;
   String? _story;
   String? _address;
   String? _gender;
   String? _purpose;
   String? _favoriteLocation;
+  KeyValuePair<String, String>? _interest;
 
   bool _isLoading = false;
   bool _isLoadingListInterests = false;
-  // bool _isUploading = false;
+  bool _isUploading = false;
 
   @override
   void initState() {
@@ -64,58 +61,131 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     });
   }
 
-  // uploadImage(ImageSource source) async {
-  //   var imageFile = await ImageHelper.pickImage(source);
-  //   if (imageFile != null) {
-  //     var url = await ImageService().uploadImage(imageFile);
-  //     if (url.isNotEmpty) {
-  //       setState(() {
-  //         _imageUrl = url;
-  //       });
-  //     } else {
-  //       ErrorHelper.showError(message: "Không tải được hình ảnh");
-  //     }
-  //   }
-  // }
+  uploadImage(ImageSource source) async {
+    var imageFile = await ImageHelper.pickImage(source);
+    if (imageFile != null) {
+      var url = await ImageService().uploadImage(imageFile);
+      if (url.isNotEmpty) {
+        setState(() {
+          _imageUrl = url;
+        });
+      } else {
+        ErrorHelper.showError(message: "Không tải được hình ảnh");
+      }
+    }
+  }
 
-  // showImageTypeSelector() {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //           content: Column(
-  //         mainAxisSize: MainAxisSize.min,
-  //         children: <Widget>[
-  //           ListTile(
-  //             leading: const Icon(Icons.image_search),
-  //             title: const Text('Chọn ảnh từ thư viện'),
-  //             onTap: () {
-  //               Navigator.pop(context);
-  //               uploadImage(ImageSource.gallery);
-  //             },
-  //           ),
-  //           ListTile(
-  //             leading: const Icon(Icons.camera_alt_outlined),
-  //             title: const Text('Chụp ảnh mới'),
-  //             onTap: () {
-  //               Navigator.pop(context);
-  //               uploadImage(ImageSource.camera);
-  //             },
-  //           ),
-  //         ],
-  //       ));
-  //     },
-  //   );
-  // }
+  showImageTypeSelector() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+            content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: const Icon(Icons.image_search),
+              title: const Text('Chọn ảnh từ thư viện'),
+              onTap: () {
+                Navigator.pop(context);
+                uploadImage(ImageSource.gallery);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.camera_alt_outlined),
+              title: const Text('Chụp ảnh mới'),
+              onTap: () {
+                Navigator.pop(context);
+                uploadImage(ImageSource.camera);
+              },
+            ),
+          ],
+        ));
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Sửa thông tin",
+          'Sửa thông tin',
           style: heading2Style,
         ),
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: _isUploading
+                ? TextButton(
+                    onPressed: () {},
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => kPrimaryColor),
+                      padding: MaterialStateProperty.resolveWith((states) =>
+                          const EdgeInsets.symmetric(horizontal: 16.0)),
+                    ),
+                    child: const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator.adaptive()))
+                : TextButton(
+                    onPressed: () async {
+                      setState(() {
+                        _isUploading = true;
+                      });
+                      var result = await Provider.of<UserProfileProvider>(
+                              context,
+                              listen: false)
+                          .updateUserProfile(
+                              // interestId: _interest?.key,
+                              );
+                      setState(() {
+                        _isUploading = false;
+                      });
+                      if (result == true) {
+                        showDialog(
+                          // ignore: use_build_context_synchronously
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Thành công'),
+                              content: const Text(
+                                  'Thông tin của bạn đã được lưu thành công.'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Đóng'),
+                                )
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => kPrimaryColor),
+                      padding: MaterialStateProperty.resolveWith((states) =>
+                          const EdgeInsets.symmetric(horizontal: 16.0)),
+                    ),
+                    child: const Text(
+                      'Lưu',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+          ),
+        ],
       ),
       body: _isLoading
           ? const Center(
@@ -130,34 +200,46 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   child: Container(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
-                        children: [
-                          Stack(
-                            children: [
-                              SizedBox(
-                                  width: 120,
-                                  height: 120,
-                                  child: ClipRRect(
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () {
+                              showImageTypeSelector();
+                            },
+                            child: Stack(
+                              children: [
+                                SizedBox(
+                                    width: 120,
+                                    height: 120,
+                                    child: ClipRRect(
                                       borderRadius: BorderRadius.circular(100),
-                                      child: Image.network(
-                                          userProfile.profileAvatar,
-                                          fit: BoxFit.cover))),
-                              Positioned(
-                                bottom: 0,
-                                right: 0,
-                                child: Container(
-                                  width: 35,
-                                  height: 35,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(100),
-                                      color: kPrimaryColor),
-                                  child: const Icon(
-                                    LineAwesomeIcons.camera,
-                                    color: Colors.black,
-                                    size: 20,
-                                  ),
-                                ),
-                              ),
-                            ],
+                                      child: _imageUrl != null &&
+                                              _imageUrl!.isNotEmpty
+                                          ? Image.network(
+                                              userProfile.profileAvatar,
+                                              fit: BoxFit.cover)
+                                          : Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.image,
+                                                  color: Colors.grey[600],
+                                                  size: 48,
+                                                ),
+                                                const SizedBox(
+                                                  height: 16,
+                                                ),
+                                                Text(
+                                                  "Thêm ảnh",
+                                                  style: TextStyle(
+                                                    color: Colors.grey[600],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                    )),
+                              ],
+                            ),
                           ),
                           const SizedBox(height: 50),
                           Form(
@@ -185,9 +267,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                       enabledBorder: InputBorder.none,
                                       focusedBorder: InputBorder.none),
                                   initialValue: userProfile.userName,
-                                  onChanged: (p0) {
+                                  onChanged: (initialValue) {
                                     setState(() {
-                                      _fullname = p0;
+                                      _userName = initialValue;
                                     });
                                   },
                                   maxLines: 1,
@@ -316,8 +398,16 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                     : MultiSelectDropDown(
                                         selectedOptionTextColor: kPrimaryColor,
                                         hint: 'Thêm sở thích',
-                                        onOptionSelected: (options) {
-                                          debugPrint(options.toString());
+                                        onOptionSelected: (options) async {
+                                          var listString = options
+                                              .map((e) => e.value.toString())
+                                              .toList();
+                                          await Provider.of<
+                                                      UserProfileProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .updateUserProfile(
+                                                  interestId: listString);
                                         },
                                         maxItems: 5,
                                         options: listInterests.map((interest) {
@@ -563,21 +653,21 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               // ),
 
                               const SizedBox(height: 20),
-                              SizedBox(
-                                width: 200,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, ProfileScreen.routeName);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: kPrimaryColor,
-                                      side: BorderSide.none,
-                                      shape: const StadiumBorder()),
-                                  child: const Text("Lưu",
-                                      style: TextStyle(color: Colors.white)),
-                                ),
-                              ),
+                              // SizedBox(
+                              //   width: 200,
+                              //   child: ElevatedButton(
+                              //     onPressed: () {
+                              //       Navigator.pushNamed(
+                              //           context, ProfileScreen.routeName);
+                              //     },
+                              //     style: ElevatedButton.styleFrom(
+                              //         backgroundColor: kPrimaryColor,
+                              //         side: BorderSide.none,
+                              //         shape: const StadiumBorder()),
+                              //     child: const Text("Lưu",
+                              //         style: TextStyle(color: Colors.white)),
+                              //   ),
+                              // ),
                             ],
                           ))
                         ],

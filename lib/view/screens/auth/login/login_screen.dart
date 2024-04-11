@@ -42,7 +42,7 @@ class _LoginScreen extends State<LoginScreen> {
     }
   }
 
-  bool showText = true;
+  bool showText = false;
 
   @override
   Widget build(BuildContext context) {
