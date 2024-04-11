@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sharing_cafe/helper/api_helper.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/shared_prefs_helper.dart';
@@ -91,5 +92,35 @@ class BlogService {
       print(e);
     }
     return [];
+  }
+
+  Future createBlog(
+      {required String userId,
+      required String interestId,
+      required String content,
+      required String title,
+      required String image,
+      required int likesCount,
+      required int commentsCount,
+      required bool isApprove}) async {
+    var data = {
+      "user_id": userId,
+      "interest_id": interestId,
+      "content": content,
+      "title": title,
+      "image": image,
+      "likes_count": likesCount,
+      "comments_count": commentsCount,
+      "is_approve": isApprove
+    };
+    var response = await ApiHelper().post('/blog', data);
+    if (response.statusCode == HttpStatus.ok) {
+      Fluttertoast.showToast(msg: "Tạo blog thành công");
+      return true;
+    } else {
+      ErrorHelper.showError(
+          message: "Lỗi ${response.statusCode}: Không thể tạo blog");
+    }
+    return false;
   }
 }

@@ -5,7 +5,6 @@ import 'package:sharing_cafe/model/blog_model.dart';
 import 'package:sharing_cafe/service/blog_service.dart';
 import 'package:sharing_cafe/view/screens/blogs/blog_detail/blog_detail_screen.dart';
 import 'package:sharing_cafe/view/screens/blogs/blog_list/components/blog_card.dart';
-import 'package:sharing_cafe/view/screens/events/event_detail/event_detail_screen.dart';
 
 class BlogCategoryScreen extends StatefulWidget {
   static String routeName = "blog-category";

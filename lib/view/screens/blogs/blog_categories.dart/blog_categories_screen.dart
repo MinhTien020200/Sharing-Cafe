@@ -45,7 +45,12 @@ class _BlogCategoriesScreenState extends State<BlogCategoriesScreen> {
                   number: interest.numOfBlog.toString(),
                   onTap: () {
                     Navigator.pushNamed(context, BlogCategoryScreen.routeName,
-                        arguments: interest);
+                        arguments: {
+                          "interestId": interest.interestId,
+                          "imageUrl": interest.imageUrl,
+                          "title": interest.name,
+                          "number": interest.numOfBlog,
+                        });
                   },
                 );
               },
