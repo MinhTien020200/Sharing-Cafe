@@ -232,8 +232,9 @@ class _HomeScreen extends State<HomeScreen> {
                             title: blog.title,
                             dateTime:
                                 DateTimeHelper.formatDateTime(blog.createdAt),
-                            avtUrl: 'https://picsum.photos/id/200/200/300',
-                            ownerName: "Thịnh",
+                            avtUrl: blog.ownerAvatar ??
+                                'https://picsum.photos/id/200/200/300',
+                            ownerName: blog.ownerName,
                             time: howOldFrom(blog.createdAt),
                             onTap: () {
                               Navigator.pushNamed(

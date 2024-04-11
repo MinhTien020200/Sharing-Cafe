@@ -10,18 +10,20 @@ class LocationService {
   Future updateLocation() async {
     // update current location to backend
     var userId = await SharedPrefHelper.getUserId();
-    var currentLocation = await LocationHelper.getCurrentLocation();
-    var endpoint =
-        "/location/updateCurrentLocation?userId=$userId&e&lat=${currentLocation.latitude}&lng=${currentLocation.longitude}";
-    var response = await ApiHelper().put(endpoint, {});
-    if (response.statusCode == HttpStatus.ok) {
-      if (kDebugMode) {
-        print("Update location success");
+    if (userId.isNotEmpty) {
+      var currentLocation = await LocationHelper.getCurrentLocation();
+      var endpoint =
+          "/location/updateCurrentLocation?userId=$userId&e&lat=${currentLocation.latitude}&lng=${currentLocation.longitude}";
+      var response = await ApiHelper().put(endpoint, {});
+      if (response.statusCode == HttpStatus.ok) {
+        if (kDebugMode) {
+          print("Update location success");
+        }
+        return true;
+      } else {
+        ErrorHelper.showError(message: "Không thể cập nhật vị trí hiện tại");
+        return false;
       }
-      return true;
-    } else {
-      ErrorHelper.showError(message: "Không thể cập nhật vị trí hiện tại");
-      return false;
     }
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharing_cafe/service/account_service.dart';
+import 'package:sharing_cafe/service/location_service.dart';
 
 class AccountProvider extends ChangeNotifier {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -21,8 +22,7 @@ class AccountProvider extends ChangeNotifier {
     pref.setString("email", result.email);
     pref.setString("userName", result.userName);
     Fluttertoast.showToast(msg: "Login successfully");
-    print(
-        "${result.token}: ${result.userId}: ${result.email}: ${result.userName}");
+    await LocationService().updateLocation();
   }
 
   Future register(String userName, String email, String password) async {
@@ -34,8 +34,7 @@ class AccountProvider extends ChangeNotifier {
     pref.setString("userName", result.userName);
     pref.setString("password", result.password);
     Fluttertoast.showToast(msg: "Register successfully");
-    print(
-        "${result.token}: ${result.userId}: ${result.email}: ${result.userName}: ${result.password}");
+    await LocationService().updateLocation();
   }
 
   Future<String?> getToken() async {
