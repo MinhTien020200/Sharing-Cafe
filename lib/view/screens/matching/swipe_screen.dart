@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
@@ -18,6 +19,7 @@ class SwipeScreen extends StatefulWidget {
 class _SwipeScreenState extends State<SwipeScreen> {
   bool _isLoading = false;
   bool _showIcon = false;
+  bool _isLikeIcon = true;
   @override
   void initState() {
     setState(() {
@@ -33,11 +35,12 @@ class _SwipeScreenState extends State<SwipeScreen> {
     super.initState();
   }
 
-  showIcon({isLike = true}) {
+  showIcon({isLike = true}) async {
     setState(() {
       _showIcon = true;
+      _isLikeIcon = isLike;
     });
-    Future.delayed(const Duration(seconds: 1), () {
+    await Future.delayed(const Duration(seconds: 1), () {
       setState(() {
         _showIcon = false;
       });
@@ -572,13 +575,26 @@ class _SwipeScreenState extends State<SwipeScreen> {
                               },
                               child: Stack(
                                 children: [
-                                  Lottie.asset('assets/animations/like.json'),
                                   ProfileCard(
                                     image: profiles.first.image,
                                     name: profiles.first.name,
                                     description: profiles.first.description,
                                     age: profiles.first.age,
                                   ),
+                                  if (_showIcon)
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: SizedBox(
+                                          height: 200,
+                                          width: 200,
+                                          child: Lottie.asset(
+                                            _isLikeIcon
+                                                ? 'assets/animations/like.json'
+                                                : 'assets/animations/dislike.json',
+                                            fit: BoxFit.cover,
+                                            repeat: false,
+                                          )),
+                                    ),
                                 ],
                               ),
                             ),
@@ -602,6 +618,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                 FloatingActionButton(
                                   heroTag: "dislike",
                                   onPressed: () async {
+                                    await showIcon(isLike: false);
                                     await value
                                         .likeOrUnlike(MatchStatus.dislike);
                                   },
@@ -612,6 +629,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                 FloatingActionButton(
                                   heroTag: "like",
                                   onPressed: () async {
+                                    await showIcon(isLike: true);
                                     await value
                                         .likeOrUnlike(MatchStatus.pending);
                                   },
