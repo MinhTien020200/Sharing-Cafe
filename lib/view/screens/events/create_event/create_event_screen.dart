@@ -30,6 +30,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   KeyValuePair<String, String>? _interest;
   String? _timeOfEvent;
   String? _location;
+  String? _endOfEvent;
 
   bool _isUploading = false;
 
@@ -83,6 +84,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     });
   }
 
+  void _handleEndTimeChange(DateTime? dateTime) {
+    setState(() {
+      _endOfEvent = dateTime?.toIso8601String();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -118,6 +125,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             _timeOfEvent = value.timeOfEvent.toString();
             _location = value.location;
             _imageUrl = value.backgroundImage;
+            _endOfEvent = value.endOfEvent.toString();
             if (value.interestId != null) {
               _interest = categories.firstWhereOrNull(
                   (element) => element.key == value.interestId);
@@ -130,6 +138,31 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       });
     }
     return null;
+  }
+
+  validateInput() {
+    if (_title == null || _title!.isEmpty) {
+      return false;
+    }
+    if (_description == null || _description!.isEmpty) {
+      return false;
+    }
+    if (_timeOfEvent == null || _timeOfEvent!.isEmpty) {
+      return false;
+    }
+    if (_location == null || _location!.isEmpty) {
+      return false;
+    }
+    if (_imageUrl == null || _imageUrl!.isEmpty) {
+      return false;
+    }
+    if (_interest == null) {
+      return false;
+    }
+    if (_endOfEvent == null || _endOfEvent!.isEmpty) {
+      return false;
+    }
+    return true;
   }
 
   @override
@@ -155,33 +188,31 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
-            child: _isUploading
+            child: _isEdit
                 ? TextButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateColor.resolveWith(
-                          (states) => kPrimaryColor),
-                      padding: MaterialStateProperty.resolveWith((states) =>
-                          const EdgeInsets.symmetric(horizontal: 16.0)),
-                    ),
-                    child: const SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator.adaptive()))
-                : TextButton(
                     onPressed: () async {
                       setState(() {
                         _isUploading = true;
                       });
+                      if (validateInput() == false) {
+                        setState(() {
+                          _isUploading = false;
+                        });
+                        ErrorHelper.showError(
+                            message: "Vui lòng điền đầy đủ thông tin.");
+                        return;
+                      }
                       var result = await Provider.of<EventProvider>(context,
                               listen: false)
-                          .createEvent(
-                        title: _title,
-                        interestId: _interest?.key,
-                        description: _description,
-                        timeOfEvent: _timeOfEvent,
-                        location: _location,
-                        backgroundImage: _imageUrl,
+                          .createOrUpdateEvent(
+                        eventId: _id,
+                        title: _title!,
+                        interestId: _interest!.key,
+                        description: _description!,
+                        timeOfEvent: _timeOfEvent!,
+                        location: _location!,
+                        backgroundImage: _imageUrl!,
+                        endOfEvent: _endOfEvent!,
                       );
                       setState(() {
                         _isUploading = false;
@@ -194,7 +225,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                             return AlertDialog(
                               title: const Text('Thành công'),
                               content: const Text(
-                                  'Sự kiện của bạn đã được tạo thành công.'),
+                                  'Sự kiện của bạn đã được cập nhật thành công.'),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () {
@@ -216,11 +247,86 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           const EdgeInsets.symmetric(horizontal: 16.0)),
                     ),
                     child: const Text(
-                      'Đăng',
+                      'Cập nhật',
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
-                  ),
+                  )
+                : _isUploading
+                    ? TextButton(
+                        onPressed: () {},
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateColor.resolveWith(
+                              (states) => kPrimaryColor),
+                          padding: MaterialStateProperty.resolveWith((states) =>
+                              const EdgeInsets.symmetric(horizontal: 16.0)),
+                        ),
+                        child: const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator.adaptive()))
+                    : TextButton(
+                        onPressed: () async {
+                          setState(() {
+                            _isUploading = true;
+                          });
+                          if (validateInput() == false) {
+                            setState(() {
+                              _isUploading = false;
+                            });
+                            ErrorHelper.showError(
+                                message: "Vui lòng điền đầy đủ thông tin.");
+                            return;
+                          }
+                          var result = await Provider.of<EventProvider>(context,
+                                  listen: false)
+                              .createOrUpdateEvent(
+                            title: _title!,
+                            interestId: _interest!.key,
+                            description: _description!,
+                            timeOfEvent: _timeOfEvent!,
+                            location: _location!,
+                            backgroundImage: _imageUrl!,
+                            endOfEvent: _endOfEvent!,
+                          );
+                          setState(() {
+                            _isUploading = false;
+                          });
+                          if (result == true) {
+                            showDialog(
+                              // ignore: use_build_context_synchronously
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text('Thành công'),
+                                  content: const Text(
+                                      'Sự kiện của bạn đã được tạo thành công.'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('Đóng'),
+                                    )
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateColor.resolveWith(
+                              (states) => kPrimaryColor),
+                          padding: MaterialStateProperty.resolveWith((states) =>
+                              const EdgeInsets.symmetric(horizontal: 16.0)),
+                        ),
+                        child: const Text(
+                          'Đăng',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      ),
           ),
         ],
       ),
@@ -272,6 +378,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   KFormField(
                     hintText: "Tên sự kiện",
                     value: _title,
+                    controller: TextEditingController(text: _title),
                     onChanged: (value) {
                       setState(() {
                         _title = value;
@@ -282,59 +389,19 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   DateTimePicker(
                     onDateTimeChanged: _handleDateTimeChange,
                     label: "Ngày và giờ bắt đầu",
-                    value:
-                        DateTime.tryParse(_timeOfEvent ?? "") ?? DateTime.now(),
+                    value: DateTime.tryParse(_timeOfEvent ?? ""),
                   ),
-                  // const SizedBox(height: 16),
-                  // Row(
-                  //   children: <Widget>[
-                  //     Expanded(
-                  //       child: TextButton(
-                  //         onPressed: () {
-                  //           // Handle attend action
-                  //         },
-                  //         style: ButtonStyle(
-                  //           backgroundColor: MaterialStateColor.resolveWith(
-                  //               (states) => kPrimaryLightColor),
-                  //           padding: MaterialStateProperty.resolveWith((states) =>
-                  //               const EdgeInsets.symmetric(horizontal: 24.0)),
-                  //         ),
-                  //         child: const Text(
-                  //           'Thêm thời gian kết thúc',
-                  //           overflow: TextOverflow.ellipsis,
-                  //           style: TextStyle(
-                  //               color: kPrimaryColor, fontWeight: FontWeight.bold),
-                  //         ),
-                  //       ),
-                  //     ),
-                  //     const SizedBox(
-                  //       width: 4,
-                  //     ),
-                  //     Expanded(
-                  //       child: TextButton(
-                  //         onPressed: () {
-                  //           // Handle attend action
-                  //         },
-                  //         style: ButtonStyle(
-                  //           backgroundColor: MaterialStateColor.resolveWith(
-                  //               (states) => kPrimaryLightColor),
-                  //           padding: MaterialStateProperty.resolveWith((states) =>
-                  //               const EdgeInsets.symmetric(horizontal: 24.0)),
-                  //         ),
-                  //         child: const Text(
-                  //           'Lặp lại sự kiện',
-                  //           overflow: TextOverflow.ellipsis,
-                  //           style: TextStyle(
-                  //               color: kPrimaryColor, fontWeight: FontWeight.bold),
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
+                  const SizedBox(height: 16),
+                  DateTimePicker(
+                    onDateTimeChanged: _handleEndTimeChange,
+                    label: "Ngày và giờ kết thúc",
+                    value: DateTime.tryParse(_endOfEvent ?? ""),
+                  ),
                   const SizedBox(height: 16),
                   KFormField(
                     hintText: "Địa điểm tổ chức",
                     value: _location,
+                    controller: TextEditingController(text: _location),
                     onChanged: (p0) {
                       setState(() {
                         _location = p0;
@@ -346,6 +413,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     hintText: "Hãy mô tả chi tiết về sự kiện",
                     maxLines: 3,
                     value: _description,
+                    controller: TextEditingController(text: _description),
                     onChanged: (p0) {
                       setState(() {
                         _description = p0;

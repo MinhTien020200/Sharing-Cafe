@@ -152,7 +152,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                 title: Text(
                                   DateTimeHelper.formatDateTime2(
                                           eventDetails.timeOfEvent) +
-                                      " - ${DateTimeHelper.formatDateTime2(eventDetails.endOfEvent!)}",
+                                      " - ${DateTimeHelper.formatDateTime2(eventDetails.endOfEvent) ?? ""}",
                                 ),
                               ),
                               ListTile(

@@ -41,7 +41,7 @@ class EventModel {
       description: json['description'],
       timeOfEvent: DateTimeHelper.parseToLocal(json['time_of_event']),
       location: json['location'],
-      participantsCount: json['participants_count'],
+      participantsCount: json['participants_count'] ?? 0,
       isAprrove: json['is_approve'],
       backgroundImage: json['background_img'],
       createdAt: DateTimeHelper.parseToLocal(json['created_at']),

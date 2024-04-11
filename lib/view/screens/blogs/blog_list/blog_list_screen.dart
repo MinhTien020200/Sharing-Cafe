@@ -117,8 +117,9 @@ class _BlogListScreenState extends State<BlogListScreen> {
                             title: blog.title,
                             dateTime:
                                 DateTimeHelper.formatDateTime(blog.createdAt),
-                            avtUrl: 'https://picsum.photos/id/200/200/300',
-                            ownerName: "Thịnh",
+                            avtUrl: blog.ownerAvatar ??
+                                'https://picsum.photos/id/200/200/300',
+                            ownerName: blog.ownerName,
                             time: howOldFrom(blog.createdAt),
                             onTap: () {
                               Navigator.pushNamed(
@@ -176,7 +177,14 @@ class _BlogListScreenState extends State<BlogListScreen> {
                                 number: interests[index].numOfBlog,
                                 onTap: () {
                                   Navigator.pushNamed(
-                                      context, BlogCategoryScreen.routeName);
+                                      context, BlogCategoryScreen.routeName,
+                                      arguments: {
+                                        "interestId":
+                                            interests[index].interestId,
+                                        "imageUrl": interests[index].imageUrl,
+                                        "title": interests[index].name,
+                                        "number": interests[index].numOfBlog,
+                                      });
                                 },
                               );
                             },
@@ -221,8 +229,9 @@ class _BlogListScreenState extends State<BlogListScreen> {
                           title: blog.title,
                           dateTime:
                               DateTimeHelper.formatDateTime(blog.createdAt),
-                          avtUrl: 'https://picsum.photos/id/200/200/300',
-                          ownerName: "Thịnh",
+                          avtUrl: blog.ownerAvatar ??
+                              'https://picsum.photos/id/200/200/300',
+                          ownerName: blog.ownerName,
                           time: howOldFrom(blog.createdAt),
                           onTap: () {
                             Navigator.pushNamed(
