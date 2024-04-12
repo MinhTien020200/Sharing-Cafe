@@ -80,6 +80,7 @@ class EventProvider extends ChangeNotifier {
     required String backgroundImage,
     String? eventId,
     required String endOfEvent,
+    required String address,
   }) async {
     try {
       // Validate Title
@@ -105,12 +106,17 @@ class EventProvider extends ChangeNotifier {
 
       // Validate Location
       if (location.isEmpty) {
-        throw ArgumentError('Địa điểm là bắt buộc và không được để trống.');
+        throw ArgumentError(
+            'Địa điểm tổ chức là bắt buộc và không được để trống.');
       }
 
       // Validate Background Image
       if (backgroundImage.isEmpty) {
         throw ArgumentError('Ảnh bìa là bắt buộc và không được để trống.');
+      }
+
+      if (address.isEmpty) {
+        throw ArgumentError('Địa chỉ là bắt buộc và không được để trống.');
       }
       if (eventId != null) {
         return await EventService().updateEvent(
@@ -122,6 +128,7 @@ class EventProvider extends ChangeNotifier {
           location: location,
           backgroundImage: backgroundImage,
           endOfEvent: endOfEvent,
+          address: address,
         );
       }
 
@@ -133,6 +140,7 @@ class EventProvider extends ChangeNotifier {
         location: location,
         backgroundImage: backgroundImage,
         endOfEvent: endOfEvent,
+        address: address,
       );
     } catch (e) {
       if (e is ArgumentError) {
