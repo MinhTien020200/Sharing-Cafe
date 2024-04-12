@@ -113,6 +113,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         setState(() {
           Provider.of<UserProfileProvider>(context, listen: false)
               .setUserAvt(url);
+          _imageUrl = url;
         });
       } else {
         ErrorHelper.showError(message: "Không tải được hình ảnh");
