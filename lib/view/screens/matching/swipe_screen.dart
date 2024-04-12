@@ -201,7 +201,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                             ],
                                                           ),
                                                           Text(
-                                                            info.purpose,
+                                                            info.purpose ?? "",
                                                             style:
                                                                 heading2Style,
                                                           )
@@ -478,8 +478,9 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                               const SizedBox(
                                                                 width: 27,
                                                               ),
-                                                              Text(info
-                                                                  .favoriteLocation),
+                                                              Text(
+                                                                  info.favoriteLocation ??
+                                                                      ""),
                                                             ],
                                                           ),
                                                           const Row(

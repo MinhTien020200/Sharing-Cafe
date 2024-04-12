@@ -5,8 +5,8 @@ class ProfileInfoModel {
   String? story;
   String gender;
   String age;
-  String purpose;
-  String favoriteLocation;
+  String? purpose;
+  String? favoriteLocation;
   String address;
   String? distance;
   List<Interest> interest;
