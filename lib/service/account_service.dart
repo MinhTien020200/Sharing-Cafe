@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:sharing_cafe/helper/api_helper.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/model/account_model.dart';
+import 'package:sharing_cafe/service/location_service.dart';
 
 class AccountService {
   Future<AccountModel> login(
@@ -16,6 +17,9 @@ class AccountService {
       var response = await ApiHelper().post(endpoint, data);
       if (response.statusCode == HttpStatus.ok) {
         var json = jsonDecode(response.body);
+        Future.delayed(Duration.zero, () async {
+          await LocationService().updateLocation();
+        });
         return AccountModel.fromJson(json);
       } else {
         throw Exception("Unauthorized: ${response.statusCode}");

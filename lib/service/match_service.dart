@@ -29,9 +29,10 @@ class MatchService {
 
   Future<bool> updateMatchStatus(String userId, MatchStatus status) async {
     var endpoint = "/auth/matching-status";
+    bool isLike = status == MatchStatus.pending;
     var payload = {
       "user_id": userId,
-      "status": status.label,
+      "status": isLike,
     };
     var response = await ApiHelper().put(endpoint, payload);
     if (response.statusCode == HttpStatus.ok) {
