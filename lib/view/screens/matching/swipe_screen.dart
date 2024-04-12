@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
@@ -133,19 +134,27 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                             }
                                             // create jobs string with ,
                                             var jobs = info.problem.isNotEmpty
-                                                ? info.problem.join(", ")
+                                                ? info.problem
+                                                    .map((e) => e.problem)
+                                                    .join(", ")
                                                 : "Không có";
                                             var unlikeTopics = info
                                                     .problem.isNotEmpty
-                                                ? info.unlikeTopic.join(", ")
+                                                ? info.unlikeTopic
+                                                    .map((e) => e.unlikeTopic)
+                                                    .join(", ")
                                                 : "Không có";
                                             var favoriteDrinks = info
                                                     .problem.isNotEmpty
-                                                ? info.favoriteDrink.join(", ")
+                                                ? info.favoriteDrink
+                                                    .map((e) => e.favoriteDrink)
+                                                    .join(", ")
                                                 : "Không có";
                                             var freeTime =
                                                 info.problem.isNotEmpty
-                                                    ? info.freeTime.join(", ")
+                                                    ? info.freeTime
+                                                        .map((e) => e.freeTime)
+                                                        .join(", ")
                                                     : "Không có";
 
                                             return SizedBox(
@@ -395,7 +404,14 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                               const SizedBox(
                                                                 width: 27,
                                                               ),
-                                                              Text(jobs),
+                                                              Expanded(
+                                                                child: Text(
+                                                                  jobs,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
+                                                              ),
                                                             ],
                                                           ),
                                                           const Row(
@@ -422,8 +438,14 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                               const SizedBox(
                                                                 width: 27,
                                                               ),
-                                                              Text(
-                                                                  unlikeTopics),
+                                                              Expanded(
+                                                                child: Text(
+                                                                  unlikeTopics,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
+                                                              ),
                                                             ],
                                                           ),
                                                           const Row(
@@ -450,8 +472,14 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                               const SizedBox(
                                                                 width: 27,
                                                               ),
-                                                              Text(
-                                                                  favoriteDrinks),
+                                                              Expanded(
+                                                                child: Text(
+                                                                  favoriteDrinks,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
+                                                              ),
                                                             ],
                                                           ),
                                                           const Row(
@@ -478,9 +506,11 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                               const SizedBox(
                                                                 width: 27,
                                                               ),
-                                                              Text(
-                                                                  info.favoriteLocation ??
-                                                                      ""),
+                                                              Expanded(
+                                                                child: Text(
+                                                                    info.favoriteLocation ??
+                                                                        ""),
+                                                              ),
                                                             ],
                                                           ),
                                                           const Row(
@@ -507,7 +537,14 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                               const SizedBox(
                                                                 width: 27,
                                                               ),
-                                                              Text(freeTime),
+                                                              Expanded(
+                                                                child: Text(
+                                                                  freeTime,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
+                                                              ),
                                                             ],
                                                           ),
                                                         ],

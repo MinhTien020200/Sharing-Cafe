@@ -96,7 +96,7 @@ class UnlikeTopic {
   factory UnlikeTopic.fromJson(Map<String, dynamic> json) {
     return UnlikeTopic(
       unlikeTopicId: json['unlike_topic_id'],
-      unlikeTopic: json['unlike_topic'],
+      unlikeTopic: json['topic'],
     );
   }
 }
