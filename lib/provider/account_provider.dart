@@ -21,18 +21,15 @@ class AccountProvider extends ChangeNotifier {
     pref.setString("userId", result.userId);
     pref.setString("email", result.email);
     pref.setString("userName", result.userName);
-    Fluttertoast.showToast(msg: "Login successfully");
+    Fluttertoast.showToast(msg: "Đăng nhập thành công");
     print(
         "${result.token}: ${result.userId}: ${result.email}: ${result.userName}");
   }
 
   Future logout() async {
     var pref = await _prefs;
-    await pref.remove("accessToken");
-    await pref.remove("userId");
-    await pref.remove("email");
-    await pref.remove("userName");
-    Fluttertoast.showToast(msg: "Đăng xuất thành công!");
+    pref.clear();
+    Fluttertoast.showToast(msg: "Đăng xuất thành công");
   }
 
   Future register(String userName, String email, String password) async {
@@ -43,7 +40,7 @@ class AccountProvider extends ChangeNotifier {
     pref.setString("email", result.email);
     pref.setString("userName", result.userName);
     pref.setString("password", result.password);
-    Fluttertoast.showToast(msg: "Register successfully");
+    Fluttertoast.showToast(msg: "Đăng ký thành công");
     await LocationService().updateLocation();
   }
 

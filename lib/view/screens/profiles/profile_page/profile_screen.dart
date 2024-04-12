@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/provider/account_provider.dart';
 import 'package:sharing_cafe/provider/user_profile_provider.dart';
+import 'package:sharing_cafe/view/screens/auth/complete_profile/select_interest_screen.dart';
 import 'package:sharing_cafe/view/screens/auth/login/login_screen.dart';
 import 'package:sharing_cafe/view/screens/events/my_event/my_event_screen.dart';
 import 'package:sharing_cafe/view/screens/profiles/profile_page/components/profile_menu.dart';
@@ -109,6 +110,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           title: "Blog của bạn",
                           icon: LineAwesomeIcons.blog,
                           onPress: () {}),
+                      ProfileMenu(
+                          title: "Sở thích của bạn",
+                          icon: LineAwesomeIcons.ice_cream,
+                          onPress: () {
+                            Navigator.pushNamed(
+                                context, SelectInterestScreen.routeName);
+                          }),
                       // ProfileMenu(
                       //     title: "Lịch sử cuộc hẹn",
                       //     icon: Icons.history,

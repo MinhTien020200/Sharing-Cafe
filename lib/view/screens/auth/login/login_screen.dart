@@ -44,11 +44,11 @@ class _LoginScreen extends State<LoginScreen> {
 
   bool showText = false;
 
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final accountService = Provider.of<AccountProvider>(context);
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
       body: SafeArea(
@@ -120,6 +120,7 @@ class _LoginScreen extends State<LoginScreen> {
                             }
                             return;
                           },
+                          obscuringCharacter: "*",
                           validator: (value) {
                             if (value!.isEmpty) {
                               addError(error: kPassNullError);

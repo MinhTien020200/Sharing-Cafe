@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/image_helper.dart';
-import 'package:sharing_cafe/helper/key_value_pair.dart';
 import 'package:sharing_cafe/provider/user_profile_provider.dart';
 import 'package:sharing_cafe/service/image_service.dart';
 
@@ -19,18 +18,53 @@ class UpdateProfileScreen extends StatefulWidget {
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   String? _imageUrl;
-  String? _userName;
+  final TextEditingController _userNameController = TextEditingController();
   String? _age;
-  String? _story;
+  final TextEditingController _storyController = TextEditingController();
   String? _address;
   String? _gender;
-  String? _purpose;
-  String? _favoriteLocation;
-  KeyValuePair<String, String>? _interest;
+  final TextEditingController _purposeController = TextEditingController();
+  final TextEditingController _favoriteLocationController =
+      TextEditingController();
 
   bool _isLoading = false;
   bool _isLoadingListInterests = false;
   bool _isUploading = false;
+
+  var listProblem = const <ValueItem>[
+    ValueItem(label: 'Công việc', value: 'Công việc'),
+    ValueItem(label: 'Mối quan hệ', value: 'Mối quan hệ'),
+    ValueItem(label: 'Học tập', value: 'Học tập'),
+    ValueItem(label: 'Sức khỏe', value: 'Sức khỏe'),
+    ValueItem(label: 'Tài Chính', value: 'Tài Chính'),
+    ValueItem(label: 'Gia đình', value: 'Gia đình'),
+    ValueItem(label: 'Định hướng', value: 'Định hướng'),
+    ValueItem(label: 'Xã hội', value: 'Xã hội'),
+    ValueItem(label: 'Không muốn đề cập', value: 'Không muốn đề cập'),
+    ValueItem(
+        label: 'Thoải mái với mọi ý tưởng', value: 'Thoải mái với mọi ý tưởng'),
+  ];
+  var listFavoriteDink = const <ValueItem>[
+    ValueItem(label: 'Cà Phê', value: 'Cà Phê'),
+    ValueItem(label: 'Trà', value: 'Trà'),
+    ValueItem(label: 'Nước ép trái cây', value: 'Nước ép trái cây'),
+    ValueItem(label: 'Sinh tố', value: 'Sinh tố'),
+    ValueItem(label: 'Đồ uống có cồn', value: 'Đồ uống có cồn'),
+    ValueItem(label: 'Smoothie', value: 'Smoothie'),
+    ValueItem(label: 'Nước lọc', value: 'Nước lọc'),
+    ValueItem(label: 'Đồ uống có ga', value: 'Đồ uống có ga'),
+    ValueItem(label: 'Sữa', value: 'Sữa'),
+  ];
+  var listFreeTime = const <ValueItem>[
+    ValueItem(label: 'Thứ 2', value: 'Thứ 2'),
+    ValueItem(label: 'Thứ 3', value: 'Thứ 3'),
+    ValueItem(label: 'Thứ 4', value: 'Thứ 4'),
+    ValueItem(label: 'Thứ 5', value: 'Thứ 5'),
+    ValueItem(label: 'Thứ 6', value: 'Thứ 6'),
+    ValueItem(label: 'Thứ 7', value: 'Thứ 7'),
+    ValueItem(label: 'Chủ nhật', value: 'Chủ nhật'),
+    ValueItem(label: 'Không cụ thể', value: 'Không cụ thể'),
+  ];
 
   @override
   void initState() {
@@ -40,8 +74,18 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     });
     Provider.of<UserProfileProvider>(context, listen: false)
         .getUserProfile()
-        .then((_) {
+        .then((value) {
       setState(() {
+        if (value != null) {
+          _userNameController.text = value.userName;
+          _imageUrl = value.profileAvatar;
+          _age = value.age;
+          _storyController.text = value.story!;
+          _address = value.address;
+          _gender = value.gender;
+          _purposeController.text = value.purpose;
+          _favoriteLocationController.text = value.favoriteLocation;
+        }
         _isLoading = false;
       });
     });
@@ -67,7 +111,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       var url = await ImageService().uploadImage(imageFile);
       if (url.isNotEmpty) {
         setState(() {
-          _imageUrl = url;
+          Provider.of<UserProfileProvider>(context, listen: false)
+              .setUserAvt(url);
         });
       } else {
         ErrorHelper.showError(message: "Không tải được hình ảnh");
@@ -144,12 +189,22 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               context,
                               listen: false)
                           .updateUserProfile(
-                              // interestId: _interest?.key,
-                              );
+                        profileAvatar: _imageUrl,
+                        userName: _userNameController.text,
+                        age: _age,
+                        story: _storyController.text,
+                        address: _address,
+                        gender: _gender,
+                        purpose: _purposeController.text,
+                        favoriteLocation: _favoriteLocationController.text,
+                      );
                       setState(() {
                         _isUploading = false;
                       });
                       if (result == true) {
+                        // ignore: use_build_context_synchronously
+                        Provider.of<UserProfileProvider>(context, listen: false)
+                            .getUserProfile();
                         showDialog(
                           // ignore: use_build_context_synchronously
                           context: context,
@@ -161,7 +216,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pop(context);
                                     Navigator.pop(context);
                                   },
                                   child: const Text('Đóng'),
@@ -195,7 +249,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               builder: (context, value, child) {
                 var userProfile = value.userProfile;
                 var listInterests = value.listInterests;
-
                 return SingleChildScrollView(
                   child: Container(
                       padding: const EdgeInsets.all(8.0),
@@ -212,31 +265,31 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                     height: 120,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(100),
-                                      child: _imageUrl != null &&
-                                              _imageUrl!.isNotEmpty
-                                          ? Image.network(
-                                              userProfile.profileAvatar,
-                                              fit: BoxFit.cover)
-                                          : Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                  Icons.image,
-                                                  color: Colors.grey[600],
-                                                  size: 48,
+                                      child:
+                                          userProfile.profileAvatar.isNotEmpty
+                                              ? Image.network(
+                                                  userProfile.profileAvatar,
+                                                  fit: BoxFit.cover)
+                                              : Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.image,
+                                                      color: Colors.grey[600],
+                                                      size: 48,
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 16,
+                                                    ),
+                                                    Text(
+                                                      "Thêm ảnh",
+                                                      style: TextStyle(
+                                                        color: Colors.grey[600],
+                                                      ),
+                                                    )
+                                                  ],
                                                 ),
-                                                const SizedBox(
-                                                  height: 16,
-                                                ),
-                                                Text(
-                                                  "Thêm ảnh",
-                                                  style: TextStyle(
-                                                    color: Colors.grey[600],
-                                                  ),
-                                                )
-                                              ],
-                                            ),
                                     )),
                               ],
                             ),
@@ -266,38 +319,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                       border: InputBorder.none,
                                       enabledBorder: InputBorder.none,
                                       focusedBorder: InputBorder.none),
-                                  initialValue: userProfile.userName,
-                                  onChanged: (initialValue) {
-                                    setState(() {
-                                      _userName = initialValue;
-                                    });
-                                  },
-                                  maxLines: 1,
-                                ),
-                              ),
-
-                              const SizedBox(height: 10),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: kFormFieldColor,
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(
-                                      color: const Color.fromARGB(
-                                          100, 158, 158, 158)),
-                                ),
-                                child: TextFormField(
-                                  decoration: const InputDecoration(
-                                      prefixText: "Tuổi | ",
-                                      contentPadding: EdgeInsets.all(16),
-                                      border: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      focusedBorder: InputBorder.none),
-                                  initialValue: userProfile.age,
-                                  onChanged: (p0) {
-                                    setState(() {
-                                      _age = p0;
-                                    });
-                                  },
+                                  controller: _userNameController,
                                   maxLines: 1,
                                 ),
                               ),
@@ -310,20 +332,35 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                       color: const Color.fromARGB(
                                           100, 158, 158, 158)),
                                 ),
-                                child: TextFormField(
+                                child: DropdownButtonFormField<String>(
+                                  value: _age,
                                   decoration: const InputDecoration(
-                                      prefixText: "Địa chỉ | ",
-                                      contentPadding: EdgeInsets.all(16),
-                                      border: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      focusedBorder: InputBorder.none),
-                                  initialValue: userProfile.address,
-                                  onChanged: (p0) {
-                                    setState(() {
-                                      _address = p0;
-                                    });
-                                  },
-                                  maxLines: 1,
+                                    prefixText: "Tuổi | ",
+                                    contentPadding: EdgeInsets.all(16),
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    hintText: 'Chọn độ tuổi',
+                                  ),
+                                  items: [
+                                    '16 - 20',
+                                    '21 - 25',
+                                    '26 - 30',
+                                    '31 - 35',
+                                    '36 - 40',
+                                    'trên 40',
+                                    'Không đề cập'
+                                  ].map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) => setState(
+                                    () {
+                                      _age = value;
+                                    },
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 10),
@@ -335,20 +372,81 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                       color: const Color.fromARGB(
                                           100, 158, 158, 158)),
                                 ),
-                                child: TextFormField(
+                                child: DropdownButtonFormField<String>(
+                                  value: _address,
                                   decoration: const InputDecoration(
-                                      prefixText: "Giới tính | ",
-                                      contentPadding: EdgeInsets.all(16),
-                                      border: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      focusedBorder: InputBorder.none),
-                                  initialValue: userProfile.gender,
-                                  onChanged: (p0) {
-                                    setState(() {
-                                      _gender = p0;
-                                    });
-                                  },
-                                  maxLines: 1,
+                                    prefixText: "Địa chỉ | ",
+                                    contentPadding: EdgeInsets.all(16),
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    hintText: 'Chọn địa chỉ',
+                                  ),
+                                  items: [
+                                    'Quận 1',
+                                    'Quận 2',
+                                    'Quận 3',
+                                    'Quận 4',
+                                    'Quận 5',
+                                    'Quận 6',
+                                    'Quận 7',
+                                    'Quận 8',
+                                    'Quận 9',
+                                    'Quận 10',
+                                    'Quận 11',
+                                    'Quận 12',
+                                    'Quận Tân Bình',
+                                    'Quận Bình Tân',
+                                    'Quận Bình Thạnh',
+                                    'Quận Tân Phú',
+                                    'Quận Gò Vấp',
+                                    'Quận Phú Nhuận',
+                                    'Quận Thủ Đức',
+                                    'Không đề cập'
+                                  ].map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) => setState(
+                                    () {
+                                      _address = value;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: kFormFieldColor,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                      color: const Color.fromARGB(
+                                          100, 158, 158, 158)),
+                                ),
+                                child: DropdownButtonFormField<String>(
+                                  value: _gender,
+                                  decoration: const InputDecoration(
+                                    prefixText: "Giới tính | ",
+                                    contentPadding: EdgeInsets.all(16),
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    hintText: 'Chọn giới tính',
+                                  ),
+                                  items: ['Nam', 'Nữ', 'Không đề cập']
+                                      .map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) => setState(
+                                    () {
+                                      _gender = value;
+                                    },
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 10),
@@ -372,16 +470,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                       border: InputBorder.none,
                                       enabledBorder: InputBorder.none,
                                       focusedBorder: InputBorder.none),
-                                  initialValue: userProfile.story,
-                                  onChanged: (p0) {
-                                    setState(() {
-                                      _story = p0;
-                                    });
-                                  },
+                                  controller: _storyController,
                                   maxLines: 3,
                                 ),
                               ),
-
                               const SizedBox(height: 10),
                               const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 8.0),
@@ -406,7 +498,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                                       UserProfileProvider>(
                                                   context,
                                                   listen: false)
-                                              .updateUserProfile(
+                                              .updateInterest(
                                                   interestId: listString);
                                         },
                                         maxItems: 5,
@@ -434,7 +526,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                             const Icon(Icons.check_circle),
                                       ),
                               ),
-
                               const SizedBox(height: 10),
                               const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 8.0),
@@ -456,12 +547,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                       border: InputBorder.none,
                                       enabledBorder: InputBorder.none,
                                       focusedBorder: InputBorder.none),
-                                  initialValue: userProfile.purpose,
-                                  onChanged: (p0) {
-                                    setState(() {
-                                      _purpose = p0;
-                                    });
-                                  },
+                                  controller: _purposeController,
                                   maxLines: 3,
                                 ),
                               ),
@@ -476,29 +562,23 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               MultiSelectDropDown(
                                 selectedOptionTextColor: kPrimaryColor,
                                 hint: 'Thêm',
-                                onOptionSelected: (options) {
-                                  debugPrint(options.toString());
+                                onOptionSelected: (options) async {
+                                  var listString = options
+                                      .map((e) => e.value.toString())
+                                      .toList();
+                                  await Provider.of<UserProfileProvider>(
+                                          context,
+                                          listen: false)
+                                      .updateProblem(problem: listString);
                                 },
+                                onOptionRemoved: (index, option) {},
                                 maxItems: 3,
-                                options: const <ValueItem>[
-                                  ValueItem(label: 'Công việc', value: '1'),
-                                  ValueItem(label: 'Mối quan hệ', value: '2'),
-                                  ValueItem(label: 'Học tập', value: '3'),
-                                  ValueItem(label: 'Sức khỏe', value: '4'),
-                                  ValueItem(label: 'Tài Chính', value: '5'),
-                                  ValueItem(label: 'Gia đình', value: '6'),
-                                  ValueItem(label: 'Định hướng', value: '7'),
-                                  ValueItem(label: 'Xã hội', value: '8'),
-                                  ValueItem(
-                                      label: 'Không muốn đề cập', value: '9'),
-                                ],
-                                selectedOptions:
-                                    userProfile.problem.map((problem) {
-                                  return ValueItem(
-                                      label: problem.problem,
-                                      value:
-                                          problem.personalProblemId.toString());
-                                }).toList(),
+                                options: listProblem,
+                                selectedOptions: listProblem
+                                    .where((element) => userProfile.problem
+                                        .map((e) => e.problem)
+                                        .contains(element.value))
+                                    .toList(),
                                 selectionType: SelectionType.multi,
                                 chipConfig: const ChipConfig(
                                     wrapType: WrapType.scroll,
@@ -514,30 +594,24 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               MultiSelectDropDown(
                                 selectedOptionTextColor: kPrimaryColor,
                                 hint: 'Thêm',
-                                onOptionSelected: (options) {
-                                  debugPrint(options.toString());
+                                onOptionSelected: (options) async {
+                                  var listString = options
+                                      .map((e) => e.value.toString())
+                                      .toList();
+                                  await Provider.of<UserProfileProvider>(
+                                          context,
+                                          listen: false)
+                                      .updateUnlikeTopic(
+                                          unlikeTopic: listString);
                                 },
+                                onOptionRemoved: (index, option) {},
                                 maxItems: 3,
-                                options: const <ValueItem>[
-                                  ValueItem(label: 'Công việc', value: '1'),
-                                  ValueItem(label: 'Mối quan hệ', value: '2'),
-                                  ValueItem(label: 'Học tập', value: '3'),
-                                  ValueItem(label: 'Sức khỏe', value: '4'),
-                                  ValueItem(label: 'Tài Chính', value: '5'),
-                                  ValueItem(label: 'Gia đình', value: '6'),
-                                  ValueItem(label: 'Định hướng', value: '7'),
-                                  ValueItem(label: 'Xã hội', value: '8'),
-                                  ValueItem(
-                                      label: 'Thoải mái với mọi ý tưởng',
-                                      value: '9'),
-                                ],
-                                selectedOptions:
-                                    userProfile.unlikeTopic.map((unlikeTopic) {
-                                  return ValueItem(
-                                      label: unlikeTopic.unlikeTopic,
-                                      value:
-                                          unlikeTopic.unlikeTopicId.toString());
-                                }).toList(),
+                                options: listProblem,
+                                selectedOptions: listProblem
+                                    .where((element) => userProfile.unlikeTopic
+                                        .map((e) => e.unlikeTopic)
+                                        .contains(element.value))
+                                    .toList(),
                                 selectionType: SelectionType.multi,
                                 chipConfig: const ChipConfig(
                                     wrapType: WrapType.scroll,
@@ -552,30 +626,25 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               MultiSelectDropDown(
                                 selectedOptionTextColor: kPrimaryColor,
                                 hint: 'Thêm',
-                                onOptionSelected: (options) {
-                                  debugPrint(options.toString());
+                                onOptionSelected: (options) async {
+                                  var listString = options
+                                      .map((e) => e.value.toString())
+                                      .toList();
+                                  await Provider.of<UserProfileProvider>(
+                                          context,
+                                          listen: false)
+                                      .updateFavoriteDrink(
+                                          favoriteDrink: listString);
                                 },
+                                onOptionRemoved: (index, option) {},
                                 maxItems: 3,
-                                options: const <ValueItem>[
-                                  ValueItem(label: 'Cà Phê', value: '1'),
-                                  ValueItem(label: 'Trà', value: '2'),
-                                  ValueItem(
-                                      label: 'Nước ép trái cây', value: '3'),
-                                  ValueItem(label: 'Sinh tố', value: '4'),
-                                  ValueItem(
-                                      label: 'Đồ uống có cồn', value: '5'),
-                                  ValueItem(label: 'Smoothie', value: '6'),
-                                  ValueItem(label: 'Nước lọc', value: '7'),
-                                  ValueItem(label: 'Đồ uống có ga', value: '8'),
-                                  ValueItem(label: 'Sữa', value: '9'),
-                                ],
-                                selectedOptions: userProfile.favoriteDrink
-                                    .map((favoriteDrink) {
-                                  return ValueItem(
-                                      label: favoriteDrink.favoriteDrink,
-                                      value: favoriteDrink.favoriteDrinkId
-                                          .toString());
-                                }).toList(),
+                                options: listFavoriteDink,
+                                selectedOptions: listFavoriteDink
+                                    .where((element) => userProfile
+                                        .favoriteDrink
+                                        .map((e) => e.favoriteDrink)
+                                        .contains(element.value))
+                                    .toList(),
                                 selectionType: SelectionType.multi,
                                 chipConfig: const ChipConfig(
                                     wrapType: WrapType.scroll,
@@ -601,13 +670,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                       border: InputBorder.none,
                                       enabledBorder: InputBorder.none,
                                       focusedBorder: InputBorder.none),
-                                  initialValue: userProfile.favoriteLocation,
-                                  onChanged: (p0) {
-                                    setState(() {
-                                      _favoriteLocation = p0;
-                                    });
-                                  },
-                                  maxLines: 3,
+                                  controller: _favoriteLocationController,
+                                  maxLines: 1,
                                 ),
                               ),
                               const SizedBox(height: 10),
@@ -615,26 +679,23 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               MultiSelectDropDown(
                                 selectedOptionTextColor: kPrimaryColor,
                                 hint: 'Thêm',
-                                onOptionSelected: (options) {
-                                  debugPrint(options.toString());
+                                onOptionSelected: (options) async {
+                                  var listString = options
+                                      .map((e) => e.value.toString())
+                                      .toList();
+                                  await Provider.of<UserProfileProvider>(
+                                          context,
+                                          listen: false)
+                                      .updateFreetime(freeTime: listString);
                                 },
+                                onOptionRemoved: (index, option) {},
                                 maxItems: 3,
-                                options: const <ValueItem>[
-                                  ValueItem(label: 'Thứ 2', value: '1'),
-                                  ValueItem(label: 'Thứ 3', value: '2'),
-                                  ValueItem(label: 'Thứ 4', value: '3'),
-                                  ValueItem(label: 'Thứ 5', value: '4'),
-                                  ValueItem(label: 'Thứ 6', value: '5'),
-                                  ValueItem(label: 'Thứ 7', value: '6'),
-                                  ValueItem(label: 'CN', value: '7'),
-                                  ValueItem(label: 'Không cụ thể', value: '8'),
-                                ],
-                                selectedOptions:
-                                    userProfile.freeTime.map((freeTime) {
-                                  return ValueItem(
-                                      label: freeTime.freeTime,
-                                      value: freeTime.freeTimeId.toString());
-                                }).toList(),
+                                options: listFreeTime,
+                                selectedOptions: listFreeTime
+                                    .where((element) => userProfile.freeTime
+                                        .map((e) => e.freeTime)
+                                        .contains(element.value))
+                                    .toList(),
                                 selectionType: SelectionType.multi,
                                 chipConfig: const ChipConfig(
                                     wrapType: WrapType.scroll,
@@ -644,30 +705,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 selectedOptionIcon:
                                     const Icon(Icons.check_circle),
                               ),
-                              // const SizedBox(height: 10),
-                              // const Padding(
-                              //   padding: EdgeInsets.symmetric(vertical: 8.0),
-                              //   child: Text('ĐANG SỐNG TẠI',
-                              //       style: heading2Style,
-                              //       textAlign: TextAlign.left),
-                              // ),
-
                               const SizedBox(height: 20),
-                              // SizedBox(
-                              //   width: 200,
-                              //   child: ElevatedButton(
-                              //     onPressed: () {
-                              //       Navigator.pushNamed(
-                              //           context, ProfileScreen.routeName);
-                              //     },
-                              //     style: ElevatedButton.styleFrom(
-                              //         backgroundColor: kPrimaryColor,
-                              //         side: BorderSide.none,
-                              //         shape: const StadiumBorder()),
-                              //     child: const Text("Lưu",
-                              //         style: TextStyle(color: Colors.white)),
-                              //   ),
-                              // ),
                             ],
                           ))
                         ],
