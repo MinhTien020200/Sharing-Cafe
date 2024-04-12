@@ -5,7 +5,7 @@ class EventCard extends StatelessWidget {
   final String imageUrl;
   final String title;
   final String dateTime;
-  final String location;
+  final String address;
   final int attendeeCount;
   final Function() onTap;
   final Function()? onMoreButtonClick;
@@ -16,7 +16,7 @@ class EventCard extends StatelessWidget {
       required this.imageUrl,
       required this.title,
       required this.dateTime,
-      required this.location,
+      required this.address,
       required this.attendeeCount,
       required this.onTap,
       this.onMoreButtonClick,
@@ -65,7 +65,7 @@ class EventCard extends StatelessWidget {
                         width: 8.0,
                       ),
                       Text(
-                        location,
+                        address,
                         style: TextStyle(
                           color: Colors.grey[600],
                         ),

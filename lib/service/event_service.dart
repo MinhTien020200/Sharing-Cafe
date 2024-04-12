@@ -109,6 +109,7 @@ class EventService {
     required String location,
     required String backgroundImage,
     required String endOfEvent,
+    required String address,
   }) async {
     try {
       var endpoint = "/event";
@@ -121,7 +122,8 @@ class EventService {
         "time_of_event": timeOfEvent,
         "location": location,
         "background_img": backgroundImage,
-        "end_of_event": endOfEvent
+        "end_of_event": endOfEvent,
+        "address": address,
       };
       var response = await ApiHelper().post(endpoint, data);
       if (response.statusCode == HttpStatus.ok) {
@@ -135,15 +137,17 @@ class EventService {
     return false;
   }
 
-  Future updateEvent(
-      {required String eventId,
-      required String title,
-      required String interestId,
-      required String description,
-      required String timeOfEvent,
-      required String location,
-      required String backgroundImage,
-      required String endOfEvent}) async {
+  Future updateEvent({
+    required String eventId,
+    required String title,
+    required String interestId,
+    required String description,
+    required String timeOfEvent,
+    required String location,
+    required String backgroundImage,
+    required String endOfEvent,
+    required String address,
+  }) async {
     try {
       var endpoint = "/event/$eventId";
       var userId = await SharedPrefHelper.getUserId();
@@ -155,7 +159,8 @@ class EventService {
         "time_of_event": timeOfEvent,
         "location": location,
         "background_img": backgroundImage,
-        "end_of_event": endOfEvent
+        "end_of_event": endOfEvent,
+        "address": address,
       };
       var response = await ApiHelper().put(endpoint, data);
       if (response.statusCode == HttpStatus.ok) {

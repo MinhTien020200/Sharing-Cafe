@@ -14,8 +14,6 @@ import 'package:sharing_cafe/provider/home_provider.dart';
 import 'package:sharing_cafe/provider/interest_provider.dart';
 import 'package:sharing_cafe/provider/user_profile_provider.dart';
 import 'package:sharing_cafe/service/location_service.dart';
-import 'package:sharing_cafe/view/screens/auth/complete_profile/complete_profile_screen.dart';
-import 'package:sharing_cafe/view/screens/auth/complete_profile/select_interest_screen.dart';
 import 'package:sharing_cafe/view/screens/auth/login/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -120,7 +118,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'Sharing Cafe',
         theme: AppTheme.lightTheme(context),
-        initialRoute: CompleteProfileScreen.routeName,
+        initialRoute: LoginScreen.routeName,
         routes: routes,
       ),
     );

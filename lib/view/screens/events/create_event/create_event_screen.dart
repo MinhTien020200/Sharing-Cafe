@@ -25,12 +25,17 @@ class CreateEventScreen extends StatefulWidget {
 
 class _CreateEventScreenState extends State<CreateEventScreen> {
   String? _imageUrl;
-  String? _title;
-  String? _description;
+  // String? _title;
+  // String? _description;
   KeyValuePair<String, String>? _interest;
   String? _timeOfEvent;
-  String? _location;
+  // String? _location;
   String? _endOfEvent;
+
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
 
   bool _isUploading = false;
 
@@ -120,12 +125,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             .toList();
         if (value != null) {
           setState(() {
-            _title = value.title;
-            _description = value.description;
+            _titleController.text = value.title;
+            _descriptionController.text = value.description!;
             _timeOfEvent = value.timeOfEvent.toString();
-            _location = value.location;
+            _locationController.text = value.location!;
             _imageUrl = value.backgroundImage;
             _endOfEvent = value.endOfEvent.toString();
+            _addressController.text = value.address!;
             if (value.interestId != null) {
               _interest = categories.firstWhereOrNull(
                   (element) => element.key == value.interestId);
@@ -141,16 +147,16 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   }
 
   validateInput() {
-    if (_title == null || _title!.isEmpty) {
+    if (_titleController.text.isEmpty) {
       return false;
     }
-    if (_description == null || _description!.isEmpty) {
+    if (_descriptionController.text.isEmpty) {
       return false;
     }
     if (_timeOfEvent == null || _timeOfEvent!.isEmpty) {
       return false;
     }
-    if (_location == null || _location!.isEmpty) {
+    if (_locationController.text.isEmpty) {
       return false;
     }
     if (_imageUrl == null || _imageUrl!.isEmpty) {
@@ -206,13 +212,14 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                               listen: false)
                           .createOrUpdateEvent(
                         eventId: _id,
-                        title: _title!,
+                        title: _titleController.text,
                         interestId: _interest!.key,
-                        description: _description!,
+                        description: _descriptionController.text,
                         timeOfEvent: _timeOfEvent!,
-                        location: _location!,
+                        location: _locationController.text,
                         backgroundImage: _imageUrl!,
                         endOfEvent: _endOfEvent!,
+                        address: _addressController.text,
                       );
                       setState(() {
                         _isUploading = false;
@@ -281,13 +288,14 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           var result = await Provider.of<EventProvider>(context,
                                   listen: false)
                               .createOrUpdateEvent(
-                            title: _title!,
+                            title: _titleController.text,
                             interestId: _interest!.key,
-                            description: _description!,
+                            description: _descriptionController.text,
                             timeOfEvent: _timeOfEvent!,
-                            location: _location!,
+                            location: _locationController.text,
                             backgroundImage: _imageUrl!,
                             endOfEvent: _endOfEvent!,
+                            address: _addressController.text,
                           );
                           setState(() {
                             _isUploading = false;
@@ -377,13 +385,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   const SizedBox(height: 16),
                   KFormField(
                     hintText: "Tên sự kiện",
-                    value: _title,
-                    controller: TextEditingController(text: _title),
-                    onChanged: (value) {
-                      setState(() {
-                        _title = value;
-                      });
-                    },
+                    controller: _titleController,
                   ),
                   const SizedBox(height: 16),
                   DateTimePicker(
@@ -400,25 +402,18 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   const SizedBox(height: 16),
                   KFormField(
                     hintText: "Địa điểm tổ chức",
-                    value: _location,
-                    controller: TextEditingController(text: _location),
-                    onChanged: (p0) {
-                      setState(() {
-                        _location = p0;
-                      });
-                    },
+                    controller: _locationController,
+                  ),
+                  const SizedBox(height: 16),
+                  KFormField(
+                    hintText: "Địa chỉ",
+                    controller: _addressController,
                   ),
                   const SizedBox(height: 16),
                   KFormField(
                     hintText: "Hãy mô tả chi tiết về sự kiện",
                     maxLines: 3,
-                    value: _description,
-                    controller: TextEditingController(text: _description),
-                    onChanged: (p0) {
-                      setState(() {
-                        _description = p0;
-                      });
-                    },
+                    controller: _descriptionController,
                   ),
                   const SizedBox(height: 16),
                   Consumer<CategoriesProvider>(

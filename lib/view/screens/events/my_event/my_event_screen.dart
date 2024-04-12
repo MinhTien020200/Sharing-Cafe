@@ -68,7 +68,7 @@ class _MyEventScreenState extends State<MyEventScreen> {
                         title: events[index].title,
                         dateTime: DateTimeHelper.formatDateTime(
                             events[index].timeOfEvent),
-                        location: events[index].location ?? "",
+                        address: events[index].address ?? "",
                         attendeeCount: events[index].participantsCount,
                         onTap: () {
                           Navigator.pushNamed(
