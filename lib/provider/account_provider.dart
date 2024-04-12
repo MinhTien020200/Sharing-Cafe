@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/service/account_service.dart';
 import 'package:sharing_cafe/service/location_service.dart';
 
@@ -54,5 +55,42 @@ class AccountProvider extends ChangeNotifier {
       }
     }
     return token;
+  }
+
+  Future completeUserProfile({
+    required String? profileAvatar,
+    required String? age,
+    required String? address,
+    required String? gender,
+    required String? story,
+  }) async {
+    try {
+      if (profileAvatar == null || profileAvatar.isEmpty) {
+        throw ArgumentError('Tuổi là bắt buộc và không được để trống.');
+      }
+      if (age == null || age.isEmpty) {
+        throw ArgumentError('Tuổi là bắt buộc và không được để trống.');
+      }
+      if (address == null || address.isEmpty) {
+        throw ArgumentError('Tuổi là bắt buộc và không được để trống.');
+      }
+      if (gender == null || gender.isEmpty) {
+        throw ArgumentError('Giới tính là bắt buộc và không được để trống.');
+      }
+
+      return await AccountService().completeUserProfile(
+        profileAvatar: profileAvatar,
+        age: age,
+        address: address,
+        gender: gender,
+        story: story,
+      );
+    } catch (e) {
+      if (e is ArgumentError) {
+        ErrorHelper.showError(message: e.message);
+      } else {
+        ErrorHelper.showError(message: e.toString());
+      }
+    }
   }
 }

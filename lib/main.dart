@@ -120,7 +120,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'Sharing Cafe',
         theme: AppTheme.lightTheme(context),
-        initialRoute: LoginScreen.routeName,
+        initialRoute: CompleteProfileScreen.routeName,
         routes: routes,
       ),
     );

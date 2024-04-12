@@ -83,8 +83,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           _storyController.text = value.story!;
           _address = value.address;
           _gender = value.gender;
-          _purposeController.text = value.purpose;
-          _favoriteLocationController.text = value.favoriteLocation;
+          _purposeController.text = value.purpose!;
+          _favoriteLocationController.text = value.favoriteLocation!;
         }
         _isLoading = false;
       });
@@ -348,7 +348,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                     '26 - 30',
                                     '31 - 35',
                                     '36 - 40',
-                                    'trên 40',
+                                    '41 - 50',
                                     'Không đề cập'
                                   ].map((String value) {
                                     return DropdownMenuItem<String>(

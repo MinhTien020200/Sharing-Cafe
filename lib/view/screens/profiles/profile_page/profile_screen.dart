@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/provider/account_provider.dart';
 import 'package:sharing_cafe/provider/user_profile_provider.dart';
+import 'package:sharing_cafe/view/screens/auth/complete_profile/complete_profile_screen.dart';
 import 'package:sharing_cafe/view/screens/auth/complete_profile/select_interest_screen.dart';
 import 'package:sharing_cafe/view/screens/auth/login/login_screen.dart';
 import 'package:sharing_cafe/view/screens/events/my_event/my_event_screen.dart';
@@ -60,7 +61,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             )
           : Consumer<UserProfileProvider>(builder: (context, value, child) {
               var userProfile = value.userProfile;
-
               return SingleChildScrollView(
                 child: Container(
                   padding: const EdgeInsets.all(24),
@@ -74,8 +74,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: Image.network(userProfile.profileAvatar,
                                   fit: BoxFit.cover))),
                       const SizedBox(height: 10),
-                      Text(userProfile.userName,
-                          style: Theme.of(context).textTheme.headlineMedium),
+                      Text(
+                        userProfile.userName,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
                       Text(userProfile.story ?? "",
                           style: Theme.of(context).textTheme.bodyMedium),
                       const SizedBox(height: 20),
@@ -117,10 +119,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Navigator.pushNamed(
                                 context, SelectInterestScreen.routeName);
                           }),
-                      // ProfileMenu(
-                      //     title: "Lịch sử cuộc hẹn",
-                      //     icon: Icons.history,
-                      //     onPress: () {}),
+                      ProfileMenu(
+                          title: "Hoàn thiện hồ sơ",
+                          icon: LineAwesomeIcons.candy_cane,
+                          onPress: () {
+                            Navigator.pushNamed(
+                                context, CompleteProfileScreen.routeName);
+                          }),
                       const Divider(color: Colors.grey),
                       // ProfileMenu(
                       //     title: "Thời tiết",

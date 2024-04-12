@@ -6,8 +6,8 @@ class UserProfileModel {
   String address;
   String gender;
   String? story;
-  String purpose;
-  String favoriteLocation;
+  String? purpose;
+  String? favoriteLocation;
   List<Interest> interest;
   List<Problem> problem;
   List<UnlikeTopic> unlikeTopic;
@@ -22,8 +22,8 @@ class UserProfileModel {
     required this.address,
     required this.gender,
     this.story,
-    required this.purpose,
-    required this.favoriteLocation,
+    this.purpose,
+    this.favoriteLocation,
     required this.interest,
     required this.problem,
     required this.unlikeTopic,
