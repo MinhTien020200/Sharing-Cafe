@@ -83,8 +83,12 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           _storyController.text = value.story!;
           _address = value.address;
           _gender = value.gender;
-          _purposeController.text = value.purpose!;
-          _favoriteLocationController.text = value.favoriteLocation!;
+          if (value.purpose != null) {
+            _purposeController.text = value.purpose!;
+          }
+          if (value.favoriteLocation != null) {
+            _favoriteLocationController.text = value.favoriteLocation!;
+          }
         }
         _isLoading = false;
       });
