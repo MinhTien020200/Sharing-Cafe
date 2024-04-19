@@ -269,6 +269,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                                 ),
                               );
                             }),
+                        const SizedBox(height: 20),
                         FutureBuilder(
                             future: LocationService().getDistrict(provinceId),
                             builder: (context, snapshot) {
