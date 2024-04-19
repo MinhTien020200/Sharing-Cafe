@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:sharing_cafe/view/screens/auth/complete_profile/complete_profile_screen.dart';
+import 'package:sharing_cafe/view/screens/auth/confirm_email/confirm_email_screen.dart';
 import 'package:sharing_cafe/view/screens/blogs/all_blog/all_blog_screen.dart';
 import 'package:sharing_cafe/view/screens/blogs/blog_categories.dart/blog_categories_screen.dart';
 import 'package:sharing_cafe/view/screens/blogs/blog_category.dart/blog_category_screen.dart';
@@ -54,4 +55,5 @@ final Map<String, WidgetBuilder> routes = {
   SwipeScreen.routeName: (context) => const SwipeScreen(),
   FriendsScreen.routeName: (context) => const FriendsScreen(),
   ChatScreen.routeName: (context) => const ChatScreen(),
+  ConfirmEmailScreen.routeName: (context) => const ConfirmEmailScreen(),
 };
