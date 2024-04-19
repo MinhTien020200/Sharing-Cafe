@@ -5,8 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/image_helper.dart';
+import 'package:sharing_cafe/model/province_model.dart';
 import 'package:sharing_cafe/provider/user_profile_provider.dart';
 import 'package:sharing_cafe/service/image_service.dart';
+import 'package:sharing_cafe/service/location_service.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   static String routeName = "/update_profile";
@@ -30,6 +32,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   bool _isLoading = false;
   bool _isLoadingListInterests = false;
   bool _isUploading = false;
+  ProvinceModel? _addressProvince;
+  DistrictModel? _addressDistrict;
+  String provinceId = "";
 
   var listProblem = const <ValueItem>[
     ValueItem(label: 'Công việc', value: 'Công việc'),
@@ -338,7 +343,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                           100, 158, 158, 158)),
                                 ),
                                 child: DropdownButtonFormField<String>(
-                                  value: _age,
+                                  value: _age!.isEmpty ? null : _age,
                                   decoration: const InputDecoration(
                                     prefixText: "Tuổi | ",
                                     contentPadding: EdgeInsets.all(16),
@@ -369,58 +374,107 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: kFormFieldColor,
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(
-                                      color: const Color.fromARGB(
-                                          100, 158, 158, 158)),
-                                ),
-                                child: DropdownButtonFormField<String>(
-                                  value: _address,
-                                  decoration: const InputDecoration(
-                                    prefixText: "Địa chỉ | ",
-                                    contentPadding: EdgeInsets.all(16),
-                                    border: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                    hintText: 'Chọn địa chỉ',
-                                  ),
-                                  items: [
-                                    'Quận 1',
-                                    'Quận 2',
-                                    'Quận 3',
-                                    'Quận 4',
-                                    'Quận 5',
-                                    'Quận 6',
-                                    'Quận 7',
-                                    'Quận 8',
-                                    'Quận 9',
-                                    'Quận 10',
-                                    'Quận 11',
-                                    'Quận 12',
-                                    'Quận Tân Bình',
-                                    'Quận Bình Tân',
-                                    'Quận Bình Thạnh',
-                                    'Quận Tân Phú',
-                                    'Quận Gò Vấp',
-                                    'Quận Phú Nhuận',
-                                    'Quận Thủ Đức',
-                                    'Không đề cập'
-                                  ].map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
+                              FutureBuilder(
+                                  future: LocationService().getProvince(),
+                                  builder: (context, snapshot) {
+                                    if (!snapshot.hasData) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }
+                                    var provinces =
+                                        snapshot.data as Set<ProvinceModel>;
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        color: kFormFieldColor,
+                                        borderRadius: BorderRadius.circular(16),
+                                        border: Border.all(
+                                            color: const Color.fromARGB(
+                                                100, 158, 158, 158)),
+                                      ),
+                                      child: DropdownButtonFormField<
+                                          ProvinceModel>(
+                                        value: _addressProvince,
+                                        decoration: const InputDecoration(
+                                          prefixText: "Tỉnh/TP | ",
+                                          contentPadding: EdgeInsets.all(20),
+                                          border: InputBorder.none,
+                                          enabledBorder: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                          hintText: 'Chọn tỉnh thành',
+                                        ),
+                                        items: provinces
+                                            .map((ProvinceModel value) {
+                                          return DropdownMenuItem<
+                                              ProvinceModel>(
+                                            value: value,
+                                            child: Text(value.province),
+                                          );
+                                        }).toList(),
+                                        onChanged: (value) => setState(
+                                          () {
+                                            _addressDistrict = null;
+                                            _addressProvince = value;
+                                            provinceId =
+                                                value?.provinceId ?? "";
+                                          },
+                                        ),
+                                      ),
                                     );
-                                  }).toList(),
-                                  onChanged: (value) => setState(
-                                    () {
-                                      _address = value;
-                                    },
-                                  ),
-                                ),
-                              ),
+                                  }),
+                              const SizedBox(height: 10),
+                              FutureBuilder(
+                                  future:
+                                      LocationService().getDistrict(provinceId),
+                                  builder: (context, snapshot) {
+                                    if (!snapshot.hasData) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }
+                                    var districts =
+                                        snapshot.data as Set<DistrictModel>;
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        color: kFormFieldColor,
+                                        borderRadius: BorderRadius.circular(16),
+                                        border: Border.all(
+                                            color: const Color.fromARGB(
+                                                100, 158, 158, 158)),
+                                      ),
+                                      child: DropdownButtonFormField<
+                                          DistrictModel>(
+                                        value: _addressDistrict,
+                                        decoration: const InputDecoration(
+                                          prefixText: "Quận/Huyện | ",
+                                          contentPadding: EdgeInsets.all(20),
+                                          border: InputBorder.none,
+                                          enabledBorder: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                          hintText: 'Chọn quận / huyện',
+                                        ),
+                                        items: districts
+                                            .map((DistrictModel value) {
+                                          return DropdownMenuItem<
+                                              DistrictModel>(
+                                            value: value,
+                                            child: SizedBox(
+                                              width: 160,
+                                              child: Text(
+                                                value.fullName,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
+                                        onChanged: (value) => setState(
+                                          () {
+                                            _addressDistrict = value;
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  }),
                               const SizedBox(height: 10),
                               Container(
                                 decoration: BoxDecoration(
@@ -431,7 +485,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                           100, 158, 158, 158)),
                                 ),
                                 child: DropdownButtonFormField<String>(
-                                  value: _gender,
+                                  value: _gender!.isEmpty ? null : _gender,
                                   decoration: const InputDecoration(
                                     prefixText: "Giới tính | ",
                                     contentPadding: EdgeInsets.all(16),
