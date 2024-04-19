@@ -34,12 +34,12 @@ class UserProfileModel {
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
     return UserProfileModel(
       userId: json['user_id'],
-      profileAvatar: json['profile_avatar'],
+      profileAvatar: json['profile_avatar'] ?? "",
       userName: json['user_name'],
-      age: json['age'],
-      address: json['address'],
-      gender: json['gender'],
-      story: json['story'],
+      age: json['age'] ?? "",
+      address: json['address'] ?? "",
+      gender: json['gender'] ?? "",
+      story: json['story'] ?? "",
       purpose: json['purpose'],
       favoriteLocation: json['favorite_location'],
       interest: List<Interest>.from(

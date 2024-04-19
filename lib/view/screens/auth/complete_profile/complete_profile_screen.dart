@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // ignore: unnecessary_import
 import 'package:flutter/widgets.dart';
@@ -7,8 +8,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/image_helper.dart';
+import 'package:sharing_cafe/model/province_model.dart';
 import 'package:sharing_cafe/provider/account_provider.dart';
 import 'package:sharing_cafe/service/image_service.dart';
+import 'package:sharing_cafe/service/location_service.dart';
 import 'package:sharing_cafe/view/screens/auth/complete_profile/select_interest_screen.dart';
 
 import '../../../../constants.dart';
@@ -24,9 +27,11 @@ class CompleteProfileScreen extends StatefulWidget {
 class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   String? _imageUrl;
-  String? _address;
+  ProvinceModel? _addressProvince;
+  DistrictModel? _addressDistrict;
   String? _age;
   String? _gender;
+  String provinceId = "";
   final TextEditingController _storyController = TextEditingController();
   final List<String?> errors = [];
 
@@ -222,55 +227,93 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            border: Border.all(),
-                          ),
-                          child: DropdownButtonFormField<String>(
-                            value: _address,
-                            decoration: const InputDecoration(
-                              prefixText: "     Địa chỉ | ",
-                              contentPadding: EdgeInsets.all(20),
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              hintText: '   Chọn địa chỉ',
-                            ),
-                            items: [
-                              'Quận 1',
-                              'Quận 2',
-                              'Quận 3',
-                              'Quận 4',
-                              'Quận 5',
-                              'Quận 6',
-                              'Quận 7',
-                              'Quận 8',
-                              'Quận 9',
-                              'Quận 10',
-                              'Quận 11',
-                              'Quận 12',
-                              'Quận Tân Bình',
-                              'Quận Bình Tân',
-                              'Quận Bình Thạnh',
-                              'Quận Tân Phú',
-                              'Quận Gò Vấp',
-                              'Quận Phú Nhuận',
-                              'Quận Thủ Đức',
-                              'Không đề cập'
-                            ].map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
+                        FutureBuilder(
+                            future: LocationService().getProvince(),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              var provinces =
+                                  snapshot.data as Set<ProvinceModel>;
+                              return Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(),
+                                ),
+                                child: DropdownButtonFormField<ProvinceModel>(
+                                  value: _addressProvince,
+                                  decoration: const InputDecoration(
+                                    prefixText: "     Tỉnh/TP | ",
+                                    contentPadding: EdgeInsets.all(20),
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    hintText: '   Chọn tỉnh thành',
+                                  ),
+                                  items: provinces.map((ProvinceModel value) {
+                                    return DropdownMenuItem<ProvinceModel>(
+                                      value: value,
+                                      child: Text(value.province),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) => setState(
+                                    () {
+                                      _addressDistrict = null;
+                                      _addressProvince = value;
+                                      provinceId = value?.provinceId ?? "";
+                                      print(provinceId);
+                                    },
+                                  ),
+                                ),
                               );
-                            }).toList(),
-                            onChanged: (value) => setState(
-                              () {
-                                _address = value;
-                              },
-                            ),
-                          ),
-                        ),
+                            }),
+                        FutureBuilder(
+                            future: LocationService().getDistrict(provinceId),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              var districts =
+                                  snapshot.data as Set<DistrictModel>;
+                              return Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(),
+                                ),
+                                child: DropdownButtonFormField<DistrictModel>(
+                                  value: _addressDistrict,
+                                  decoration: const InputDecoration(
+                                    prefixText: "Quận/Huyện | ",
+                                    contentPadding: EdgeInsets.all(20),
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    hintText: 'Chọn quận / huyện',
+                                  ),
+                                  items: districts.map((DistrictModel value) {
+                                    return DropdownMenuItem<DistrictModel>(
+                                      value: value,
+                                      child: SizedBox(
+                                        width: 160,
+                                        child: Text(
+                                          value.fullName,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) => setState(
+                                    () {
+                                      _addressDistrict = value;
+                                    },
+                                  ),
+                                ),
+                              );
+                            }),
                         const SizedBox(height: 20),
                         TextFormField(
                           controller: _storyController,
@@ -291,7 +334,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                                 profileAvatar: _imageUrl,
                                 age: _age,
                                 story: _storyController.text,
-                                address: _address,
+                                addressProvince: _addressProvince?.province,
+                                addressDistrict: _addressDistrict?.fullName,
                                 gender: _gender,
                               );
                               if (result == true) {
