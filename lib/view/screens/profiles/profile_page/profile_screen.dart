@@ -10,6 +10,7 @@ import 'package:sharing_cafe/view/screens/auth/complete_profile/complete_profile
 import 'package:sharing_cafe/view/screens/auth/complete_profile/select_interest_screen.dart';
 import 'package:sharing_cafe/view/screens/auth/login/login_screen.dart';
 import 'package:sharing_cafe/view/screens/events/my_event/my_event_screen.dart';
+import 'package:sharing_cafe/view/screens/profiles/preview_my_profile/preview_my_profile_screen.dart';
 import 'package:sharing_cafe/view/screens/profiles/profile_page/components/profile_menu.dart';
 import 'package:sharing_cafe/view/screens/profiles/update_profile/update_profile_screen.dart';
 
@@ -83,20 +84,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Text(userProfile.story ?? "",
                           style: Theme.of(context).textTheme.bodyMedium),
                       const SizedBox(height: 20),
-                      SizedBox(
-                        width: 200,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(
-                                context, UpdateProfileScreen.routeName);
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: kPrimaryColor,
-                              side: BorderSide.none,
-                              shape: const StadiumBorder()),
-                          child: const Text("Chỉnh sửa",
-                              style: TextStyle(color: Colors.white)),
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(
+                            width: 200,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, UpdateProfileScreen.routeName);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: kPrimaryColor,
+                                  side: BorderSide.none,
+                                  shape: const StadiumBorder()),
+                              child: const Text("Chỉnh sửa",
+                                  style: TextStyle(color: Colors.white)),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 200,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, PreviewMyProfileScreen.routeName);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: kPrimaryColor,
+                                  side: BorderSide.none,
+                                  shape: const StadiumBorder()),
+                              child: const Text("Xem trước",
+                                  style: TextStyle(color: Colors.white)),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 30),
                       const Divider(),
