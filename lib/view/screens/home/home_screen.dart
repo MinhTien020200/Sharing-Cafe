@@ -10,6 +10,7 @@ import 'package:sharing_cafe/view/screens/home/components/blog_card.dart';
 import 'package:sharing_cafe/view/screens/events/event_detail/event_detail_screen.dart';
 //import 'package:sharing_cafe/view/screens/home/components/matching_banner.dart';
 import 'package:sharing_cafe/view/screens/home/components/event_card_2.dart';
+import 'package:sharing_cafe/view/screens/notification/notification_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static String routeName = "/home";
@@ -86,7 +87,10 @@ class _HomeScreen extends State<HomeScreen> {
                 Icons.notifications_none_outlined,
                 size: 24,
               ),
-              onPressed: () {/* ... */},
+              onPressed: () {
+                Navigator.pushNamed(context, NotificationScreen.routeName);
+                ;
+              },
             ),
           ],
         ),
