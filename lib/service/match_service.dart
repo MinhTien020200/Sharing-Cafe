@@ -43,8 +43,8 @@ class MatchService {
     }
   }
 
-  Future<List<MatchedModel>> getListFriends() async {
-    var endpoint = "/auth/matched?status=Matched";
+  Future<List<MatchedModel>> getListFriends({bool pending = false}) async {
+    var endpoint = "/auth/matched?status=${pending ? "Pending" : "Matched"}";
     var response = await ApiHelper().get(endpoint);
     if (response.statusCode == HttpStatus.ok) {
       var result = json.decode(response.body);

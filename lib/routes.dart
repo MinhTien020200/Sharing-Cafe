@@ -14,6 +14,7 @@ import 'package:sharing_cafe/view/screens/events/event_list/event_list_screen.da
 import 'package:sharing_cafe/view/screens/events/my_event/my_event_screen.dart';
 import 'package:sharing_cafe/view/screens/events/search/search_screen.dart';
 import 'package:sharing_cafe/view/screens/friends/friends_screen.dart';
+import 'package:sharing_cafe/view/screens/friends/pending_screen.dart';
 import 'package:sharing_cafe/view/screens/matching/swipe_screen.dart';
 import 'package:sharing_cafe/view/screens/home/home_screen.dart';
 import 'package:sharing_cafe/view/screens/profiles/profile_page/profile_screen.dart';
@@ -56,4 +57,5 @@ final Map<String, WidgetBuilder> routes = {
   FriendsScreen.routeName: (context) => const FriendsScreen(),
   ChatScreen.routeName: (context) => const ChatScreen(),
   ConfirmEmailScreen.routeName: (context) => const ConfirmEmailScreen(),
+  PendingScreen.routeName: (context) => const PendingScreen(),
 };
