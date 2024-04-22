@@ -89,7 +89,6 @@ class _HomeScreen extends State<HomeScreen> {
               ),
               onPressed: () {
                 Navigator.pushNamed(context, NotificationScreen.routeName);
-                ;
               },
             ),
           ],
