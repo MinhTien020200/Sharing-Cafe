@@ -18,19 +18,22 @@ class MatchProvider extends ChangeNotifier {
   ProfileModel? get currentProfile => _currentProfile;
   ProfileInfoModel? get info => _info;
 
-  Future initListProfiles() async {
-    _profiles = await MatchService().getListProfiles(_limit, _offset);
+  Future initListProfiles({String? filterByAge, String? filterByGender}) async {
+    _profiles = await MatchService()
+        .getListProfiles(_limit, _offset, filterByAge, filterByGender);
     _currentProfile = _profiles.firstOrNull;
     notifyListeners();
   }
 
-  Future likeOrUnlike(MatchStatus status) async {
+  Future likeOrUnlike(MatchStatus status,
+      {String? filterByAge, String? filterByGender}) async {
     try {
       var userId = _currentProfile!.userId;
       var result = await MatchService().updateMatchStatus(userId, status);
       if (result == true) {
         var selectedIndex = _profiles.indexWhere((e) => e.userId == userId);
-        _getNextProfileThenAddDistinct();
+        _getNextProfileThenAddDistinct(
+            filterByAge: filterByAge, filterByGender: filterByGender);
         _replaceProfile(selectedIndex);
         _currentProfile = _profiles.first;
         print("Current: ${_currentProfile!.name}");
@@ -67,8 +70,10 @@ class MatchProvider extends ChangeNotifier {
     _profiles.removeAt(index);
   }
 
-  _getNextProfileThenAddDistinct() async {
-    var nextProfiles = await MatchService().getListProfiles(_limit, _offset);
+  _getNextProfileThenAddDistinct(
+      {String? filterByAge, String? filterByGender}) async {
+    var nextProfiles = await MatchService()
+        .getListProfiles(_limit, _offset, filterByAge, filterByGender);
     _addDistinct(nextProfiles);
   }
 
