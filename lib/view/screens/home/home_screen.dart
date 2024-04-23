@@ -116,13 +116,8 @@ class _HomeScreen extends State<HomeScreen> {
                 FutureBuilder(
                   future: WeatherHelper().getWeather(),
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator.adaptive(),
-                      );
-                    }
                     if (snapshot.hasError || snapshot.data == null) {
-                      return const Text("Không thể lấy thông tin thời tiết");
+                      return Container();
                     }
                     var weatherData = snapshot.data;
                     return Container(
