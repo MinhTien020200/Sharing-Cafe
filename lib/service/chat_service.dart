@@ -27,9 +27,9 @@ class ChatService {
   }
 
   Future<List<RecommendCafeModel>> getRecommendCafe(
-      String userId, String currentUserId) async {
+      String userId, String currentUserId, String selectedKeyword) async {
     var endpoint =
-        "/location/getRecommendCafe?userIdA=$userId&userIdB=$currentUserId";
+        "/location/getRecommendCafe?userIdA=$userId&userIdB=$currentUserId&keyword=$selectedKeyword";
     return ApiHelper().get(endpoint).then((response) {
       if (response.statusCode == HttpStatus.ok) {
         var jsonList = json.decode(response.body);

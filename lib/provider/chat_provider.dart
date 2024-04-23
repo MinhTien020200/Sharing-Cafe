@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/shared_prefs_helper.dart';
 import 'package:sharing_cafe/model/chat_message_model.dart';
-import 'package:sharing_cafe/model/recommend_cafe.dart';
 import 'package:sharing_cafe/model/schedule_model.dart';
 import 'package:sharing_cafe/service/chat_service.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
@@ -14,8 +13,10 @@ class ChatProvider extends ChangeNotifier {
   final Map<String, List<ChatMessageModel>> _mapUserMessages = {};
   late io.Socket socket;
   late String _userId;
+  String _selectedKeyword = "Highland";
 
   String get userId => _userId;
+  String get selectedKeyword => _selectedKeyword;
 
   void connectAndListen() {
     socket = io.io(ApiHelper().socketBaseUrl, <String, dynamic>{
@@ -162,11 +163,11 @@ class ChatProvider extends ChangeNotifier {
     }
   }
 
-  Future<List<RecommendCafeModel>> getRecommendCafe() async {
+  Future<List<String>> getRecommendCafe(String selectedKeyword) async {
     var currentUserId = await SharedPrefHelper.getUserId();
-    var recommendCafe =
-        await ChatService().getRecommendCafe(_userId, currentUserId);
-    return recommendCafe;
+    var recommendCafe = await ChatService()
+        .getRecommendCafe(_userId, currentUserId, selectedKeyword);
+    return recommendCafe.map((e) => e.description).toList();
   }
 
   Future<ScheduleModel> createSchedule(ScheduleModel scheduleModel) async {
@@ -185,5 +186,10 @@ class ChatProvider extends ChangeNotifier {
 
   Future changeStatusSchedule(String scheduleId, bool isAccept) async {
     await ChatService().changeStatusSchedule(scheduleId, isAccept);
+  }
+
+  void setSelectedKeyword(String keyword) {
+    _selectedKeyword = keyword;
+    notifyListeners();
   }
 }
