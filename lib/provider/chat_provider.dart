@@ -33,6 +33,11 @@ class ChatProvider extends ChangeNotifier {
     });
 
     socket.on('message', (data) {
+      if (data == null) {
+        ErrorHelper.showError(
+            message: "Lỗi 500: Không kết nối được với socket");
+        return;
+      }
       var message = ChatMessageModel.fromJson(data);
       message.messageType = message.receiverId == _userId;
       addMessage(message);
