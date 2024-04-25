@@ -123,4 +123,24 @@ class BlogService {
     }
     return false;
   }
+
+  Future reportBlog(
+      {required String reporterId,
+      required String blogId,
+      required String content}) async {
+    var data = {
+      "reporter_id": reporterId,
+      "blog_id": blogId,
+      "content": content
+    };
+    var response = await ApiHelper().post('/user/blogs/report', data);
+    if (response.statusCode == HttpStatus.ok) {
+      Fluttertoast.showToast(msg: "Báo cáo blog thành công");
+      return true;
+    } else {
+      ErrorHelper.showError(
+          message: "Lỗi ${response.statusCode}: Không thể báo cáo blog");
+    }
+    return false;
+  }
 }
