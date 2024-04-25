@@ -20,7 +20,6 @@ class BlogDetailScreen extends StatefulWidget {
 
 class _BlogDetailScreenState extends State<BlogDetailScreen> {
   bool _isLoading = false;
-  bool _isLiked = false;
 
   final TextEditingController _contentEditingController =
       TextEditingController();
@@ -185,21 +184,21 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      blog.title,
-                                      textAlign: TextAlign.left,
-                                      style: headingStyle,
+                                    Expanded(
+                                      child: Text(
+                                        blog.title,
+                                        textAlign: TextAlign.left,
+                                        style: headingStyle,
+                                      ),
                                     ),
                                     Row(
                                       children: [
                                         InkWell(
                                             onTap: () {
-                                              setState(() {
-                                                _isLiked = !_isLiked;
-                                              });
+                                              value.setLike();
                                             },
                                             child: Icon(
-                                              _isLiked
+                                              blog.isLike
                                                   ? Icons.favorite
                                                   : Icons.favorite_outline,
                                               color: Colors.red,

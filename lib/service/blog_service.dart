@@ -30,7 +30,8 @@ class BlogService {
 
   Future<BlogModel?> getBlogDetails(String blogId) async {
     try {
-      var response = await ApiHelper().get('/blog/$blogId');
+      var userId = await SharedPrefHelper.getUserId();
+      var response = await ApiHelper().get('/blog/$blogId?userId=$userId');
       if (response.statusCode == HttpStatus.ok) {
         return BlogModel.fromJson(json.decode(response.body)[0]);
       } else {
@@ -140,6 +141,32 @@ class BlogService {
     } else {
       ErrorHelper.showError(
           message: "Lỗi ${response.statusCode}: Không thể báo cáo blog");
+    }
+    return false;
+  }
+
+  // post /api/blogs/like
+  Future likeBlog({required String userId, required String blogId}) async {
+    var data = {"user_id": userId, "blog_id": blogId};
+    var response = await ApiHelper().post('/blogs/like', data);
+    if (response.statusCode == HttpStatus.ok) {
+      return true;
+    } else {
+      ErrorHelper.showError(
+          message: "Lỗi ${response.statusCode}: Không thể thích blog");
+    }
+    return false;
+  }
+
+  // put /api/blogs/like
+  Future unlikeBlog({required String userId, required String blogId}) async {
+    var data = {"user_id": userId, "like_blog_id": blogId};
+    var response = await ApiHelper().put('/blogs/like', data);
+    if (response.statusCode == HttpStatus.ok) {
+      return true;
+    } else {
+      ErrorHelper.showError(
+          message: "Lỗi ${response.statusCode}: Không thể bỏ thích blog");
     }
     return false;
   }

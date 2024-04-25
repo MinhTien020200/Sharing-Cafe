@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sharing_cafe/helper/error_helper.dart';
+import 'package:sharing_cafe/helper/shared_prefs_helper.dart';
 import 'package:sharing_cafe/model/blog_model.dart';
 import 'package:sharing_cafe/service/blog_service.dart';
 
@@ -14,6 +16,29 @@ class BlogProvider extends ChangeNotifier {
   Future getBlogs() async {
     _blogs = await BlogService().getBlogs();
     notifyListeners();
+  }
+
+  Future setLike() async {
+    final userId = await SharedPrefHelper.getUserId();
+    bool isSuccess = false;
+    if (_blogDetails!.isLike) {
+      isSuccess = await BlogService()
+          .unlikeBlog(userId: userId, blogId: _blogDetails!.blogId);
+    } else {
+      isSuccess = await BlogService()
+          .likeBlog(userId: userId, blogId: _blogDetails!.blogId);
+    }
+    if (isSuccess) {
+      _blogDetails!.isLike = !_blogDetails!.isLike;
+      if (_blogDetails!.isLike) {
+        _blogDetails!.likesCount++;
+      } else {
+        _blogDetails!.likesCount--;
+      }
+      notifyListeners();
+    } else {
+      ErrorHelper.showError(message: "Lỗi không thể thích bài viết");
+    }
   }
 
   Future getBlogDetails(String blogId) async {
