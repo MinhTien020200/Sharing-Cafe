@@ -213,4 +213,20 @@ class EventService {
     }
     return [];
   }
+
+  // leave event /auth/user/event/leave-event?event_id=891f28ff-9e2b-41b6-b434-3f33fbfe7dbe
+  Future leaveEvent(String eventId) async {
+    try {
+      var endpoint = "/auth/user/event/leave-event?event_id=$eventId";
+      var response = await ApiHelper().put(endpoint, {});
+      if (response.statusCode == HttpStatus.ok) {
+        return true;
+      }
+      ErrorHelper.showError(
+          message: "Lỗi ${response.statusCode}: Không thể rời khỏi sự kiện");
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
 }
