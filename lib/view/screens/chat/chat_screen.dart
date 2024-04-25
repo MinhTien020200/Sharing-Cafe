@@ -98,6 +98,8 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: [
           IconButton(
               onPressed: () {
+                Provider.of<ChatProvider>(context, listen: false)
+                    .setSelectedKeyword("");
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
