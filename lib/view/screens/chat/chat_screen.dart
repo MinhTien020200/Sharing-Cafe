@@ -148,6 +148,10 @@ class _ChatScreenState extends State<ChatScreen> {
                             DateTimePicker(
                               onDateTimeChanged: _handleDateTimeChange,
                               label: "Thêm ngày",
+                              firstDate:
+                                  DateTime.now().add(const Duration(hours: 1)),
+                              lastDate: DateTime.now()
+                                  .add(const Duration(days: 30 * 6)),
                             ),
                             const SizedBox(
                               height: 10,

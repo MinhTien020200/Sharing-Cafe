@@ -87,9 +87,11 @@ class ChatService {
     return ApiHelper().get(endpoint).then((response) {
       if (response.statusCode == HttpStatus.ok) {
         var jsonList = json.decode(response.body) as List;
-        return jsonList
+        var res = jsonList
             .map<ScheduleModel>((e) => ScheduleModel.fromJson(e))
             .toList();
+        res.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        return res;
       } else {
         return [];
       }
