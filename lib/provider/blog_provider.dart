@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/shared_prefs_helper.dart';
 import 'package:sharing_cafe/model/blog_model.dart';
 import 'package:sharing_cafe/service/blog_service.dart';
@@ -36,8 +35,6 @@ class BlogProvider extends ChangeNotifier {
         _blogDetails!.likesCount--;
       }
       notifyListeners();
-    } else {
-      ErrorHelper.showError(message: "Lỗi không thể thích bài viết");
     }
   }
 
