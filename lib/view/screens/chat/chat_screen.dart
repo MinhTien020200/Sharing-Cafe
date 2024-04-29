@@ -487,7 +487,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         child: TextField(
                           controller: _controller,
                           decoration: InputDecoration(
-                            hintText: "Type a message...",
+                            hintText: "Trò chuyện...",
                             constraints: const BoxConstraints(
                               maxHeight: 50,
                               minHeight: 10,
