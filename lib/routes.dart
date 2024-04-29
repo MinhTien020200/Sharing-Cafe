@@ -9,6 +9,7 @@ import 'package:sharing_cafe/view/screens/blogs/blog_detail/blog_detail_screen.d
 import 'package:sharing_cafe/view/screens/blogs/blog_list/blog_list_screen.dart';
 import 'package:sharing_cafe/view/screens/blogs/create_blog/create_blog_screen.dart';
 import 'package:sharing_cafe/view/screens/blogs/my_blogs/my_blog_screen.dart';
+import 'package:sharing_cafe/view/screens/blogs/search/search_blog_screen.dart';
 import 'package:sharing_cafe/view/screens/chat/chat_screen.dart';
 import 'package:sharing_cafe/view/screens/events/create_event/create_event_screen.dart';
 import 'package:sharing_cafe/view/screens/events/event_detail/event_detail_screen.dart';
@@ -67,4 +68,5 @@ final Map<String, WidgetBuilder> routes = {
   AppointmentHistoryScreen.routeName: (context) =>
       const AppointmentHistoryScreen(),
   MyBlogScreen.routeName: (context) => const MyBlogScreen(),
+  SearchBlogScreen.routeName: (context) => const SearchBlogScreen(),
 };
