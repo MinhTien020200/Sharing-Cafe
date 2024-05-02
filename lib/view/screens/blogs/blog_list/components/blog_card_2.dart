@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/view/components/custom_network_image.dart';
 
