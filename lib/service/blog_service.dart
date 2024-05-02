@@ -51,7 +51,10 @@ class BlogService {
       var response = await ApiHelper().get('/auth/user/my-blog');
       if (response.statusCode == HttpStatus.ok) {
         var jsonList = json.decode(response.body) as List;
-        return jsonList.map<BlogModel>((e) => BlogModel.fromJson(e)).toList();
+        var res =
+            jsonList.map<BlogModel>((e) => BlogModel.fromJson(e)).toList();
+        res.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        return res;
       } else {
         ErrorHelper.showError(
             message:
