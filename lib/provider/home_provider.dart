@@ -19,7 +19,7 @@ class HomeProvider extends ChangeNotifier {
   }
 
   Future getBlogs() async {
-    _blogs = await BlogService().getBlogs();
+    _blogs = await BlogService().getPopularBlogs();
     notifyListeners();
   }
 }

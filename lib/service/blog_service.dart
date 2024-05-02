@@ -66,6 +66,42 @@ class BlogService {
     return [];
   }
 
+  // get popular blogs
+  Future<List<BlogModel>> getPopularBlogs() async {
+    try {
+      var response = await ApiHelper().get('/blogs/popular');
+      if (response.statusCode == HttpStatus.ok) {
+        var jsonList = json.decode(response.body) as List;
+        return jsonList.map<BlogModel>((e) => BlogModel.fromJson(e)).toList();
+      } else {
+        ErrorHelper.showError(
+            message:
+                "Lỗi ${response.statusCode}: Không thể lấy danh sách blog phổ biến");
+      }
+    } on Exception catch (_, e) {
+      print(e);
+    }
+    return [];
+  }
+
+  //get new blogs
+  Future<List<BlogModel>> getNewBlogs() async {
+    try {
+      var response = await ApiHelper().get('/blog/new/blogs');
+      if (response.statusCode == HttpStatus.ok) {
+        var jsonList = json.decode(response.body) as List;
+        return jsonList.map<BlogModel>((e) => BlogModel.fromJson(e)).toList();
+      } else {
+        ErrorHelper.showError(
+            message:
+                "Lỗi ${response.statusCode}: Không thể lấy danh sách blog mới");
+      }
+    } on Exception catch (_, e) {
+      print(e);
+    }
+    return [];
+  }
+
   Future<BlogModel?> getBlogDetails(String blogId) async {
     try {
       var userId = await SharedPrefHelper.getUserId();
