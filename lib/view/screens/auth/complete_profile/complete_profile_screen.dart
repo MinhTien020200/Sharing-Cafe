@@ -300,7 +300,6 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                                     return DropdownMenuItem<DistrictModel>(
                                       value: value,
                                       child: SizedBox(
-                                        width: 160,
                                         child: Text(
                                           value.fullName,
                                           overflow: TextOverflow.ellipsis,

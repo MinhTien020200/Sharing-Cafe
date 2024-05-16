@@ -118,7 +118,7 @@ class _MyBlogScreenState extends State<MyBlogScreen> {
                                       return AlertDialog(
                                         title: const Text("Xác nhận"),
                                         content: const Text(
-                                            "Bạn có chắc chắn muốn xóa sự kiện này không?"),
+                                            "Bạn có chắc chắn muốn xóa bài viết này không?"),
                                         actions: [
                                           TextButton(
                                             onPressed: () {

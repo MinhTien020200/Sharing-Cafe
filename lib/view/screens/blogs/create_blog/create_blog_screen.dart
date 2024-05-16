@@ -212,7 +212,7 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
                                   height: 16,
                                 ),
                                 Text(
-                                  "Thêm ảnh bìa bài viết",
+                                  "Thêm ảnh bìa",
                                   style: TextStyle(
                                     color: Colors.grey[600],
                                   ),
@@ -227,7 +227,7 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
                     child: Text('Tiêu đề', style: heading2Style),
                   ),
                   KFormField(
-                    hintText: "Tên sự kiện",
+                    hintText: "",
                     controller: _titleController,
                   ),
                   const SizedBox(height: 8),
@@ -255,7 +255,7 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
                           .firstWhereOrNull(
                               (element) => element.key == _interestId);
                       return KSelectForm(
-                        hintText: 'Chọn chủ đề',
+                        hintText: '',
                         options: categoriesProvider.categories
                             .map((e) => KeyValuePair(e.categoryId, e.title))
                             .toList(),

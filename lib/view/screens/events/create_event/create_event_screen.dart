@@ -381,7 +381,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                                   height: 16,
                                 ),
                                 Text(
-                                  "Thêm ảnh bìa bài viết",
+                                  "Thêm ảnh bìa",
                                   style: TextStyle(
                                     color: Colors.grey[600],
                                   ),

@@ -178,7 +178,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       //     icon: LineAwesomeIcons.cloud_with_sun,
                       //     onPress: () {}),
                       ProfileMenu(
-                          title: "Logout",
+                          title: "Đăng Xuất",
                           icon: LineAwesomeIcons.alternate_sign_out,
                           textColor: Colors.red,
                           endIcon: false,
