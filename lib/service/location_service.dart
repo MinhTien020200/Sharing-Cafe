@@ -31,7 +31,7 @@ class LocationService {
 
   Future<Set<ProvinceModel>> getProvince() async {
     // get province from backend
-    var endpoint = "/location/getProvince";
+    var endpoint = "/map/province";
     var response = await ApiHelper().get(endpoint);
     if (response.statusCode == HttpStatus.ok) {
       var jsonList = jsonDecode(response.body);
@@ -51,11 +51,11 @@ class LocationService {
       return {};
     }
     // get district from backend
-    var endpoint = "/location/getDistrict?province_id=$provinceId";
+    var endpoint = "/map/district?province_id=$provinceId";
     var response = await ApiHelper().get(endpoint);
     if (response.statusCode == HttpStatus.ok) {
       var jsonList = jsonDecode(response.body);
-      Set<DistrictModel> list = jsonList["data"]
+      Set<DistrictModel> list = jsonList
           .map((e) => DistrictModel.fromJson(e))
           .toSet()
           .cast<DistrictModel>();

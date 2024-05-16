@@ -37,8 +37,8 @@ class DistrictModel {
 
   factory DistrictModel.fromJson(Map<String, dynamic> json) {
     return DistrictModel(
-      id: json['id'],
-      fullName: json['full_name'],
+      id: json['district_id'],
+      fullName: json['district'],
     );
   }
 

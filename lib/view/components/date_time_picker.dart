@@ -13,14 +13,20 @@ class DateTimePicker extends StatefulWidget {
   final DateTime? value;
   final DateTime? firstDate;
   final DateTime? lastDate;
-  const DateTimePicker(
-      {Key? key,
-      required this.onDateTimeChanged,
-      required this.label,
-      this.value,
-      this.firstDate,
-      this.lastDate})
-      : super(key: key);
+  final bool? onlyDate;
+  final Function(DateTime?)? format;
+  final bool inRow;
+  const DateTimePicker({
+    Key? key,
+    required this.onDateTimeChanged,
+    required this.label,
+    this.value,
+    this.firstDate,
+    this.lastDate,
+    this.onlyDate = false,
+    this.format,
+    this.inRow = false,
+  }) : super(key: key);
 
   @override
   State<DateTimePicker> createState() => _DateTimePickerState();
@@ -40,7 +46,17 @@ class _DateTimePickerState extends State<DateTimePicker> {
           widget.lastDate ?? DateTime.now().add(const Duration(days: 30 * 6)),
     );
     if (pickedDate == null) return;
-
+    if (widget.onlyDate == true) {
+      setState(() {
+        selectedDateTime = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+        );
+      });
+      widget.onDateTimeChanged(selectedDateTime);
+      return;
+    }
     final DateTime? pickedTime = await DatePickerBdaya.showTimePicker(
       context,
       locale: LocaleType.vi,
@@ -87,29 +103,52 @@ class _DateTimePickerState extends State<DateTimePicker> {
             color: kFormFieldColor),
         child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  widget.label,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.0,
-                    color: Colors.black54,
-                  ),
-                ),
-                if (selectedDateTime != null)
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text(
-                      '${DateTimeHelper.formatDateTime2(selectedDateTime)}',
-                      style: const TextStyle(
-                        fontSize: 16.0,
+            child: widget.inRow == true
+                ? Row(
+                    children: <Widget>[
+                      Text(
+                        widget.label,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 16.0,
+                          color: Colors.black54,
+                        ),
                       ),
-                    ),
-                  ),
-              ],
-            )),
+                      if (selectedDateTime != null)
+                        Container(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text(
+                            '${widget.format != null ? widget.format!(selectedDateTime) : DateTimeHelper.formatDateTime2(selectedDateTime)}',
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ),
+                    ],
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        widget.label,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 16.0,
+                          color: Colors.black54,
+                        ),
+                      ),
+                      if (selectedDateTime != null)
+                        Container(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text(
+                            '${widget.format != null ? widget.format!(selectedDateTime) : DateTimeHelper.formatDateTime2(selectedDateTime)}',
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ),
+                    ],
+                  )),
       ),
     );
   }

@@ -41,7 +41,7 @@ class BlogModel {
       likesCount: json["likes_count"],
       commentsCount: json["comments_count"],
       isApprove: json["is_approve"],
-      createdAt: DateTimeHelper.parseToLocal(json["created_at"]),
+      createdAt: DateTimeHelper.parse(json["created_at"]),
       image: json["image"],
       title: json["title"],
       ownerName: json['user_name'],

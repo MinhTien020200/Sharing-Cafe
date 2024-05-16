@@ -31,11 +31,11 @@ class ScheduleModel {
   final List<Rating>? rating;
 
   factory ScheduleModel.fromJson(Map<String, dynamic> json) => ScheduleModel(
-        createdAt: DateTimeHelper.parseToLocal(json["created_at"]),
+        createdAt: DateTimeHelper.parse(json["created_at"]),
         scheduleId: json["schedule_id"],
         content: json["content"],
         location: json["location"],
-        date: DateTimeHelper.parseToLocal(json["schedule_time"]),
+        date: DateTimeHelper.parse(json["schedule_time"]),
         senderId: json["sender_id"],
         receiverName: json["receiver"],
         receiverAvt: json["receiver_avatar"],

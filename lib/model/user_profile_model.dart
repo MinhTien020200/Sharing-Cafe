@@ -1,3 +1,5 @@
+import 'package:sharing_cafe/helper/datetime_helper.dart';
+
 class UserProfileModel {
   final String userId;
   String profileAvatar;
@@ -5,6 +7,7 @@ class UserProfileModel {
   String age;
   String address;
   String gender;
+  DateTime? dob;
   String? story;
   String? purpose;
   String? favoriteLocation;
@@ -21,6 +24,7 @@ class UserProfileModel {
     required this.age,
     required this.address,
     required this.gender,
+    this.dob,
     this.story,
     this.purpose,
     this.favoriteLocation,
@@ -32,11 +36,14 @@ class UserProfileModel {
   });
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
+    var dateOfBirth =
+        json['dob'] != null ? DateTimeHelper.parse(json['dob']) : null;
     return UserProfileModel(
       userId: json['user_id'],
       profileAvatar: json['profile_avatar'] ?? "",
       userName: json['user_name'],
-      age: json['age'] ?? "",
+      age: DateTimeHelper.calculateAge(dateOfBirth),
+      dob: dateOfBirth,
       address: json['address'] ?? "",
       gender: json['gender'] ?? "",
       story: json['story'] ?? "",

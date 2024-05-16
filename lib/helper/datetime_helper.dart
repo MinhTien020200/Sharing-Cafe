@@ -17,6 +17,13 @@ final class DateTimeHelper {
     return DateTime.parse(dateTimeString).toLocal();
   }
 
+  static parse(String? dateTimeString) {
+    if (dateTimeString == null) {
+      return null;
+    }
+    return DateTime.parse(dateTimeString);
+  }
+
   static formatDateTime3(DateTime value) {
     return '${value.hour.toString().padLeft(2, '0')}:${value.minute.toString().padLeft(2, '0')}, ${value.day} THG ${value.month}';
   }
@@ -38,5 +45,13 @@ final class DateTimeHelper {
     } else {
       return "vài giây trước";
     }
+  }
+
+  static String calculateAge(DateTime? dob) {
+    if (dob == null) {
+      return '';
+    }
+    var diff = DateTime.now().difference(dob);
+    return (diff.inDays / 365).floor().toString();
   }
 }

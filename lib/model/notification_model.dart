@@ -20,7 +20,7 @@ class NotificationModel {
       id: json['notification_id'],
       // title: json['title'],
       content: json['content'],
-      createdAt: DateTimeHelper.parseToLocal(json['created_at']),
+      createdAt: DateTimeHelper.parse(json['created_at']),
       status: NotificationStatus.fromString(json['notification_status']),
     );
   }

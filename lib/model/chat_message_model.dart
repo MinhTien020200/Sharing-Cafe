@@ -39,7 +39,7 @@ class ChatMessageModel {
       receiverName: json['receiver_name'],
       receiverAvt: json['receiver_avatar'],
       messageContent: json['content'],
-      createdAt: DateTimeHelper.parseToLocal(json['created_at']),
+      createdAt: DateTimeHelper.parse(json['created_at']),
     );
   }
 

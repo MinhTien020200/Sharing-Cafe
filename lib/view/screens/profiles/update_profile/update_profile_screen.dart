@@ -10,6 +10,7 @@ import 'package:sharing_cafe/provider/user_profile_provider.dart';
 import 'package:sharing_cafe/service/image_service.dart';
 import 'package:sharing_cafe/service/location_service.dart';
 import 'package:sharing_cafe/view/components/custom_network_image.dart';
+import 'package:sharing_cafe/view/components/date_time_picker.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   static String routeName = "/update_profile";
@@ -28,6 +29,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final TextEditingController _purposeController = TextEditingController();
   final TextEditingController _favoriteLocationController =
       TextEditingController();
+  DateTime? _dob;
 
   bool _isLoading = false;
   bool _isLoadingListInterests = false;
@@ -103,6 +105,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         _age = value.age;
         _storyController.text = value.story!;
         _gender = value.gender;
+        _dob = value.dob;
         if (value.purpose != null) {
           _purposeController.text = value.purpose!;
         }
@@ -230,6 +233,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         gender: _gender,
                         purpose: _purposeController.text,
                         favoriteLocation: _favoriteLocationController.text,
+                        dob: _dob,
                       );
                       setState(() {
                         _isUploading = false;
@@ -365,27 +369,23 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                       color: const Color.fromARGB(
                                           100, 158, 158, 158)),
                                 ),
-                                child: DropdownButtonFormField<String>(
-                                  value: _age!.isEmpty ? null : _age,
-                                  decoration: const InputDecoration(
-                                    prefixText: "Tuổi | ",
-                                    contentPadding: EdgeInsets.all(16),
-                                    border: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                    hintText: 'Chọn độ tuổi',
-                                  ),
-                                  items: ageRange.map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) => setState(
-                                    () {
-                                      _age = value;
-                                    },
-                                  ),
+                                child: DateTimePicker(
+                                  onDateTimeChanged: (date) {
+                                    _dob = date;
+                                  },
+                                  value: _dob,
+                                  label: "Ngày sinh | ",
+                                  firstDate: DateTime.now()
+                                      .add(const Duration(days: -365 * 100)),
+                                  lastDate: DateTime.now()
+                                      .add(const Duration(days: -365 * 18)),
+                                  onlyDate: true,
+                                  format: (p0) {
+                                    return p0 != null
+                                        ? "${p0.day}/${p0.month}/${p0.year}"
+                                        : "";
+                                  },
+                                  inRow: true,
                                 ),
                               ),
                               const SizedBox(height: 10),

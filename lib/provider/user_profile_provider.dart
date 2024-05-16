@@ -40,6 +40,7 @@ class UserProfileProvider extends ChangeNotifier {
     required String? story,
     required String? purpose,
     required String? favoriteLocation,
+    required DateTime? dob,
   }) async {
     try {
       if (profileAvatar == null || profileAvatar.isEmpty) {
@@ -48,22 +49,26 @@ class UserProfileProvider extends ChangeNotifier {
       if (userName == null || userName.isEmpty) {
         throw ArgumentError('Tên là bắt buộc và không được để trống.');
       }
-      if (age == null || age.isEmpty) {
-        throw ArgumentError('Tuổi là bắt buộc và không được để trống.');
-      }
+      // if (age == null || age.isEmpty) {
+      //   throw ArgumentError('Tuổi là bắt buộc và không được để trống.');
+      // }
       if (gender == null || gender.isEmpty) {
         throw ArgumentError('Giới tính là bắt buộc và không được để trống.');
+      }
+      if (dob == null) {
+        throw ArgumentError('Ngày sinh là bắt buộc và không được để trống.');
       }
 
       return await UserProfileService().updateUserProfile(
         profileAvatar: profileAvatar,
         userName: userName,
-        age: age,
+        age: age ?? '',
         address: address,
         gender: gender,
         story: story,
         purpose: purpose,
         favoriteLocation: favoriteLocation,
+        dob: dob.toIso8601String(),
       );
     } catch (e) {
       if (e is ArgumentError) {
