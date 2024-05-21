@@ -18,7 +18,7 @@ class ProfileModel {
       userId: json["user_id"],
       image: json["profile_avatar"] ?? "",
       name: json["user_name"],
-      age: json["age"] ?? "",
+      age: json["age"].toString(),
       description: json["story"] ?? "",
     );
   }

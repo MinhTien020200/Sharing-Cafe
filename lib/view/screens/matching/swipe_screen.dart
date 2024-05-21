@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
@@ -5,6 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/enums.dart';
 import 'package:sharing_cafe/provider/match_provider.dart';
+import 'package:sharing_cafe/service/location_service.dart';
+import 'package:sharing_cafe/service/match_service.dart';
 import 'package:sharing_cafe/view/screens/friends/friends_screen.dart';
 import 'package:sharing_cafe/view/screens/friends/pending_screen.dart';
 import 'package:sharing_cafe/view/screens/matching/components/profile_card.dart';
@@ -23,9 +27,14 @@ class _SwipeScreenState extends State<SwipeScreen> {
   bool _isLikeIcon = true;
   List<ValueItem> selectedFilterByAge = [];
   List<ValueItem> selectedFilterByGender = [];
+  List<ValueItem> selectedFilterByProvince = [];
+  List<ValueItem> selectedFilterByDistrict = [];
+  String? _selectedProvinceId;
+  RangeValues _ageRange = const RangeValues(18, 100);
   @override
   void initState() {
-    getProfiles();
+    Provider.of<MatchProvider>(context, listen: false).initFilter();
+    getProfilesV2();
     super.initState();
   }
 
@@ -36,6 +45,30 @@ class _SwipeScreenState extends State<SwipeScreen> {
     Provider.of<MatchProvider>(context, listen: false)
         .initListProfiles(
             filterByAge: filterByAge, filterByGender: filterByGender)
+        .then((_) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+  }
+
+  void getProfilesV2() {
+    setState(() {
+      _isLoading = true;
+    });
+    Provider.of<MatchProvider>(context, listen: false)
+        .initListProfilesV2(
+            minAge: _ageRange.start.round(),
+            maxAge: _ageRange.end.round(),
+            filterByGender: selectedFilterByGender.isNotEmpty
+                ? selectedFilterByGender.first.value
+                : null,
+            filterByProvince: selectedFilterByProvince.isNotEmpty
+                ? selectedFilterByProvince.first.value
+                : null,
+            filterByDistrict: selectedFilterByDistrict.isNotEmpty
+                ? selectedFilterByDistrict.first.value
+                : null)
         .then((_) {
       setState(() {
         _isLoading = false;
@@ -76,83 +109,200 @@ class _SwipeScreenState extends State<SwipeScreen> {
           //filter
           IconButton(
               icon: const Icon(Icons.filter_alt_outlined),
-              onPressed: () {
+              onPressed: () async {
+                await Provider.of<MatchProvider>(context, listen: false)
+                    .initFilter();
                 showDialog(
+                    // ignore: use_build_context_synchronously
                     context: context,
                     builder: (context) {
-                      return AlertDialog(
-                        title: const Text(
-                          "Bộ lọc",
-                          style: heading2Style,
-                        ),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            MultiSelectDropDown(
-                              selectedOptionTextColor: kPrimaryColor,
-                              hint: 'Chọn độ tuổi',
-                              onOptionSelected: (options) async {
-                                setState(() {
-                                  selectedFilterByAge = options;
-                                });
-                              },
-                              options: filterAgeRange.map((age) {
-                                return ValueItem(label: age, value: age);
-                              }).toList(),
-                              selectedOptions: selectedFilterByAge,
-                              selectionType: SelectionType.single,
-                              chipConfig: const ChipConfig(
-                                  wrapType: WrapType.scroll,
-                                  backgroundColor: kPrimaryColor),
-                              optionTextStyle: const TextStyle(fontSize: 16),
-                              selectedOptionIcon:
-                                  const Icon(Icons.check_circle),
+                      return Consumer<MatchProvider>(
+                          builder: (context, provider, widget) {
+                        var filter = provider.filter;
+                        if (filter == null) {
+                          return const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          );
+                        }
+                        _ageRange = RangeValues(filter.minAge?.toDouble() ?? 18,
+                            filter.maxAge?.toDouble() ?? 100);
+                        return StatefulBuilder(builder:
+                            (BuildContext context, StateSetter setState) {
+                          return AlertDialog(
+                            title: const Text(
+                              "Bộ lọc",
+                              style: heading2Style,
                             ),
-                            const SizedBox(
-                              height: 8,
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text(
+                                  "Chọn độ tuổi",
+                                ),
+                                RangeSlider(
+                                  values: _ageRange,
+                                  min: filter.minAge?.roundToDouble() ?? 0,
+                                  max: filter.maxAge?.roundToDouble() ?? 100,
+                                  divisions: 82,
+                                  labels: RangeLabels(
+                                    _ageRange.start.round().toString(),
+                                    _ageRange.end.round().toString(),
+                                  ),
+                                  onChanged: (RangeValues values) {
+                                    setState(() {
+                                      _ageRange = values;
+                                    });
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                FutureBuilder(
+                                    future: MatchService().getListGender(),
+                                    builder: (context, snapshot) {
+                                      if (!snapshot.hasData) {
+                                        return Container();
+                                      }
+                                      var genders = snapshot.data;
+                                      selectedFilterByGender = genders!
+                                          .where((element) =>
+                                              element.genderId == filter.sexId)
+                                          .map((e) => ValueItem(
+                                              value: e.genderId,
+                                              label: e.gender))
+                                          .toList();
+
+                                      return MultiSelectDropDown(
+                                        selectedOptionTextColor: kPrimaryColor,
+                                        hint: 'Chọn giới tính',
+                                        onOptionSelected: (options) async {
+                                          setState(() {
+                                            selectedFilterByGender = options;
+                                          });
+                                        },
+                                        options: genders.map((gender) {
+                                          return ValueItem(
+                                              label: gender.gender,
+                                              value: gender.genderId);
+                                        }).toList(),
+                                        selectedOptions: selectedFilterByGender,
+                                        selectionType: SelectionType.single,
+                                        chipConfig: const ChipConfig(
+                                            wrapType: WrapType.scroll,
+                                            backgroundColor: kPrimaryColor),
+                                        optionTextStyle:
+                                            const TextStyle(fontSize: 16),
+                                        selectedOptionIcon:
+                                            const Icon(Icons.check_circle),
+                                      );
+                                    }),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                FutureBuilder(
+                                    future: LocationService().getProvince(),
+                                    builder: (context, snapshot) {
+                                      if (!snapshot.hasData) {
+                                        return Container();
+                                      }
+                                      var provinces = snapshot.data;
+                                      selectedFilterByProvince = provinces!
+                                          .where((element) =>
+                                              element.provinceId ==
+                                              filter.provinceId)
+                                          .map((e) => ValueItem(
+                                              value: e.provinceId,
+                                              label: e.province))
+                                          .toList();
+                                      return MultiSelectDropDown(
+                                        selectedOptionTextColor: kPrimaryColor,
+                                        hint: 'Chọn tỉnh / thành phố',
+                                        onOptionSelected: (options) async {
+                                          setState(() {
+                                            selectedFilterByProvince = options;
+                                            _selectedProvinceId =
+                                                selectedFilterByProvince
+                                                    .firstOrNull?.value;
+                                            selectedFilterByDistrict.clear();
+                                          });
+                                        },
+                                        options: provinces.map((province) {
+                                          return ValueItem(
+                                              label: province.province,
+                                              value: province.provinceId);
+                                        }).toList(),
+                                        selectedOptions:
+                                            selectedFilterByProvince,
+                                        selectionType: SelectionType.single,
+                                        chipConfig: const ChipConfig(
+                                            wrapType: WrapType.scroll,
+                                            backgroundColor: kPrimaryColor),
+                                        optionTextStyle:
+                                            const TextStyle(fontSize: 16),
+                                        selectedOptionIcon:
+                                            const Icon(Icons.check_circle),
+                                      );
+                                    }),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                if (_selectedProvinceId != null)
+                                  FutureBuilder(
+                                      future: LocationService()
+                                          .getDistrict(_selectedProvinceId),
+                                      builder: (context, snapshot) {
+                                        if (!snapshot.hasData) {
+                                          return Container();
+                                        }
+                                        var districts = snapshot.data;
+                                        selectedFilterByDistrict = districts!
+                                            .where((element) =>
+                                                element.id == filter.districtId)
+                                            .map((e) => ValueItem(
+                                                value: e.id, label: e.fullName))
+                                            .toList();
+                                        return MultiSelectDropDown(
+                                          selectedOptionTextColor:
+                                              kPrimaryColor,
+                                          hint: 'Chọn quận / huyện',
+                                          onOptionSelected: (options) async {
+                                            setState(() {
+                                              selectedFilterByDistrict =
+                                                  options;
+                                            });
+                                          },
+                                          options: districts.map((district) {
+                                            return ValueItem(
+                                                label: district.fullName,
+                                                value: district.id);
+                                          }).toList(),
+                                          selectedOptions:
+                                              selectedFilterByDistrict,
+                                          selectionType: SelectionType.single,
+                                          chipConfig: const ChipConfig(
+                                              wrapType: WrapType.scroll,
+                                              backgroundColor: kPrimaryColor),
+                                          optionTextStyle:
+                                              const TextStyle(fontSize: 16),
+                                          selectedOptionIcon:
+                                              const Icon(Icons.check_circle),
+                                        );
+                                      }),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    getProfilesV2();
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("Áp dụng"),
+                                )
+                              ],
                             ),
-                            MultiSelectDropDown(
-                              selectedOptionTextColor: kPrimaryColor,
-                              hint: 'Chọn giới tính',
-                              onOptionSelected: (options) async {
-                                setState(() {
-                                  selectedFilterByGender = options;
-                                });
-                              },
-                              options: ['Nam', 'Nữ'].map((gender) {
-                                return ValueItem(label: gender, value: gender);
-                              }).toList(),
-                              selectedOptions: selectedFilterByGender,
-                              selectionType: SelectionType.single,
-                              chipConfig: const ChipConfig(
-                                  wrapType: WrapType.scroll,
-                                  backgroundColor: kPrimaryColor),
-                              optionTextStyle: const TextStyle(fontSize: 16),
-                              selectedOptionIcon:
-                                  const Icon(Icons.check_circle),
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                var filterByAge = selectedFilterByAge.isNotEmpty
-                                    ? selectedFilterByAge.first.value
-                                    : null;
-                                var filterByGender =
-                                    selectedFilterByGender.isNotEmpty
-                                        ? selectedFilterByGender.first.value
-                                        : null;
-                                getProfiles(
-                                    filterByAge: filterByAge,
-                                    filterByGender: filterByGender);
-                                Navigator.pop(context);
-                              },
-                              child: const Text("Áp dụng"),
-                            )
-                          ],
-                        ),
-                      );
+                          );
+                        });
+                      });
                     });
               }),
           IconButton(

@@ -46,8 +46,8 @@ class LocationService {
     }
   }
 
-  Future<Set<DistrictModel>> getDistrict(String provinceId) async {
-    if (provinceId.isEmpty) {
+  Future<Set<DistrictModel>> getDistrict(String? provinceId) async {
+    if (provinceId == null || provinceId.isEmpty) {
       return {};
     }
     // get district from backend

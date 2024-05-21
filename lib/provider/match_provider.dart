@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:sharing_cafe/enums.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
+import 'package:sharing_cafe/helper/shared_prefs_helper.dart';
+import 'package:sharing_cafe/model/filter_model.dart';
 import 'package:sharing_cafe/model/profile_info_model.dart';
 import 'package:sharing_cafe/model/profile_model.dart';
 import 'package:sharing_cafe/service/match_service.dart';
@@ -13,14 +15,41 @@ class MatchProvider extends ChangeNotifier {
   ProfileInfoModel? _info;
   final int _limit = 5;
   final int _offset = 0;
+  FilterModel? _filter;
 
   List<ProfileModel> get profiles => _profiles;
   ProfileModel? get currentProfile => _currentProfile;
   ProfileInfoModel? get info => _info;
+  FilterModel? get filter => _filter;
 
   Future initListProfiles({String? filterByAge, String? filterByGender}) async {
     _profiles = await MatchService()
         .getListProfiles(_limit, _offset, filterByAge, filterByGender);
+    _currentProfile = _profiles.firstOrNull;
+    notifyListeners();
+  }
+
+  Future initListProfilesV2(
+      {int? minAge,
+      int? maxAge,
+      String? filterByGender,
+      String? filterByProvince,
+      String? filterByDistrict}) async {
+    var filter = FilterModel(
+        provinceId: filterByProvince,
+        minAge: minAge,
+        maxAge: maxAge,
+        byAge: minAge != null && maxAge != null,
+        byDistrict: filterByDistrict != null,
+        byProvince: filterByProvince != null,
+        bySex: filterByGender != null,
+        byInterest: true,
+        sexId: filterByGender,
+        districtId: filterByDistrict);
+    filter.userId = await SharedPrefHelper.getUserId();
+    await MatchService().updateFilterSetting(filter);
+
+    _profiles = await MatchService().getUserFilterSetting();
     _currentProfile = _profiles.firstOrNull;
     notifyListeners();
   }
@@ -62,6 +91,18 @@ class MatchProvider extends ChangeNotifier {
       ErrorHelper.showError(message: e.toString());
     }
     return null;
+  }
+
+  Future setFilter(FilterModel filter) async {
+    _filter = filter;
+    await MatchService().updateFilterSetting(filter);
+    notifyListeners();
+  }
+
+  Future initFilter() async {
+    var val = await MatchService().getFilterSetting();
+    _filter = val;
+    notifyListeners();
   }
 
   // Private methods

@@ -5,6 +5,8 @@ import 'package:sharing_cafe/enums.dart';
 import 'package:sharing_cafe/helper/api_helper.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/shared_prefs_helper.dart';
+import 'package:sharing_cafe/model/filter_model.dart';
+import 'package:sharing_cafe/model/gender_model.dart';
 import 'package:sharing_cafe/model/matched_model.dart';
 import 'package:sharing_cafe/model/profile_info_model.dart';
 import 'package:sharing_cafe/model/profile_model.dart';
@@ -32,6 +34,20 @@ class MatchService {
       ErrorHelper.showError(message: "Không thể lấy danh sách người dùng");
     }
     return List.empty();
+  }
+
+  // /api/auth/user/auth/user-filter-setting
+  Future<List<ProfileModel>> getUserFilterSetting() async {
+    var endpoint = "/auth/user/auth/user-filter-setting";
+    var response = await ApiHelper().get(endpoint);
+    if (response.statusCode == HttpStatus.ok) {
+      var result = json.decode(response.body);
+      var jsonList = result as List;
+      return jsonList
+          .map<ProfileModel>((e) => ProfileModel.fromJson(e))
+          .toList();
+    }
+    throw Exception("Lỗi ${response.statusCode}");
   }
 
   Future<bool> updateMatchStatus(String userId, MatchStatus status) async {
@@ -85,5 +101,42 @@ class MatchService {
       return true;
     }
     throw Exception("Lỗi ${response.statusCode}");
+  }
+
+  // /auth/user/auth/setting-filter
+  Future<bool> updateFilterSetting(FilterModel filter) async {
+    var endpoint = "/auth/user/auth/setting-filter";
+    var payload = filter.toJson();
+    var response = await ApiHelper().put(endpoint, payload);
+    if (response.statusCode == HttpStatus.ok) {
+      return true;
+    }
+    throw Exception("Lỗi ${response.statusCode}");
+  }
+
+  // /auth/user/auth/setting-filter
+  Future<FilterModel> getFilterSetting() async {
+    var endpoint = "/auth/user/auth/setting-filter";
+    var response = await ApiHelper().get(endpoint);
+    if (response.statusCode == HttpStatus.ok) {
+      var result = json.decode(response.body);
+      return FilterModel.fromJson(result);
+    }
+    throw Exception("Lỗi ${response.statusCode}");
+  }
+
+  // /user/gender
+  Future<List<GenderModel>> getListGender() {
+    var endpoint = "/user/gender";
+    return ApiHelper().get(endpoint).then((response) {
+      if (response.statusCode == HttpStatus.ok) {
+        var result = json.decode(response.body);
+        var jsonList = result as List;
+        return jsonList
+            .map<GenderModel>((e) => GenderModel.fromJson(e))
+            .toList();
+      }
+      throw Exception("Lỗi ${response.statusCode}");
+    });
   }
 }
