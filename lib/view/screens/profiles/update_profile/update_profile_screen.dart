@@ -5,10 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/image_helper.dart';
+import 'package:sharing_cafe/model/gender_model.dart';
 import 'package:sharing_cafe/model/province_model.dart';
 import 'package:sharing_cafe/provider/user_profile_provider.dart';
 import 'package:sharing_cafe/service/image_service.dart';
 import 'package:sharing_cafe/service/location_service.dart';
+import 'package:sharing_cafe/service/match_service.dart';
 import 'package:sharing_cafe/view/components/custom_network_image.dart';
 import 'package:sharing_cafe/view/components/date_time_picker.dart';
 
@@ -104,7 +106,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         _imageUrl = value.profileAvatar;
         _age = value.age;
         _storyController.text = value.story!;
-        _gender = value.gender;
+        _gender = value.genderId;
         _dob = value.dob;
         if (value.purpose != null) {
           _purposeController.text = value.purpose!;
@@ -491,38 +493,49 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                     );
                                   }),
                               const SizedBox(height: 10),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: kFormFieldColor,
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(
-                                      color: const Color.fromARGB(
-                                          100, 158, 158, 158)),
-                                ),
-                                child: DropdownButtonFormField<String>(
-                                  value: _gender!.isEmpty ? null : _gender,
-                                  decoration: const InputDecoration(
-                                    prefixText: "Giới tính | ",
-                                    contentPadding: EdgeInsets.all(16),
-                                    border: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                    hintText: 'Chọn giới tính',
-                                  ),
-                                  items: ['Nam', 'Nữ', 'Không đề cập']
-                                      .map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
+                              FutureBuilder(
+                                  future: MatchService().getListGender(),
+                                  builder: (context, snapshot) {
+                                    if (!snapshot.hasData) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }
+                                    var genders =
+                                        snapshot.data as List<GenderModel>;
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        color: kFormFieldColor,
+                                        borderRadius: BorderRadius.circular(16),
+                                        border: Border.all(
+                                            color: const Color.fromARGB(
+                                                100, 158, 158, 158)),
+                                      ),
+                                      child: DropdownButtonFormField<String>(
+                                        value:
+                                            _gender!.isEmpty ? null : _gender,
+                                        decoration: const InputDecoration(
+                                          prefixText: "Giới tính | ",
+                                          contentPadding: EdgeInsets.all(16),
+                                          border: InputBorder.none,
+                                          enabledBorder: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                          hintText: 'Chọn giới tính',
+                                        ),
+                                        items: genders.map((GenderModel value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value.genderId,
+                                            child: Text(value.gender),
+                                          );
+                                        }).toList(),
+                                        onChanged: (value) => setState(
+                                          () {
+                                            _gender = value;
+                                          },
+                                        ),
+                                      ),
                                     );
-                                  }).toList(),
-                                  onChanged: (value) => setState(
-                                    () {
-                                      _gender = value;
-                                    },
-                                  ),
-                                ),
-                              ),
+                                  }),
                               const SizedBox(height: 10),
                               const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 8.0),

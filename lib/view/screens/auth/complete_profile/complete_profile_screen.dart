@@ -4,13 +4,16 @@ import 'package:flutter/material.dart';
 // ignore: unnecessary_import
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/image_helper.dart';
+import 'package:sharing_cafe/model/gender_model.dart';
 import 'package:sharing_cafe/model/province_model.dart';
 import 'package:sharing_cafe/provider/account_provider.dart';
 import 'package:sharing_cafe/service/image_service.dart';
 import 'package:sharing_cafe/service/location_service.dart';
+import 'package:sharing_cafe/service/match_service.dart';
 import 'package:sharing_cafe/view/components/custom_network_image.dart';
 import 'package:sharing_cafe/view/screens/auth/complete_profile/select_interest_screen.dart';
 
@@ -31,9 +34,11 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
   DistrictModel? _addressDistrict;
   String? _age;
   String? _gender;
+  String? _dob;
   String provinceId = "";
   final TextEditingController _storyController = TextEditingController();
   final List<String?> errors = [];
+  List<GenderModel> listGenders = [];
 
   void addError({String? error}) {
     if (!errors.contains(error)) {
@@ -161,70 +166,53 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            border: Border.all(),
-                          ),
-                          child: DropdownButtonFormField<String>(
-                            value: _age,
-                            decoration: const InputDecoration(
-                              prefixText: "     Tuổi | ",
-                              contentPadding: EdgeInsets.all(20),
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              hintText: '       Chọn độ tuổi',
-                            ),
-                            items: [
-                              '16 - 20',
-                              '21 - 25',
-                              '26 - 30',
-                              '31 - 35',
-                              '36 - 40',
-                              '41 - 50',
-                              'Không đề cập'
-                            ].map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
+                        FutureBuilder(
+                            future: MatchService().getListGender(),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return Container();
+                              }
+                              var genders = snapshot.data;
+                              listGenders = genders!;
+                              return Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(),
+                                ),
+                                child: DropdownButtonFormField<String>(
+                                  value: _gender,
+                                  decoration: const InputDecoration(
+                                    prefixText: "     Giới tính | ",
+                                    contentPadding: EdgeInsets.all(20),
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    hintText: 'Chọn giới tính',
+                                  ),
+                                  items: listGenders.map((GenderModel value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value.genderId,
+                                      child: Text(value.gender),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) => setState(
+                                    () {
+                                      _gender = value;
+                                    },
+                                  ),
+                                ),
                               );
-                            }).toList(),
-                            onChanged: (value) => setState(
-                              () {
-                                _age = value;
-                              },
-                            ),
-                          ),
-                        ),
+                            }),
                         const SizedBox(height: 20),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            border: Border.all(),
-                          ),
-                          child: DropdownButtonFormField<String>(
-                            value: _gender,
-                            decoration: const InputDecoration(
-                              prefixText: "     Giới tính | ",
-                              contentPadding: EdgeInsets.all(20),
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              hintText: 'Chọn giới tính',
-                            ),
-                            items: ['Nam', 'Nữ', 'Không đề cập']
-                                .map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            onChanged: (value) => setState(
-                              () {
-                                _gender = value;
-                              },
-                            ),
+                        // birthday datetime dob
+                        TextFormField(
+                          keyboardType: TextInputType.datetime,
+                          onChanged: (value) {
+                            _dob = value;
+                          },
+                          decoration: const InputDecoration(
+                            hintText: "Ngày sinh",
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
                           ),
                         ),
                         const SizedBox(height: 20),
@@ -328,6 +316,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                         Consumer<AccountProvider>(
                           builder: (context, auth, child) => ElevatedButton(
                             onPressed: () async {
+                              var date = DateFormat("dd/MM/yyyy")
+                                  .parse(_dob.toString());
                               var result = await Provider.of<AccountProvider>(
                                       context,
                                       listen: false)
@@ -338,6 +328,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                                 addressProvince: _addressProvince?.province,
                                 addressDistrict: _addressDistrict?.fullName,
                                 gender: _gender,
+                                dob: date.toIso8601String(),
                               );
                               if (result == true) {
                                 Navigator.pushNamed(

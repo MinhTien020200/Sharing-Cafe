@@ -6,6 +6,7 @@ class UserProfileModel {
   String userName;
   String age;
   String address;
+  String? genderId;
   String gender;
   DateTime? dob;
   String? story;
@@ -23,6 +24,7 @@ class UserProfileModel {
     required this.userName,
     required this.age,
     required this.address,
+    this.genderId,
     required this.gender,
     this.dob,
     this.story,
@@ -45,6 +47,7 @@ class UserProfileModel {
       age: DateTimeHelper.calculateAge(dateOfBirth),
       dob: dateOfBirth,
       address: json['address'] ?? "",
+      genderId: json['gender_id'],
       gender: json['gender'] ?? "",
       story: json['story'] ?? "",
       purpose: json['purpose'],

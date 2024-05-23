@@ -42,7 +42,7 @@ class UserProfileService {
         "user_name": userName,
         "age": age,
         "address": address,
-        "gender": gender,
+        "gender_id": gender,
         "story": story,
         "purpose": purpose,
         "favorite_location": favoriteLocation,

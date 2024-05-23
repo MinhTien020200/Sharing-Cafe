@@ -33,8 +33,12 @@ const defaultDuration = Duration(milliseconds: 250);
 // Form Error
 final RegExp emailValidatorRegExp =
     RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+final RegExp birthDayValidatorRegExp =
+    RegExp(r"^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$");
 const String kEmailNullError = "Bạn cần nhập email để tiếp tục";
 const String kInvalidEmailError = "Hãy nhập email hợp lệ";
+const String kDobNullError = "Bạn cần nhập ngày sinh để tiếp tục";
+const String kInvalidDobError = "Hãy nhập ngày sinh hợp lệ";
 const String kPassNullError = "Bạn cần nhập mật khẩu để tiếp tục";
 const String kShortPassError = "Mật khẩu quá ngắn";
 const String kMatchPassError = "Mật khẩu không khớp";
