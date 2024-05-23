@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:lottie/lottie.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:provider/provider.dart';
@@ -792,6 +793,96 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                               ),
                                                             ],
                                                           ),
+                                                          if (info.avgRating !=
+                                                              null)
+                                                            const Row(
+                                                              children: [
+                                                                Icon(Icons
+                                                                    .star_border_outlined),
+                                                                SizedBox(
+                                                                  width: 4,
+                                                                ),
+                                                                Expanded(
+                                                                  child: Text(
+                                                                    "Đánh giá trung bình",
+                                                                    maxLines: 2,
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          if (info.avgRating !=
+                                                              null)
+                                                            Row(
+                                                              children: [
+                                                                const SizedBox(
+                                                                  width: 27,
+                                                                ),
+                                                                RatingBar
+                                                                    .builder(
+                                                                  initialRating:
+                                                                      double.parse(
+                                                                          info.avgRating!),
+                                                                  itemCount: 5,
+                                                                  ignoreGestures:
+                                                                      true,
+                                                                  itemSize: 32,
+                                                                  onRatingUpdate:
+                                                                      (rating) {},
+                                                                  itemBuilder:
+                                                                      (context,
+                                                                          index) {
+                                                                    switch (
+                                                                        index) {
+                                                                      case 0:
+                                                                        return const Icon(
+                                                                          Icons
+                                                                              .sentiment_very_dissatisfied,
+                                                                          color:
+                                                                              Colors.red,
+                                                                        );
+                                                                      case 1:
+                                                                        return const Icon(
+                                                                          Icons
+                                                                              .sentiment_dissatisfied,
+                                                                          color:
+                                                                              Colors.redAccent,
+                                                                        );
+                                                                      case 2:
+                                                                        return const Icon(
+                                                                          Icons
+                                                                              .sentiment_neutral,
+                                                                          color:
+                                                                              Colors.amber,
+                                                                        );
+                                                                      case 3:
+                                                                        return const Icon(
+                                                                          Icons
+                                                                              .sentiment_satisfied,
+                                                                          color:
+                                                                              Colors.lightGreen,
+                                                                        );
+                                                                      case 4:
+                                                                        return const Icon(
+                                                                          Icons
+                                                                              .sentiment_very_satisfied,
+                                                                          color:
+                                                                              Colors.green,
+                                                                        );
+                                                                      default:
+                                                                        return const Icon(
+                                                                          Icons
+                                                                              .sentiment_very_dissatisfied,
+                                                                          color:
+                                                                              Colors.red,
+                                                                        );
+                                                                    }
+                                                                  },
+                                                                )
+                                                              ],
+                                                            )
                                                         ],
                                                       ),
                                                     ),

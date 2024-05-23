@@ -14,48 +14,49 @@ class ProfileInfoModel {
   List<UnlikeTopic> unlikeTopic;
   List<FavoriteDrink> favoriteDrink;
   List<FreeTime> freeTime;
+  String? avgRating;
 
-  ProfileInfoModel({
-    required this.userId,
-    required this.userName,
-    required this.profileAvatar,
-    this.story,
-    this.distance,
-    required this.gender,
-    required this.age,
-    required this.purpose,
-    required this.favoriteLocation,
-    required this.address,
-    required this.interest,
-    required this.problem,
-    required this.unlikeTopic,
-    required this.favoriteDrink,
-    required this.freeTime,
-  });
+  ProfileInfoModel(
+      {required this.userId,
+      required this.userName,
+      required this.profileAvatar,
+      this.story,
+      this.distance,
+      required this.gender,
+      required this.age,
+      required this.purpose,
+      required this.favoriteLocation,
+      required this.address,
+      required this.interest,
+      required this.problem,
+      required this.unlikeTopic,
+      required this.favoriteDrink,
+      required this.freeTime,
+      this.avgRating});
 
   factory ProfileInfoModel.fromJson(Map<String, dynamic> json) {
     return ProfileInfoModel(
-      userId: json['user_id'],
-      userName: json['user_name'],
-      profileAvatar: json['profile_avatar'],
-      story: json['story'],
-      gender: json['gender'],
-      age: json['age'],
-      distance: json['distance'],
-      purpose: json['purpose'],
-      favoriteLocation: json['favorite_location'],
-      address: json['address'],
-      interest: List<Interest>.from(
-          json['interest'].map((x) => Interest.fromJson(x))),
-      problem:
-          List<Problem>.from(json['problem'].map((x) => Problem.fromJson(x))),
-      unlikeTopic: List<UnlikeTopic>.from(
-          json['unlike_topic'].map((x) => UnlikeTopic.fromJson(x))),
-      favoriteDrink: List<FavoriteDrink>.from(
-          json['favorite_drink'].map((x) => FavoriteDrink.fromJson(x))),
-      freeTime: List<FreeTime>.from(
-          json['free_time'].map((x) => FreeTime.fromJson(x))),
-    );
+        userId: json['user_id'],
+        userName: json['user_name'],
+        profileAvatar: json['profile_avatar'],
+        story: json['story'],
+        gender: json['gender'],
+        age: json['age'],
+        distance: json['distance'],
+        purpose: json['purpose'],
+        favoriteLocation: json['favorite_location'],
+        address: "${json['district']}, ${json['province']}",
+        interest: List<Interest>.from(
+            json['interest'].map((x) => Interest.fromJson(x))),
+        problem:
+            List<Problem>.from(json['problem'].map((x) => Problem.fromJson(x))),
+        unlikeTopic: List<UnlikeTopic>.from(
+            json['unlike_topic'].map((x) => UnlikeTopic.fromJson(x))),
+        favoriteDrink: List<FavoriteDrink>.from(
+            json['favorite_drink'].map((x) => FavoriteDrink.fromJson(x))),
+        freeTime: List<FreeTime>.from(
+            json['free_time'].map((x) => FreeTime.fromJson(x))),
+        avgRating: json['avg_rating']);
   }
 }
 
