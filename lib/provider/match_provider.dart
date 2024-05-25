@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:sharing_cafe/enums.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
@@ -29,7 +31,14 @@ class MatchProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future initListProfilesV2(
+  Future initListProfilesV2() async {
+    await initFilter();
+    _profiles = await MatchService().getUserFilterSetting();
+    _currentProfile = _profiles.firstOrNull;
+    notifyListeners();
+  }
+
+  Future filterProfile(
       {int? minAge,
       int? maxAge,
       String? filterByGender,
@@ -47,8 +56,7 @@ class MatchProvider extends ChangeNotifier {
         sexId: filterByGender,
         districtId: filterByDistrict);
     filter.userId = await SharedPrefHelper.getUserId();
-    await MatchService().updateFilterSetting(filter);
-
+    await setFilter(filter);
     _profiles = await MatchService().getUserFilterSetting();
     _currentProfile = _profiles.firstOrNull;
     notifyListeners();

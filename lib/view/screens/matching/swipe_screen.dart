@@ -34,7 +34,6 @@ class _SwipeScreenState extends State<SwipeScreen> {
   RangeValues _ageRange = const RangeValues(18, 100);
   @override
   void initState() {
-    Provider.of<MatchProvider>(context, listen: false).initFilter();
     getProfilesV2();
     super.initState();
   }
@@ -58,7 +57,20 @@ class _SwipeScreenState extends State<SwipeScreen> {
       _isLoading = true;
     });
     Provider.of<MatchProvider>(context, listen: false)
-        .initListProfilesV2(
+        .initListProfilesV2()
+        .then((_) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+  }
+
+  void filterProfiles() {
+    setState(() {
+      _isLoading = true;
+    });
+    Provider.of<MatchProvider>(context, listen: false)
+        .filterProfile(
             minAge: _ageRange.start.round(),
             maxAge: _ageRange.end.round(),
             filterByGender: selectedFilterByGender.isNotEmpty
@@ -294,7 +306,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
-                                    getProfilesV2();
+                                    filterProfiles();
                                     Navigator.pop(context);
                                   },
                                   child: const Text("Áp dụng"),
