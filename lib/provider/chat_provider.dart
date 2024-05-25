@@ -44,6 +44,38 @@ class ChatProvider extends ChangeNotifier {
         ErrorHelper.showError(message: data);
         return;
       }
+      if (data["appointment"] != null) {
+        var appointment = data["appointment"];
+        var scheduleJson = {
+          "schedule_id": appointment["schedule_id"],
+          "content": appointment["content"],
+          "location": appointment["location"],
+          "schedule_time": appointment["date"],
+          "sender_id": appointment["sender_id"],
+          "receiver_id": appointment["receiver_id"],
+          "created_at": appointment["created_at"],
+        };
+        var schedule = ScheduleModel.fromJson(scheduleJson);
+        addMessage(ChatMessageModel(
+            messageId: schedule.scheduleId,
+            senderId: schedule.senderId,
+            senderAvt: "",
+            senderName: "",
+            receiverId: schedule.receiverId,
+            receiverAvt: "",
+            receiverName: "",
+            messageContent: schedule.content,
+            createdAt: DateTime.now(),
+            messageType: false,
+            appointment: Appointment(
+                id: schedule.scheduleId,
+                title: schedule.content,
+                location: schedule.location,
+                dateTime: schedule.date,
+                isApproved: schedule.isAccept),
+            isAppointment: true));
+        return;
+      }
       var message = ChatMessageModel.fromJson(data);
       message.messageType = message.receiverId == _userId;
       addMessage(message);
@@ -60,6 +92,7 @@ class ChatProvider extends ChangeNotifier {
         'to': _userId,
         'message': message,
         'timestamp': DateTime.now().toIso8601String(),
+        'appointment': null
       };
       socket.emit('message', data);
     }
@@ -172,7 +205,7 @@ class ChatProvider extends ChangeNotifier {
     try {
       var res = await ChatService().createSchedule(schedule);
       appointment.appointment!.id = res.scheduleId;
-      addMessage(appointment);
+      // addMessage(appointment);
       var loggedUserId = await SharedPrefHelper.getUserId();
       var data = {
         'from': loggedUserId,
@@ -181,11 +214,13 @@ class ChatProvider extends ChangeNotifier {
         'timestamp': DateTime.now().toIso8601String(),
         "appointment": appointment.appointment != null
             ? {
+                "schedule_id": res.scheduleId,
                 "sender_id": senderId,
                 "receiver_id": _userId,
                 "content": appointment.appointment?.title,
                 "location": appointment.appointment?.location,
                 "date": appointment.appointment?.dateTime.toIso8601String(),
+                "created_at": DateTime.now().toIso8601String()
               }
             : null,
       };
