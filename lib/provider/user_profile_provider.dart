@@ -41,6 +41,8 @@ class UserProfileProvider extends ChangeNotifier {
     required String? purpose,
     required String? favoriteLocation,
     required DateTime? dob,
+    required String? provinceId,
+    required String? districtId,
   }) async {
     try {
       if (profileAvatar == null || profileAvatar.isEmpty) {
@@ -69,6 +71,8 @@ class UserProfileProvider extends ChangeNotifier {
         purpose: purpose,
         favoriteLocation: favoriteLocation,
         dob: dob.toIso8601String(),
+        provinceId: provinceId,
+        districtId: districtId,
       );
     } catch (e) {
       if (e is ArgumentError) {

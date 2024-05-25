@@ -34,6 +34,8 @@ class UserProfileService {
     required String? purpose,
     required String? favoriteLocation,
     required String dob,
+    required String? provinceId,
+    required String? districtId,
   }) async {
     try {
       var endpoint = "/auth/user/profile";
@@ -46,7 +48,9 @@ class UserProfileService {
         "story": story,
         "purpose": purpose,
         "favorite_location": favoriteLocation,
-        "dob": dob
+        "dob": dob,
+        "province_id": provinceId,
+        "district_id": districtId,
       };
       var response = await ApiHelper().put(endpoint, data);
       if (response.statusCode == HttpStatus.ok) {

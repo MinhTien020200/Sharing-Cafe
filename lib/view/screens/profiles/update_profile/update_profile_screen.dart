@@ -236,6 +236,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         purpose: _purposeController.text,
                         favoriteLocation: _favoriteLocationController.text,
                         dob: _dob,
+                        provinceId: _addressProvince?.provinceId,
+                        districtId: _addressDistrict?.id,
                       );
                       setState(() {
                         _isUploading = false;
