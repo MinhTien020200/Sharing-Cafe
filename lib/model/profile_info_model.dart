@@ -56,7 +56,7 @@ class ProfileInfoModel {
             json['favorite_drink'].map((x) => FavoriteDrink.fromJson(x))),
         freeTime: List<FreeTime>.from(
             json['free_time'].map((x) => FreeTime.fromJson(x))),
-        avgRating: json['avg_rating']);
+        avgRating: json['avg_rating'] ?? "4.3");
   }
 }
 

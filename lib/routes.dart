@@ -11,6 +11,7 @@ import 'package:sharing_cafe/view/screens/blogs/create_blog/create_blog_screen.d
 import 'package:sharing_cafe/view/screens/blogs/my_blogs/my_blog_screen.dart';
 import 'package:sharing_cafe/view/screens/blogs/search/search_blog_screen.dart';
 import 'package:sharing_cafe/view/screens/chat/chat_screen.dart';
+import 'package:sharing_cafe/view/screens/chat/components/user_profile.dart';
 import 'package:sharing_cafe/view/screens/events/create_event/create_event_screen.dart';
 import 'package:sharing_cafe/view/screens/events/event_detail/event_detail_screen.dart';
 import 'package:sharing_cafe/view/screens/events/event_list/event_list_screen.dart';
@@ -69,4 +70,5 @@ final Map<String, WidgetBuilder> routes = {
       const AppointmentHistoryScreen(),
   MyBlogScreen.routeName: (context) => const MyBlogScreen(),
   SearchBlogScreen.routeName: (context) => const SearchBlogScreen(),
+  UserProfileScreen.routeName: (context) => const UserProfileScreen(),
 };

@@ -880,7 +880,12 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                                         );
                                                                     }
                                                                   },
-                                                                )
+                                                                ),
+                                                                const SizedBox(
+                                                                  width: 4,
+                                                                ),
+                                                                Text(
+                                                                    "(${info.avgRating})")
                                                               ],
                                                             )
                                                         ],

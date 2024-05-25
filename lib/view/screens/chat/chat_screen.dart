@@ -12,6 +12,7 @@ import 'package:sharing_cafe/provider/chat_provider.dart';
 import 'package:sharing_cafe/service/chat_service.dart';
 import 'package:sharing_cafe/view/components/date_time_picker.dart';
 import 'package:sharing_cafe/view/components/form_field.dart';
+import 'package:sharing_cafe/view/screens/chat/components/user_profile.dart';
 
 class ChatScreen extends StatefulWidget {
   static String routeName = "/chat";
@@ -25,6 +26,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
   bool _isLoading = true;
   String _userName = "Chat";
+  String? _userId;
   @override
   void initState() {
     super.initState();
@@ -36,6 +38,7 @@ class _ChatScreenState extends State<ChatScreen> {
       var id = arguments['id'];
       setState(() {
         _userName = arguments['name'];
+        _userId = id;
       });
       Provider.of<ChatProvider>(context, listen: false).setUserId(id);
       return id;
@@ -127,6 +130,16 @@ class _ChatScreenState extends State<ChatScreen> {
           //           });
           //     },
           //     icon: const Icon(Icons.block)),
+          if (_userId != null)
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, UserProfileScreen.routeName,
+                      arguments: {
+                        "id": _userId,
+                        "name": _userName,
+                      });
+                },
+                icon: const Icon(Icons.person_outline_outlined)),
           IconButton(
               onPressed: () {
                 Provider.of<ChatProvider>(context, listen: false)
