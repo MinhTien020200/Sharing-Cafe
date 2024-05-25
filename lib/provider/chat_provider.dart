@@ -173,6 +173,23 @@ class ChatProvider extends ChangeNotifier {
       var res = await ChatService().createSchedule(schedule);
       appointment.appointment!.id = res.scheduleId;
       addMessage(appointment);
+      var loggedUserId = await SharedPrefHelper.getUserId();
+      var data = {
+        'from': loggedUserId,
+        'to': _userId,
+        'message': null,
+        'timestamp': DateTime.now().toIso8601String(),
+        "appointment": appointment.appointment != null
+            ? {
+                "sender_id": senderId,
+                "receiver_id": _userId,
+                "content": appointment.appointment?.title,
+                "location": appointment.appointment?.location,
+                "date": appointment.appointment?.dateTime.toIso8601String(),
+              }
+            : null,
+      };
+      socket.emit('message', data);
     } catch (e) {
       ErrorHelper.showError(message: "Không thể tạo lịch hẹn: 500");
     }

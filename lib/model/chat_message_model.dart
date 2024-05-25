@@ -49,6 +49,15 @@ class ChatMessageModel {
       'to': receiverId,
       'message': messageContent,
       'timestamp': createdAt.toIso8601String(),
+      "appointment": appointment != null
+          ? {
+              "sender_id": senderId,
+              "receiver_id": receiverId,
+              "content": appointment?.title,
+              "location": appointment?.location,
+              "date": appointment?.dateTime.toIso8601String(),
+            }
+          : null,
     };
   }
 }
@@ -67,4 +76,14 @@ class Appointment {
     required this.dateTime,
     required this.isApproved,
   });
+
+  factory Appointment.fromJson(Map<String, dynamic> json) {
+    return Appointment(
+      id: json['id'],
+      title: json['title'],
+      location: json['location'],
+      dateTime: DateTimeHelper.parse(json['date']),
+      isApproved: json['is_approved'],
+    );
+  }
 }

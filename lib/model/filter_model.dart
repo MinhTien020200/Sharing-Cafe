@@ -45,17 +45,17 @@ class FilterModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'userId': userId,
-      'byProvince': provinceId != null,
-      'provinceId': provinceId,
-      'byDistrict': districtId != null,
-      'districtId': districtId,
-      'byAge': minAge != null && maxAge != null,
-      'minAge': minAge,
-      'maxAge': maxAge,
-      'bySex': sexId != null,
-      'sexId': sexId,
-      'byInterest': byInterest,
+      'user_id': userId,
+      'by_province': provinceId != null,
+      'province_id': provinceId,
+      'by_district': districtId != null,
+      'district_id': districtId,
+      'by_age': minAge != null && maxAge != null,
+      'min_age': minAge,
+      'max_age': maxAge,
+      'by_sex': sexId != null,
+      'sex_id': sexId,
+      'by_interest': byInterest,
     };
   }
 }
