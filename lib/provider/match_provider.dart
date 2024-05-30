@@ -43,7 +43,8 @@ class MatchProvider extends ChangeNotifier {
       int? maxAge,
       String? filterByGender,
       String? filterByProvince,
-      String? filterByDistrict}) async {
+      String? filterByDistrict,
+      bool? byInterest}) async {
     var filter = FilterModel(
         provinceId: filterByProvince,
         minAge: minAge,
@@ -52,7 +53,7 @@ class MatchProvider extends ChangeNotifier {
         byDistrict: filterByDistrict != null,
         byProvince: filterByProvince != null,
         bySex: filterByGender != null,
-        byInterest: true,
+        byInterest: byInterest ?? false,
         sexId: filterByGender,
         districtId: filterByDistrict);
     filter.userId = await SharedPrefHelper.getUserId();

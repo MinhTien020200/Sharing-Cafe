@@ -35,6 +35,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
   late Set<ProvinceModel> provinces;
   late Set<DistrictModel> districts;
   RangeValues _ageRange = const RangeValues(18, 100);
+  bool? _byInterest;
   @override
   void initState() {
     getProfilesV2();
@@ -84,7 +85,8 @@ class _SwipeScreenState extends State<SwipeScreen> {
                 : null,
             filterByDistrict: selectedFilterByDistrict.isNotEmpty
                 ? selectedFilterByDistrict.first.value
-                : null)
+                : null,
+            byInterest: _byInterest)
         .then((_) {
       setState(() {
         _isLoading = false;
@@ -147,6 +149,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                     .where((element) => element.id == filter.districtId)
                     .map((e) => ValueItem(value: e.id, label: e.fullName))
                     .toList();
+                _byInterest = filter.byInterest;
                 showDialog(
                     // ignore: use_build_context_synchronously
                     context: context,
@@ -262,6 +265,25 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                   selectedOptionIcon:
                                       const Icon(Icons.check_circle),
                                 ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              // select box by_interest
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text("Áp dụng theo sở thích"),
+                                  Checkbox(
+                                    value: _byInterest,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _byInterest = value ?? false;
+                                      });
+                                    },
+                                  )
+                                ],
+                              ),
                               const SizedBox(
                                 height: 16,
                               ),
