@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:sharing_cafe/helper/api_helper.dart';
+import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/model/chat_message_model.dart';
 import 'package:sharing_cafe/model/recommend_cafe.dart';
 import 'package:sharing_cafe/model/schedule_model.dart';
@@ -49,6 +50,10 @@ class ChatService {
     return ApiHelper().post(endpoint, scheduleModel.toJson()).then((response) {
       if (response.statusCode == HttpStatus.ok) {
         var jsonMap = json.decode(response.body);
+        if (jsonMap["error"] != null) {
+          ErrorHelper.showError(message: jsonMap["error"]);
+          throw Exception("Failed to create schedule: ${jsonMap["error"]}");
+        }
         return ScheduleModel.fromJson(jsonMap);
       } else {
         throw Exception("Failed to create schedule: ${response.statusCode}");
@@ -61,9 +66,11 @@ class ChatService {
     return ApiHelper().get(endpoint).then((response) {
       if (response.statusCode == HttpStatus.ok) {
         var jsonList = json.decode(response.body) as List;
-        return jsonList
-            .map<ScheduleModel>((e) => ScheduleModel.fromJson(e))
-            .toList();
+        return jsonList.map<ScheduleModel>((e) {
+          var schedule = ScheduleModel.fromJson(e);
+          schedule.date = schedule.date.add(const Duration(hours: -7));
+          return schedule;
+        }).toList();
       } else {
         return [];
       }
@@ -98,12 +105,14 @@ class ChatService {
     });
   }
 
-  Future<bool> sendFeedback(String scheduleId, String content, int rating) {
+  Future<bool> sendFeedback(
+      String scheduleId, String content, int rating, String userIdRated) {
     var endpoint = "/auth/schedule/rating";
     var body = {
       "schedule_id": scheduleId,
       "content": content,
       "rating": rating.toString(),
+      "user_id_rated": userIdRated
     };
     return ApiHelper().post(endpoint, body).then((response) {
       if (response.statusCode != HttpStatus.ok) {

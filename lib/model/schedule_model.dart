@@ -20,7 +20,7 @@ class ScheduleModel {
   final String scheduleId;
   final String content;
   final String location;
-  final DateTime date;
+  DateTime date;
   final String senderId;
   final String? senderName;
   final String? senderAvt;

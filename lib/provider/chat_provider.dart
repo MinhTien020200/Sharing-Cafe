@@ -226,7 +226,7 @@ class ChatProvider extends ChangeNotifier {
       };
       socket.emit('message', data);
     } catch (e) {
-      ErrorHelper.showError(message: "Không thể tạo lịch hẹn: 500");
+      ErrorHelper.showError(message: "Không thể tạo lịch hẹn");
     }
   }
 

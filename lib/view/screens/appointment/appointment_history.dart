@@ -19,7 +19,7 @@ class AppointmentHistoryScreen extends StatefulWidget {
 
 class _AppointmentHistoryScreenState extends State<AppointmentHistoryScreen> {
   Future<bool> sendFeedback(
-      String scheduleId, String content, int rating) async {
+      String scheduleId, String content, int rating, String userIdRated) async {
     if (content.isEmpty) {
       ErrorHelper.showError(message: "Vui lòng nhập cảm nhận của bạn");
       return false;
@@ -29,7 +29,8 @@ class _AppointmentHistoryScreenState extends State<AppointmentHistoryScreen> {
       return false;
     }
     try {
-      return await ChatService().sendFeedback(scheduleId, content, rating);
+      return await ChatService()
+          .sendFeedback(scheduleId, content, rating, userIdRated);
     } catch (e) {
       ErrorHelper.showError(message: e.toString());
       return false;
@@ -246,7 +247,8 @@ class _AppointmentHistoryScreenState extends State<AppointmentHistoryScreen> {
                                                             history.scheduleId,
                                                             commentController
                                                                 .text,
-                                                            ratingPoint);
+                                                            ratingPoint,
+                                                            history.senderId);
                                                     if (res) {
                                                       Fluttertoast.showToast(
                                                           msg:
