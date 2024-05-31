@@ -275,7 +275,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                 children: [
                                   const Text("Áp dụng theo sở thích"),
                                   Checkbox(
-                                    value: _byInterest,
+                                    value: _byInterest ?? false,
                                     onChanged: (value) {
                                       setState(() {
                                         _byInterest = value ?? false;
