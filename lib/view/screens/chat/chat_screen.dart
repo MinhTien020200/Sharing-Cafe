@@ -471,18 +471,26 @@ class _ChatScreenState extends State<ChatScreen> {
                             const SizedBox(
                               width: 8,
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  color: Colors.grey.shade300,
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                    color: Colors.grey.shade300,
+                                  ),
+                                  color: (message.messageType!
+                                      ? Colors.grey.shade200
+                                      : kPrimaryLightColor),
                                 ),
-                                color: (message.messageType!
-                                    ? Colors.grey.shade200
-                                    : kPrimaryLightColor),
+                                padding: const EdgeInsets.all(16),
+                                child: SingleChildScrollView(
+                                  child: Text(
+                                    message.messageContent,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 10,
+                                  ),
+                                ),
                               ),
-                              padding: const EdgeInsets.all(16),
-                              child: Text(message.messageContent),
                             ),
                           ];
                           if (!message.messageType!) {
