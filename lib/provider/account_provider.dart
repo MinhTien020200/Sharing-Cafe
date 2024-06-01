@@ -4,7 +4,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/service/account_service.dart';
 import 'package:sharing_cafe/service/location_service.dart';
@@ -34,11 +33,9 @@ class AccountProvider extends ChangeNotifier {
     Fluttertoast.showToast(msg: "Đăng xuất thành công");
   }
 
-  Future register(
-      String userName, String email, String password, String dob) async {
+  Future register(String userName, String email, String password) async {
     var pref = await _prefs;
-    var result =
-        await AccountService().register(userName, email, password, dob);
+    var result = await AccountService().register(userName, email, password);
     pref.setString("accessToken", result.token);
     pref.setString("userId", result.userId);
     pref.setString("email", result.email);
@@ -66,11 +63,12 @@ class AccountProvider extends ChangeNotifier {
   Future completeUserProfile({
     required String? profileAvatar,
     required String? age,
-    required String? addressProvince,
-    required String? addressDistrict,
+    required String? address,
     required String? gender,
     required String? story,
-    required String? dob,
+    required DateTime? dob,
+    required String? provinceId,
+    required String? districtId,
   }) async {
     try {
       if (profileAvatar == null || profileAvatar.isEmpty) {
@@ -79,12 +77,6 @@ class AccountProvider extends ChangeNotifier {
       // if (age == null || age.isEmpty) {
       //   throw ArgumentError('Tuổi là bắt buộc và không được để trống.');
       // }
-      if (addressProvince == null ||
-          addressProvince.isEmpty ||
-          addressDistrict == null ||
-          addressDistrict.isEmpty) {
-        throw ArgumentError('Địa chỉ là bắt buộc và không được để trống.');
-      }
       if (gender == null || gender.isEmpty) {
         throw ArgumentError('Giới tính là bắt buộc và không được để trống.');
       }
@@ -93,20 +85,20 @@ class AccountProvider extends ChangeNotifier {
         throw ArgumentError('Câu chuyện không được vượt quá 500 ký tự.');
       }
 
-      if (dob == null || dob.isEmpty) {
+      if (dob == null) {
         throw ArgumentError('Ngày sinh là bắt buộc và không được để trống.');
-      }
-      if (birthDayValidatorRegExp.hasMatch(dob) == false) {
-        throw ArgumentError('Ngày sinh không hợp lệ.');
       }
 
       return await AccountService().completeUserProfile(
-          profileAvatar: profileAvatar,
-          age: age ?? "",
-          address: "$addressDistrict, $addressProvince",
-          gender: gender,
-          story: story,
-          dob: dob);
+        profileAvatar: profileAvatar,
+        age: age ?? "",
+        address: address,
+        gender: gender,
+        story: story,
+        dob: dob.toIso8601String(),
+        provinceId: provinceId,
+        districtId: districtId,
+      );
     } catch (e) {
       if (e is ArgumentError) {
         ErrorHelper.showError(message: e.message);

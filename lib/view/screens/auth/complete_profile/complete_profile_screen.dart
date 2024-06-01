@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 // ignore: unnecessary_import
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/image_helper.dart';
@@ -15,6 +14,7 @@ import 'package:sharing_cafe/service/image_service.dart';
 import 'package:sharing_cafe/service/location_service.dart';
 import 'package:sharing_cafe/service/match_service.dart';
 import 'package:sharing_cafe/view/components/custom_network_image.dart';
+import 'package:sharing_cafe/view/components/date_time_picker.dart';
 import 'package:sharing_cafe/view/screens/auth/complete_profile/select_interest_screen.dart';
 
 import '../../../../constants.dart';
@@ -34,7 +34,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
   DistrictModel? _addressDistrict;
   String? _age;
   String? _gender;
-  String? _dob;
+  DateTime? _dob;
   String provinceId = "";
   final TextEditingController _storyController = TextEditingController();
   final List<String?> errors = [];
@@ -204,15 +204,33 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                               );
                             }),
                         const SizedBox(height: 20),
-                        // birthday datetime dob
-                        TextFormField(
-                          keyboardType: TextInputType.datetime,
-                          onChanged: (value) {
-                            _dob = value;
-                          },
-                          decoration: const InputDecoration(
-                            hintText: "Ngày sinh",
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                        Container(
+                          decoration: BoxDecoration(
+                            color: kFormFieldColor,
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 8),
+                          child: DateTimePicker(
+                            onDateTimeChanged: (date) {
+                              setState(() {
+                                _dob = date;
+                              });
+                            },
+                            value: _dob,
+                            label: "Ngày sinh | ",
+                            firstDate: DateTime.now()
+                                .add(const Duration(days: -365 * 100)),
+                            lastDate: DateTime.now()
+                                .add(const Duration(days: -365 * 18)),
+                            onlyDate: true,
+                            format: (p0) {
+                              return p0 != null
+                                  ? "${p0.day}/${p0.month}/${p0.year}"
+                                  : "";
+                            },
+                            inRow: true,
                           ),
                         ),
                         const SizedBox(height: 20),
@@ -316,8 +334,12 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                         Consumer<AccountProvider>(
                           builder: (context, auth, child) => ElevatedButton(
                             onPressed: () async {
-                              var date = DateFormat("dd/MM/yyyy")
-                                  .parse(_dob.toString());
+                              String? address;
+                              if (_addressDistrict != null &&
+                                  _addressProvince != null) {
+                                address =
+                                    "${_addressDistrict!.fullName}, ${_addressProvince!.province}";
+                              }
                               var result = await Provider.of<AccountProvider>(
                                       context,
                                       listen: false)
@@ -325,10 +347,11 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                                 profileAvatar: _imageUrl,
                                 age: _age,
                                 story: _storyController.text,
-                                addressProvince: _addressProvince?.province,
-                                addressDistrict: _addressDistrict?.fullName,
+                                address: address,
+                                provinceId: _addressProvince?.provinceId,
+                                districtId: _addressDistrict?.id,
                                 gender: _gender,
-                                dob: date.toIso8601String(),
+                                dob: _dob,
                               );
                               if (result == true) {
                                 Navigator.pushNamed(

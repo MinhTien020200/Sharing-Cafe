@@ -9,6 +9,7 @@ import 'package:sharing_cafe/provider/account_provider.dart';
 import 'package:sharing_cafe/provider/user_profile_provider.dart';
 import 'package:sharing_cafe/view/components/custom_network_image.dart';
 import 'package:sharing_cafe/view/screens/appointment/appointment_history.dart';
+import 'package:sharing_cafe/view/screens/auth/complete_profile/complete_profile_screen.dart';
 import 'package:sharing_cafe/view/screens/auth/login/login_screen.dart';
 import 'package:sharing_cafe/view/screens/blogs/my_blogs/my_blog_screen.dart';
 import 'package:sharing_cafe/view/screens/events/my_event/my_event_screen.dart';
@@ -155,13 +156,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       //       Navigator.pushNamed(
                       //           context, SelectInterestScreen.routeName);
                       //     }),
-                      // ProfileMenu(
-                      //     title: "Hoàn thiện hồ sơ",
-                      //     icon: LineAwesomeIcons.candy_cane,
-                      //     onPress: () {
-                      //       Navigator.pushNamed(
-                      //           context, CompleteProfileScreen.routeName);
-                      //     }),
+                      ProfileMenu(
+                          title: "Hoàn thiện hồ sơ",
+                          icon: LineAwesomeIcons.candy_cane,
+                          onPress: () {
+                            Navigator.pushNamed(
+                                context, CompleteProfileScreen.routeName);
+                          }),
                       ProfileMenu(
                           title: "Lịch sử cuộc hẹn",
                           icon: LineAwesomeIcons.history,

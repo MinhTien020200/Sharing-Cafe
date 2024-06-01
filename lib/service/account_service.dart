@@ -32,15 +32,10 @@ class AccountService {
   }
 
   Future<AccountModel> register(
-      String userName, String email, String password, String dob) async {
+      String userName, String email, String password) async {
     try {
       var endpoint = "/user/register";
-      var data = {
-        "user_name": userName,
-        "email": email,
-        "password": password,
-        "dob": dob
-      };
+      var data = {"user_name": userName, "email": email, "password": password};
       var response = await ApiHelper().post(endpoint, data);
       if (response.statusCode == HttpStatus.ok) {
         var json = jsonDecode(response.body);
@@ -65,10 +60,12 @@ class AccountService {
   Future<bool> completeUserProfile({
     required String profileAvatar,
     required String age,
-    required String address,
+    required String? address,
     required String gender,
     required String? story,
-    required String? dob,
+    required String dob,
+    required String? provinceId,
+    required String? districtId,
   }) async {
     try {
       var endpoint = "/auth/user/profile";
@@ -76,9 +73,11 @@ class AccountService {
         "profile_avatar": profileAvatar,
         "age": age,
         "address": address,
-        "gender": gender,
+        "gender_id": gender,
         "story": story,
-        "dob": dob
+        "dob": dob,
+        "province_id": provinceId,
+        "district_id": districtId,
       };
       var response = await ApiHelper().put(endpoint, data);
       if (response.statusCode == HttpStatus.ok) {

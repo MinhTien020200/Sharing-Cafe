@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/provider/account_provider.dart';
 import 'package:sharing_cafe/view/components/form_error.dart';
@@ -25,7 +24,6 @@ class _RegisterScreen extends State<RegisterScreen> {
   String? email;
   String? password;
   String? confirmPassword;
-  String? dob;
   bool remember = false;
   final List<String?> errors = [];
 
@@ -50,7 +48,6 @@ class _RegisterScreen extends State<RegisterScreen> {
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController dobController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -126,36 +123,6 @@ class _RegisterScreen extends State<RegisterScreen> {
                           decoration: const InputDecoration(
                             //labelText: "Email",
                             hintText: "Email",
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          controller: dobController,
-                          keyboardType: TextInputType.datetime,
-                          onSaved: (newValue) => dob = newValue,
-                          onChanged: (value) {
-                            if (value.isNotEmpty) {
-                              removeError(error: kDobNullError);
-                            } else if (birthDayValidatorRegExp
-                                .hasMatch(value)) {
-                              removeError(error: kInvalidDobError);
-                            }
-                            return;
-                          },
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              addError(error: kInvalidDobError);
-                              return "";
-                            } else if (!birthDayValidatorRegExp
-                                .hasMatch(value)) {
-                              addError(error: kInvalidDobError);
-                              return "";
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            hintText: "Ngày sinh",
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                           ),
                         ),
@@ -240,13 +207,11 @@ class _RegisterScreen extends State<RegisterScreen> {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
-                                var date = DateFormat("dd/MM/yyyy")
-                                    .parse(dobController.text.toString());
+                                ;
                                 await accountService.register(
                                     userNameController.text.toString(),
                                     emailController.text.toString(),
-                                    passwordController.text.toString(),
-                                    date.toIso8601String());
+                                    passwordController.text.toString());
                                 try {
                                   var isConfirm = await accountService
                                       .confirmVerificationEmail(
