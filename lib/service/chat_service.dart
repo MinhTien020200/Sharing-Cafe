@@ -68,7 +68,6 @@ class ChatService {
         var jsonList = json.decode(response.body) as List;
         return jsonList.map<ScheduleModel>((e) {
           var schedule = ScheduleModel.fromJson(e);
-          schedule.date = schedule.date.add(const Duration(hours: -7));
           return schedule;
         }).toList();
       } else {
