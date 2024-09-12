@@ -4,10 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiHelper {
-  final String baseUrl =
-      "https://sharing-coffee-be-capstone-com.onrender.com/api";
+  final String baseUrl = "https://sharingcafebe-production.up.railway.app/api";
   final String socketBaseUrl =
-      "https://sharing-coffee-be-capstone-com.onrender.com";
+      "https://sharingcafebe-production.up.railway.app";
 
   ApiHelper();
 
