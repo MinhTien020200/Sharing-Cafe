@@ -1,16 +1,20 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:sharing_cafe/constants.dart';
 
 class ProfileCard extends StatelessWidget {
   final String image;
   final String name;
   final String? description;
   final String age;
+  final bool isDetailPage;
   const ProfileCard({
     super.key,
     required this.image,
     required this.name,
     this.description,
     required this.age,
+    required this.isDetailPage,
   });
 
   @override
@@ -19,17 +23,37 @@ class ProfileCard extends StatelessWidget {
       color: Colors.white,
       child: Stack(children: [
         Positioned.fill(
-          child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(image),
-                fit: BoxFit.cover,
-              ),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(8),
-              ),
-            ),
-          ),
+          child: isDetailPage
+              ? Swiper(
+                  itemBuilder: (context, index) => Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(image),
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(8),
+                            bottomRight: Radius.circular(8),
+                          ),
+                        ),
+                      ),
+                  itemCount: 1,
+                  pagination: const SwiperPagination(),
+                  control: const SwiperControl(
+                    color: kPrimaryColor,
+                  ))
+              : Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(image),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(8),
+                      bottomRight: Radius.circular(8),
+                    ),
+                  ),
+                ),
         ),
         Positioned(
           bottom: 0,

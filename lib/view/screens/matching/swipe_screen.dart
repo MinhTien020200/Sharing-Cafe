@@ -412,6 +412,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                         description: profiles
                                                             .first.description,
                                                         age: profiles.first.age,
+                                                        isDetailPage: true,
                                                       ),
                                                     ),
                                                     const SizedBox(
@@ -962,6 +963,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                     name: profiles.first.name,
                                     description: profiles.first.description,
                                     age: profiles.first.age,
+                                    isDetailPage: false,
                                   ),
                                   if (_showIcon)
                                     Align(

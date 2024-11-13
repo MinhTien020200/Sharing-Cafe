@@ -123,6 +123,8 @@ class _PendingScreenState extends State<PendingScreen> {
                                                               description:
                                                                   info.story,
                                                               age: info.age,
+                                                              isDetailPage:
+                                                                  false,
                                                             ),
                                                           ),
                                                           const SizedBox(

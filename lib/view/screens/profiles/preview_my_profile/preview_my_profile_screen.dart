@@ -152,6 +152,7 @@ class _PreviewMyProfileScreenState extends State<PreviewMyProfileScreen> {
                                                 name: profiles.userName,
                                                 description: profiles.story,
                                                 age: profiles.age,
+                                                isDetailPage: true,
                                               ),
                                             ),
                                             const SizedBox(
@@ -564,6 +565,7 @@ class _PreviewMyProfileScreenState extends State<PreviewMyProfileScreen> {
                               name: profiles.userName,
                               description: profiles.story,
                               age: profiles.age,
+                              isDetailPage: true,
                             ),
                             // if (_showIcon)
                             //   Align(

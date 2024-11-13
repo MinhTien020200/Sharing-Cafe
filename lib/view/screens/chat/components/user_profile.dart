@@ -65,6 +65,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           name: info.userName,
                           description: info.story,
                           age: info.age,
+                          isDetailPage: false,
                         ),
                       ),
                       const SizedBox(
