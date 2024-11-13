@@ -147,39 +147,41 @@ class _HomeScreen extends State<HomeScreen> {
                     );
                   },
                 ),
-                const Text(
-                  "Sự kiện thịnh hành",
-                  style: heading2Style,
-                ),
-                SizedBox(
-                  height: 333,
-                  child: _isLoadingSuggestEvents
-                      ? const Center(
-                          child: CircularProgressIndicator.adaptive(),
-                        )
-                      : ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: value.suggestEvents.length,
-                          itemBuilder: (context, index) {
-                            var event = value.suggestEvents[index];
-                            return EventCard2(
-                              imageUrl: event.backgroundImage,
-                              title: event.title,
-                              dateTime: DateTimeHelper.formatDateTime(
-                                  event.timeOfEvent),
-                              location: event.location ?? "",
-                              attendeeCount: event.participantsCount,
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, EventDetailScreen.routeName,
-                                    arguments: {
-                                      'id': event.eventId,
-                                    });
-                              },
-                            );
-                          },
-                        ),
-                ),
+                if (value.suggestEvents.isNotEmpty)
+                  const Text(
+                    "Sự kiện thịnh hành",
+                    style: heading2Style,
+                  ),
+                if (value.suggestEvents.isNotEmpty)
+                  SizedBox(
+                    height: 333,
+                    child: _isLoadingSuggestEvents
+                        ? const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          )
+                        : ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: value.suggestEvents.length,
+                            itemBuilder: (context, index) {
+                              var event = value.suggestEvents[index];
+                              return EventCard2(
+                                imageUrl: event.backgroundImage,
+                                title: event.title,
+                                dateTime: DateTimeHelper.formatDateTime(
+                                    event.timeOfEvent),
+                                location: event.location ?? "",
+                                attendeeCount: event.participantsCount,
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, EventDetailScreen.routeName,
+                                      arguments: {
+                                        'id': event.eventId,
+                                      });
+                                },
+                              );
+                            },
+                          ),
+                  ),
                 const SizedBox(
                   height: 16,
                 ),

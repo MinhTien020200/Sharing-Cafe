@@ -104,77 +104,83 @@ class _EventListScreenState extends State<EventListScreen> {
         body: Consumer<EventProvider>(builder: (context, value, child) {
           return Padding(
             padding: const EdgeInsets.all(16.0),
-            child: ListView(
-              children: [
-                const Text(
-                  "Đề xuất",
-                  style: heading2Style,
-                ),
-                SizedBox(
-                  height: 333,
-                  child: _isLoadingSuggestEvents
-                      ? const Center(
-                          child: CircularProgressIndicator.adaptive(),
-                        )
-                      : ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: value.suggestEvents.length,
-                          itemBuilder: (context, index) {
-                            var event = value.suggestEvents[index];
-                            return EventCard2(
-                              imageUrl: event.backgroundImage,
-                              title: event.title,
-                              dateTime: DateTimeHelper.formatDateTime(
-                                  event.timeOfEvent),
-                              address: event.address ?? "",
-                              attendeeCount: event.participantsCount,
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, EventDetailScreen.routeName,
-                                    arguments: {
-                                      'id': event.eventId,
-                                    });
-                              },
-                            );
-                          },
+            child: value.suggestEvents.isEmpty && value.newEvents.isEmpty
+                ? const Center(child: Text("Không có sự kiện nào"))
+                : ListView(
+                    children: [
+                      if (value.suggestEvents.isNotEmpty)
+                        const Text(
+                          "Đề xuất",
+                          style: heading2Style,
                         ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                const Text(
-                  "Sự kiện mới",
-                  style: heading2Style,
-                ),
-                _isLoadingNewEvents
-                    ? const Center(
-                        child: CircularProgressIndicator.adaptive(),
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: value.newEvents.length,
-                        itemBuilder: (context, index) {
-                          var event = value.newEvents[index];
-                          return EventCard(
-                            imageUrl: event.backgroundImage,
-                            title: event.title,
-                            dateTime: DateTimeHelper.formatDateTime(
-                                event.timeOfEvent),
-                            address: event.address ?? "",
-                            attendeeCount: event.participantsCount,
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, EventDetailScreen.routeName,
-                                  arguments: {
-                                    'id': event.eventId,
-                                  });
-                            },
-                          );
-                        },
+                      if (value.suggestEvents.isNotEmpty)
+                        SizedBox(
+                          height: 333,
+                          child: _isLoadingSuggestEvents
+                              ? const Center(
+                                  child: CircularProgressIndicator.adaptive(),
+                                )
+                              : ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: value.suggestEvents.length,
+                                  itemBuilder: (context, index) {
+                                    var event = value.suggestEvents[index];
+                                    return EventCard2(
+                                      imageUrl: event.backgroundImage,
+                                      title: event.title,
+                                      dateTime: DateTimeHelper.formatDateTime(
+                                          event.timeOfEvent),
+                                      address: event.address ?? "",
+                                      attendeeCount: event.participantsCount,
+                                      onTap: () {
+                                        Navigator.pushNamed(context,
+                                            EventDetailScreen.routeName,
+                                            arguments: {
+                                              'id': event.eventId,
+                                            });
+                                      },
+                                    );
+                                  },
+                                ),
+                        ),
+                      const SizedBox(
+                        height: 16,
                       ),
-              ],
-            ),
+                      if (value.newEvents.isNotEmpty)
+                        const Text(
+                          "Sự kiện mới",
+                          style: heading2Style,
+                        ),
+                      if (value.suggestEvents.isNotEmpty)
+                        _isLoadingNewEvents
+                            ? const Center(
+                                child: CircularProgressIndicator.adaptive(),
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: value.newEvents.length,
+                                itemBuilder: (context, index) {
+                                  var event = value.newEvents[index];
+                                  return EventCard(
+                                    imageUrl: event.backgroundImage,
+                                    title: event.title,
+                                    dateTime: DateTimeHelper.formatDateTime(
+                                        event.timeOfEvent),
+                                    address: event.address ?? "",
+                                    attendeeCount: event.participantsCount,
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, EventDetailScreen.routeName,
+                                          arguments: {
+                                            'id': event.eventId,
+                                          });
+                                    },
+                                  );
+                                },
+                              ),
+                    ],
+                  ),
           );
         }));
   }

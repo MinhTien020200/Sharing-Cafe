@@ -30,22 +30,22 @@ class CustomNetworkImage extends StatelessWidget {
           fit: fit,
         );
       },
-      loadingBuilder: (BuildContext context, Widget child,
-          ImageChunkEvent? loadingProgress) {
-        if (loadingProgress == null) return child;
-        return SizedBox(
-          width: width,
-          height: height,
-          child: Center(
-            child: CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                      loadingProgress.expectedTotalBytes!
-                  : null,
-            ),
-          ),
-        );
-      },
+      // loadingBuilder: (BuildContext context, Widget child,
+      //     ImageChunkEvent? loadingProgress) {
+      //   if (loadingProgress == null) return child;
+      //   return SizedBox(
+      //     width: width,
+      //     height: height,
+      //     child: Center(
+      //       child: CircularProgressIndicator(
+      //         value: loadingProgress.expectedTotalBytes != null
+      //             ? loadingProgress.cumulativeBytesLoaded /
+      //                 loadingProgress.expectedTotalBytes!
+      //             : null,
+      //       ),
+      //     ),
+      //   );
+      // },
     );
   }
 }
