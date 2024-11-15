@@ -12,4 +12,8 @@ class ImageHelper {
     }
     return null;
   }
+
+  static String getExtension(String path) {
+    return path.split('.').last;
+  }
 }

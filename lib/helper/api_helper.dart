@@ -4,9 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiHelper {
-  final String baseUrl = "https://sharingcafebe-production.up.railway.app/api";
-  final String socketBaseUrl =
-      "https://sharingcafebe-production.up.railway.app";
+  final String baseUrl = "https://sharingcafe-be.onrender.com/api";
+  final String socketBaseUrl = "https://sharingcafe-be.onrender.com";
 
   ApiHelper();
 
@@ -95,5 +94,15 @@ class ApiHelper {
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('accessToken');
     return token ?? "";
+  }
+
+  String appendUrlParams(String url, Map<String, dynamic> params) {
+    if (params.isEmpty) {
+      return url;
+    }
+    var query = params.entries
+        .map((e) => '${e.key}=${Uri.encodeComponent(e.value.toString())}')
+        .join('&');
+    return '$url?$query';
   }
 }

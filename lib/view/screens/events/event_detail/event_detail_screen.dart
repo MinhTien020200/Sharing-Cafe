@@ -198,9 +198,9 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                           },
                                           style: ButtonStyle(
                                             backgroundColor:
-                                                MaterialStateColor.resolveWith(
+                                                WidgetStateColor.resolveWith(
                                                     (states) => kPrimaryColor),
-                                            padding: MaterialStateProperty
+                                            padding: WidgetStateProperty
                                                 .resolveWith((states) =>
                                                     const EdgeInsets.symmetric(
                                                         horizontal: 32.0)),
@@ -231,10 +231,10 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                               },
                                               style: ButtonStyle(
                                                 backgroundColor:
-                                                    MaterialStateColor
+                                                    WidgetStateColor
                                                         .resolveWith((states) =>
                                                             kErrorColor),
-                                                padding: MaterialStateProperty
+                                                padding: WidgetStateProperty
                                                     .resolveWith((states) =>
                                                         const EdgeInsets
                                                             .symmetric(

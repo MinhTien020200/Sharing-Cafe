@@ -252,9 +252,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       }
                     },
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateColor.resolveWith(
+                      backgroundColor: WidgetStateColor.resolveWith(
                           (states) => kPrimaryColor),
-                      padding: MaterialStateProperty.resolveWith((states) =>
+                      padding: WidgetStateProperty.resolveWith((states) =>
                           const EdgeInsets.symmetric(horizontal: 16.0)),
                     ),
                     child: const Text(
@@ -267,9 +267,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     ? TextButton(
                         onPressed: () {},
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith(
+                          backgroundColor: WidgetStateColor.resolveWith(
                               (states) => kPrimaryColor),
-                          padding: MaterialStateProperty.resolveWith((states) =>
+                          padding: WidgetStateProperty.resolveWith((states) =>
                               const EdgeInsets.symmetric(horizontal: 16.0)),
                         ),
                         child: const SizedBox(
@@ -332,9 +332,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           }
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith(
+                          backgroundColor: WidgetStateColor.resolveWith(
                               (states) => kPrimaryColor),
-                          padding: MaterialStateProperty.resolveWith((states) =>
+                          padding: WidgetStateProperty.resolveWith((states) =>
                               const EdgeInsets.symmetric(horizontal: 16.0)),
                         ),
                         child: const Text(

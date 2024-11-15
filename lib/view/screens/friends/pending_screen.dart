@@ -116,6 +116,8 @@ class _PendingScreenState extends State<PendingScreen> {
                                                           SizedBox(
                                                             height: 500,
                                                             child: ProfileCard(
+                                                              refId:
+                                                                  info.userId,
                                                               image: info
                                                                   .profileAvatar,
                                                               name:

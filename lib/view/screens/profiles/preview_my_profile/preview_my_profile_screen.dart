@@ -148,6 +148,7 @@ class _PreviewMyProfileScreenState extends State<PreviewMyProfileScreen> {
                                             SizedBox(
                                               height: 500,
                                               child: ProfileCard(
+                                                refId: profiles.userId,
                                                 image: profiles.profileAvatar,
                                                 name: profiles.userName,
                                                 description: profiles.story,
@@ -561,11 +562,12 @@ class _PreviewMyProfileScreenState extends State<PreviewMyProfileScreen> {
                         child: Stack(
                           children: [
                             ProfileCard(
+                              refId: profiles.userId,
                               image: profiles.profileAvatar,
                               name: profiles.userName,
                               description: profiles.story,
                               age: profiles.age,
-                              isDetailPage: true,
+                              isDetailPage: false,
                             ),
                             // if (_showIcon)
                             //   Align(
@@ -585,9 +587,6 @@ class _PreviewMyProfileScreenState extends State<PreviewMyProfileScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 32,
-                    )
                   ],
                 ),
                 // Positioned(

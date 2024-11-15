@@ -1,8 +1,11 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:sharing_cafe/constants.dart';
+import 'package:sharing_cafe/enums.dart';
+import 'package:sharing_cafe/service/image_service.dart';
 
-class ProfileCard extends StatelessWidget {
+class ProfileCard extends StatefulWidget {
+  final String refId;
   final String image;
   final String name;
   final String? description;
@@ -10,6 +13,7 @@ class ProfileCard extends StatelessWidget {
   final bool isDetailPage;
   const ProfileCard({
     super.key,
+    required this.refId,
     required this.image,
     required this.name,
     this.description,
@@ -18,17 +22,40 @@ class ProfileCard extends StatelessWidget {
   });
 
   @override
+  State<ProfileCard> createState() => _ProfileCardState();
+}
+
+class _ProfileCardState extends State<ProfileCard> {
+  List<String> profileImages = [];
+  @override
+  void initState() {
+    if (widget.isDetailPage) {
+      getProfileGallery();
+    }
+    super.initState();
+  }
+
+  Future getProfileGallery() async {
+    profileImages.add(widget.image);
+    final profileGallery = await ImageService()
+        .getImageLinks(refId: widget.refId, type: ImageType.user);
+    setState(() {
+      profileImages.addAll(profileGallery.map((e) => e.url).toList());
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
       child: Stack(children: [
         Positioned.fill(
-          child: isDetailPage
+          child: widget.isDetailPage
               ? Swiper(
                   itemBuilder: (context, index) => Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: NetworkImage(image),
+                            image: NetworkImage(profileImages[index]),
                             fit: BoxFit.cover,
                           ),
                           borderRadius: const BorderRadius.only(
@@ -37,15 +64,16 @@ class ProfileCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                  itemCount: 1,
+                  itemCount: profileImages.length,
                   pagination: const SwiperPagination(),
+                  loop: false,
                   control: const SwiperControl(
                     color: kPrimaryColor,
                   ))
               : Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(image),
+                      image: NetworkImage(widget.image),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: const BorderRadius.only(
@@ -76,7 +104,7 @@ class ProfileCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Text(
-                  '$name, $age',
+                  '${widget.name}, ${widget.age}',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 24,
@@ -85,9 +113,9 @@ class ProfileCard extends StatelessWidget {
                 ),
                 Wrap(
                   children: <Widget>[
-                    if (description != null)
+                    if (widget.description != null)
                       Text(
-                        description!,
+                        widget.description!,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,

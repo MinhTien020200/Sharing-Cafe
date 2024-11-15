@@ -207,7 +207,6 @@ class _RegisterScreen extends State<RegisterScreen> {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
-                                ;
                                 await accountService.register(
                                     userNameController.text.toString(),
                                     emailController.text.toString(),

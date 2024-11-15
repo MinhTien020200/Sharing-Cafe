@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
@@ -20,6 +21,11 @@ class UpdateProfileScreen extends StatefulWidget {
 
   @override
   State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
+}
+
+ImageFile convertToImageFile(XFile pickedFile) {
+  return ImageFile(pickedFile.path,
+      name: pickedFile.path, path: pickedFile.path, extension: "png");
 }
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
@@ -75,12 +81,33 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     ValueItem(label: 'Không cụ thể', value: 'Không cụ thể'),
   ];
 
+  final gallaryController = MultiImagePickerController(
+    maxImages: 6,
+    images: <ImageFile>[], // array of pre/default selected images
+    picker: (bool allowMultiple) async {
+      final picker = ImagePicker();
+      var pickedImages = <XFile>[];
+      if (allowMultiple) {
+        pickedImages = await picker.pickMultiImage();
+      } else {
+        var pickedImage = await picker.pickImage(source: ImageSource.camera);
+        if (pickedImage != null) {
+          pickedImages.add(pickedImage);
+        }
+      }
+      return pickedImages.map((e) => convertToImageFile(e)).toList();
+    },
+  );
+
   @override
   void initState() {
     loadListInterests();
     setState(() {
       _isLoading = true;
     });
+    Provider.of<UserProfileProvider>(context, listen: false).getUserGallery();
+    gallaryController.updateImages(
+        Provider.of<UserProfileProvider>(context, listen: false).galleryImage);
     Provider.of<UserProfileProvider>(context, listen: false)
         .getUserProfile()
         .then((value) async {
@@ -202,9 +229,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 ? TextButton(
                     onPressed: () {},
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateColor.resolveWith(
+                      backgroundColor: WidgetStateColor.resolveWith(
                           (states) => kPrimaryColor),
-                      padding: MaterialStateProperty.resolveWith((states) =>
+                      padding: WidgetStateProperty.resolveWith((states) =>
                           const EdgeInsets.symmetric(horizontal: 16.0)),
                     ),
                     child: const SizedBox(
@@ -239,6 +266,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         provinceId: _addressProvince?.provinceId,
                         districtId: _addressDistrict?.id,
                       );
+
+                      await Provider.of<UserProfileProvider>(context,
+                              listen: false)
+                          .updateUserGallery(gallaryController.images.toList());
+
                       setState(() {
                         _isUploading = false;
                       });
@@ -268,9 +300,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       }
                     },
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateColor.resolveWith(
+                      backgroundColor: WidgetStateColor.resolveWith(
                           (states) => kPrimaryColor),
-                      padding: MaterialStateProperty.resolveWith((states) =>
+                      padding: WidgetStateProperty.resolveWith((states) =>
                           const EdgeInsets.symmetric(horizontal: 16.0)),
                     ),
                     child: const Text(
@@ -335,7 +367,19 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 50),
+                          const SizedBox(height: 20),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text('ẢNH CỦA BẠN',
+                                style: heading2Style,
+                                textAlign: TextAlign.left),
+                          ),
+                          SizedBox(
+                            height: 280,
+                            child: MultiImagePickerView(
+                              controller: gallaryController,
+                            ),
+                          ),
                           Form(
                               child: Column(
                             children: [

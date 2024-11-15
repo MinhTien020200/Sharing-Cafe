@@ -405,6 +405,8 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                     SizedBox(
                                                       height: 500,
                                                       child: ProfileCard(
+                                                        refId: profiles
+                                                            .first.userId,
                                                         image: profiles
                                                             .first.image,
                                                         name:
@@ -959,6 +961,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                               child: Stack(
                                 children: [
                                   ProfileCard(
+                                    refId: profiles.first.userId,
                                     image: profiles.first.image,
                                     name: profiles.first.name,
                                     description: profiles.first.description,

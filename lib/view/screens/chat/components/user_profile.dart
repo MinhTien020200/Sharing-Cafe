@@ -61,6 +61,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       SizedBox(
                         height: 500,
                         child: ProfileCard(
+                          refId: userId,
                           image: info.profileAvatar,
                           name: info.userName,
                           description: info.story,

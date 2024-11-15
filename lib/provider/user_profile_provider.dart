@@ -1,9 +1,14 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:multi_image_picker_view/multi_image_picker_view.dart';
+import 'package:sharing_cafe/enums.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
+import 'package:sharing_cafe/helper/image_helper.dart';
+import 'package:sharing_cafe/helper/shared_prefs_helper.dart';
 import 'package:sharing_cafe/model/interest_model.dart';
 import 'package:sharing_cafe/model/user_profile_model.dart';
+import 'package:sharing_cafe/service/image_service.dart';
 import 'package:sharing_cafe/service/interest_service.dart';
 import 'package:sharing_cafe/service/user_profile_service.dart';
 
@@ -11,9 +16,11 @@ class UserProfileProvider extends ChangeNotifier {
   // private variables
   UserProfileModel? _userProfile;
   List<InterestModel> _listInterests = [];
+  List<ImageFile> _galleryImage = [];
   //public
   UserProfileModel get userProfile => _userProfile!;
   List<InterestModel> get listInterests => _listInterests;
+  List<ImageFile> get galleryImage => _galleryImage;
 
   Future<UserProfileModel?> getUserProfile() async {
     _userProfile = await UserProfileService().getUserProfile();
@@ -28,6 +35,29 @@ class UserProfileProvider extends ChangeNotifier {
 
   setUserAvt(String url) {
     userProfile.profileAvatar = url;
+    notifyListeners();
+  }
+
+  Future updateUserGallery(List<ImageFile> images) async {
+    var refId = await SharedPrefHelper.getUserId();
+    var type = ImageType.user;
+    _galleryImage = images;
+    notifyListeners();
+    return await ImageService().updateImageLinks(images, refId, type);
+  }
+
+  Future getUserGallery() async {
+    var refId = await SharedPrefHelper.getUserId();
+    var type = ImageType.user;
+    var images = await ImageService().getImageLinks(refId: refId, type: type);
+    _galleryImage = images
+        .map((e) => ImageFile(
+              e.url,
+              path: e.url,
+              name: e.url,
+              extension: ImageHelper.getExtension(e.url),
+            ))
+        .toList();
     notifyListeners();
   }
 

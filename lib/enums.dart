@@ -29,3 +29,28 @@ enum NotificationStatus {
     }
   }
 }
+
+enum ImageType {
+  user(value: 1),
+  event(value: 2),
+  blog(value: 3),
+  comment(value: 4);
+
+  final int value;
+  const ImageType({required this.value});
+
+  static ImageType fromInt(int value) {
+    switch (value) {
+      case 1:
+        return ImageType.user;
+      case 2:
+        return ImageType.event;
+      case 3:
+        return ImageType.blog;
+      case 4:
+        return ImageType.comment;
+      default:
+        return ImageType.user;
+    }
+  }
+}

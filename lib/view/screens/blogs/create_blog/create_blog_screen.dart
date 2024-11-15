@@ -152,8 +152,8 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
               },
               style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateColor.resolveWith((states) => kPrimaryColor),
-                padding: MaterialStateProperty.resolveWith(
+                    WidgetStateColor.resolveWith((states) => kPrimaryColor),
+                padding: WidgetStateProperty.resolveWith(
                     (states) => const EdgeInsets.symmetric(horizontal: 16.0)),
               ),
               child: Text(
