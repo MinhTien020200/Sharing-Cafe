@@ -29,6 +29,8 @@ class ImageService {
     for (var image in images) {
       if (!image.path!.contains("http")) {
         imageLinks.add(await uploadImage(File(image.path!)));
+      } else {
+        imageLinks.add(image.path!);
       }
     }
     var data = {
