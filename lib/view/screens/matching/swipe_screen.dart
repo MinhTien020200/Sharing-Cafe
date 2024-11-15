@@ -7,8 +7,10 @@ import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/enums.dart';
+import 'package:sharing_cafe/model/interest_model.dart';
 import 'package:sharing_cafe/model/province_model.dart';
 import 'package:sharing_cafe/provider/match_provider.dart';
+import 'package:sharing_cafe/provider/user_profile_provider.dart';
 import 'package:sharing_cafe/service/location_service.dart';
 import 'package:sharing_cafe/service/match_service.dart';
 import 'package:sharing_cafe/view/screens/friends/friends_screen.dart';
@@ -31,9 +33,11 @@ class _SwipeScreenState extends State<SwipeScreen> {
   List<ValueItem> selectedFilterByGender = [];
   List<ValueItem> selectedFilterByProvince = [];
   List<ValueItem> selectedFilterByDistrict = [];
+  List<ValueItem> selectedFilterByInterest = [];
   String? _selectedProvinceId;
   late Set<ProvinceModel> provinces;
   late Set<DistrictModel> districts;
+  late List<InterestModel> interests;
   RangeValues _ageRange = const RangeValues(18, 100);
   bool? _byInterest;
   @override
@@ -150,6 +154,8 @@ class _SwipeScreenState extends State<SwipeScreen> {
                     .map((e) => ValueItem(value: e.id, label: e.fullName))
                     .toList();
                 _byInterest = filter.byInterest;
+                Provider.of<UserProfileProvider>(context, listen: false)
+                    .getListInterests();
                 showDialog(
                     // ignore: use_build_context_synchronously
                     context: context,
@@ -273,7 +279,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text("Áp dụng theo sở thích"),
+                                  const Text("Áp dụng theo sở thích của bạn"),
                                   Checkbox(
                                     value: _byInterest ?? false,
                                     onChanged: (value) {
@@ -283,6 +289,44 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                     },
                                   )
                                 ],
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Chọn sở thích ưu tiên"),
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              SizedBox(
+                                width: 300,
+                                child: MultiSelectDropDown(
+                                  selectedOptionTextColor: kPrimaryColor,
+                                  hint: 'Thêm sở thích',
+                                  onOptionSelected: (options) async {},
+                                  maxItems: 5,
+                                  options: Provider.of<UserProfileProvider>(
+                                          context,
+                                          listen: false)
+                                      .listInterests
+                                      .map((interest) {
+                                    return ValueItem(
+                                        label: interest.name,
+                                        value: interest.interestId.toString());
+                                  }).toList(),
+                                  selectedOptions: selectedFilterByInterest,
+                                  selectionType: SelectionType.multi,
+                                  chipConfig: const ChipConfig(
+                                      wrapType: WrapType.scroll,
+                                      backgroundColor: kPrimaryColor),
+                                  dropdownHeight: 400,
+                                  optionTextStyle:
+                                      const TextStyle(fontSize: 16),
+                                  selectedOptionIcon:
+                                      const Icon(Icons.check_circle),
+                                ),
                               ),
                               const SizedBox(
                                 height: 16,
