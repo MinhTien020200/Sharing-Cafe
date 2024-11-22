@@ -1,5 +1,7 @@
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
+import 'package:sharing_cafe/model/calendar_model.dart';
 import 'package:sharing_cafe/model/event_model.dart';
 import 'package:sharing_cafe/service/event_service.dart';
 
@@ -11,6 +13,8 @@ class EventProvider extends ChangeNotifier {
   EventModel? _eventDetails;
   final List<String> _searchHistory = [];
   List<EventModel> _searchEvents = [];
+  List<CalendarModel> _calendar = [];
+  List<CalendarEventData> _selectedCalendarCell = [];
   // public
   List<EventModel> get newEvents => _newEvents;
   List<EventModel> get suggestEvents => _suggestEvents;
@@ -18,6 +22,8 @@ class EventProvider extends ChangeNotifier {
   EventModel get eventDetails => _eventDetails!;
   List<String> get searchHistory => _searchHistory;
   List<EventModel> get searchEvents => _searchEvents;
+  List<CalendarModel> get calendar => _calendar;
+  List<CalendarEventData> get selectedCalendarCell => _selectedCalendarCell;
 
   Future getNewEvents() async {
     _newEvents = await EventService().getNewEvents();
@@ -153,5 +159,17 @@ class EventProvider extends ChangeNotifier {
 
   Future<bool> deleteEvent(String eventId) {
     return EventService().deleteEvent(eventId);
+  }
+
+  Future<List<CalendarModel>> getCalendar() async {
+    var calendar = await EventService().getCalendar();
+    _calendar = calendar;
+    notifyListeners();
+    return calendar;
+  }
+
+  void setSelectedCalendarCell(List<CalendarEventData> selectedCalendarCell) {
+    _selectedCalendarCell = selectedCalendarCell;
+    notifyListeners();
   }
 }

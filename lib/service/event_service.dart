@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sharing_cafe/helper/api_helper.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/shared_prefs_helper.dart';
+import 'package:sharing_cafe/model/calendar_model.dart';
 import 'package:sharing_cafe/model/event_model.dart';
 import 'package:sharing_cafe/model/event_participant.dart';
 
@@ -265,5 +266,23 @@ class EventService {
       print(e);
     }
     return false;
+  }
+
+  Future<List<CalendarModel>> getCalendar() async {
+    try {
+      var response = await ApiHelper().get('/auth/calendar');
+      if (response.statusCode == HttpStatus.ok) {
+        var jsonList = json.decode(response.body) as List;
+        return jsonList
+            .map<CalendarModel>((e) => CalendarModel.fromJson(e))
+            .toList();
+      } else {
+        ErrorHelper.showError(
+            message: "Lỗi ${response.statusCode}: Không thể lấy lịch sự kiện");
+      }
+    } on Exception catch (_, e) {
+      print(e);
+    }
+    return [];
   }
 }
