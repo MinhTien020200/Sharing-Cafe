@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:provider/provider.dart';
+import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/provider/event_provider.dart';
 import 'package:sharing_cafe/view/screens/calendar/day_view_screen.dart';
 
@@ -62,6 +63,53 @@ class _MyCalendarScreenState extends State<MyCalendarScreen> {
           showWeekTileBorder: false, // To show or hide header border
           hideDaysNotInMonth:
               true, // To hide days or cell that are not in current month
+          headerStyle: const HeaderStyle(
+              decoration: BoxDecoration(
+            color: kPrimaryLightColor,
+          )),
+          cellBuilder: (date, event, isToday, isInMonth, hideDaysNotInMonth) =>
+              Container(
+            decoration: BoxDecoration(
+              color: isToday ? kPrimaryLightColor : Colors.white,
+            ),
+            child: isInMonth
+                ? Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            top: isToday
+                                ? const BorderSide(color: kPrimaryColor)
+                                : BorderSide.none,
+                          ),
+                        ),
+                        child: Text(
+                          date.day.toString(),
+                          style: TextStyle(
+                              color: isToday ? kPrimaryColor : Colors.black),
+                        ),
+                      ),
+                      if (event.isNotEmpty)
+                        ListView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          children: event
+                              .map((e) => Container(
+                                  decoration: const BoxDecoration(
+                                      color: kPrimaryColor,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(4))),
+                                  height: 20,
+                                  child: Text(
+                                    e.title,
+                                    style: const TextStyle(color: Colors.white),
+                                  )))
+                              .toList(),
+                        )
+                    ],
+                  )
+                : Container(),
+          ),
         ),
       );
     });

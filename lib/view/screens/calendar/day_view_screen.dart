@@ -3,6 +3,7 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/provider/event_provider.dart';
 
 class DayViewScreen extends StatefulWidget {
@@ -22,7 +23,7 @@ class _DayViewScreenState extends State<DayViewScreen> {
       final List<CalendarEventData> events = value.selectedCalendarCell;
       return Scaffold(
         appBar: AppBar(
-          title: const Text("Calendar"),
+          title: const Text("Lịch của tôi"),
         ),
         body: DayView(
           controller: EventController()..addAll(events),
@@ -39,6 +40,40 @@ class _DayViewScreenState extends State<DayViewScreen> {
           onEventDoubleTap: (events, date) => print(events),
           onEventLongTap: (events, date) => print(events),
           onDateLongPress: (date) => print(date),
+          headerStyle: const HeaderStyle(
+              decoration: BoxDecoration(
+            color: kPrimaryLightColor,
+          )),
+          eventTileBuilder:
+              (date, events, boundary, startDuration, endDuration) => Container(
+            decoration: BoxDecoration(
+              color: kPrimaryLightColor,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            padding: const EdgeInsets.all(8),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    events.firstOrNull?.title ?? "",
+                    style: const TextStyle(
+                      color: kPrimaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Text(events.firstOrNull?.description ?? "",
+                      style: const TextStyle(
+                        color: kTextColor,
+                        fontSize: 16,
+                        overflow: TextOverflow.ellipsis,
+                      ))
+                ],
+              ),
+            ),
+          ),
         ),
       );
     });
