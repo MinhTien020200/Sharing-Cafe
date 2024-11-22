@@ -1,15 +1,20 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
 
 import 'package:sharing_cafe/helper/datetime_helper.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
+import 'package:sharing_cafe/helper/image_helper.dart';
 import 'package:sharing_cafe/model/chat_message_model.dart';
 import 'package:sharing_cafe/provider/chat_provider.dart';
 import 'package:sharing_cafe/service/chat_service.dart';
+import 'package:sharing_cafe/service/image_service.dart';
 import 'package:sharing_cafe/view/components/date_time_picker.dart';
 import 'package:sharing_cafe/view/components/form_field.dart';
 import 'package:sharing_cafe/view/screens/chat/components/user_profile.dart';
@@ -483,13 +488,16 @@ class _ChatScreenState extends State<ChatScreen> {
                                       : kPrimaryLightColor),
                                 ),
                                 padding: const EdgeInsets.all(16),
-                                child: SingleChildScrollView(
-                                  child: Text(
-                                    message.messageContent,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 10,
-                                  ),
-                                ),
+                                child: ImageHelper.isImageUrl(
+                                        message.messageContent)
+                                    ? Image.network(message.messageContent)
+                                    : SingleChildScrollView(
+                                        child: Text(
+                                          message.messageContent,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 10,
+                                        ),
+                                      ),
                               ),
                             ),
                           ];
@@ -545,6 +553,20 @@ class _ChatScreenState extends State<ChatScreen> {
                           ),
                           onChanged: (String messageText) {},
                         ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.image),
+                        onPressed: () async {
+                          var imageFile = await ImagePicker().pickImage(
+                            source: ImageSource.camera,
+                          );
+                          if (imageFile == null) return;
+                          var image = await ImageService()
+                              .uploadImage(File(imageFile.path));
+                          await Provider.of<ChatProvider>(context,
+                                  listen: false)
+                              .sendMessage(image);
+                        },
                       ),
                       IconButton(
                         icon: const Icon(Icons.send),

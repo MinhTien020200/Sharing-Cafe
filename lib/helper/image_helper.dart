@@ -16,4 +16,19 @@ class ImageHelper {
   static String getExtension(String path) {
     return path.split('.').last;
   }
+
+  static bool isImageUrl(String url) {
+    // Regex to match common image file extensions
+    final imageFileExtensions =
+        RegExp(r'\.(jpg|jpeg|png|gif|bmp|webp|svg)$', caseSensitive: false);
+
+    // Check if the string is a valid URL
+    Uri? uri = Uri.tryParse(url);
+    if (uri == null || !(uri.hasScheme && uri.hasAuthority)) {
+      return false;
+    }
+
+    // Check if the URL ends with a valid image extension
+    return imageFileExtensions.hasMatch(url);
+  }
 }
