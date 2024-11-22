@@ -10,6 +10,7 @@ class FilterModel {
   bool? bySex;
   String? sexId;
   bool? byInterest;
+  String? priorityInterestIds;
   DateTime? createdAt;
 
   FilterModel({
@@ -25,6 +26,7 @@ class FilterModel {
     this.sexId,
     this.byInterest,
     this.createdAt,
+    this.priorityInterestIds,
   });
 
   factory FilterModel.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class FilterModel {
       bySex: json['by_sex'],
       sexId: json['sex_id'],
       byInterest: json['by_interest'],
+      priorityInterestIds: json['priority_interest_ids'],
     );
   }
 
@@ -56,6 +59,7 @@ class FilterModel {
       'by_sex': sexId != null,
       'sex_id': sexId,
       'by_interest': byInterest,
+      'priority_interest_ids': priorityInterestIds,
     };
   }
 }

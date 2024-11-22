@@ -255,7 +255,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 16.0, vertical: 8.0),
                                         child: Text(
-                                          blog.category,
+                                          blog.category ?? "",
                                           style: const TextStyle(
                                             color: kPrimaryColor,
                                             fontSize: 12.0,

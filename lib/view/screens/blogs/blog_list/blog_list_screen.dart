@@ -44,58 +44,58 @@ class _BlogListScreenState extends State<BlogListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Image.asset(
-              'assets/images/cafe.png',
-              height: 20,
+    return Consumer<BlogProvider>(builder: (context, value, child) {
+      var blogs = value.popularBlogs;
+      var newBlogs = value.newBlogs;
+      return Scaffold(
+        appBar: AppBar(
+          title: Row(
+            children: [
+              Image.asset(
+                'assets/images/cafe.png',
+                height: 20,
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              Text('Blog', style: heading2Style.copyWith(color: kPrimaryColor)),
+            ],
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(
+                Icons.add_box_outlined,
+                size: 24,
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, CreateBlogScreen.routeName);
+              },
             ),
-            const SizedBox(
-              width: 8,
+            IconButton(
+              icon: const Icon(
+                Icons.feed_outlined,
+                size: 24,
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, MyBlogScreen.routeName);
+              },
             ),
-            Text('Blog', style: heading2Style.copyWith(color: kPrimaryColor)),
+            IconButton(
+              icon: const Icon(
+                Icons.search,
+                size: 24,
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, SearchBlogScreen.routeName);
+              },
+            ),
           ],
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.add_box_outlined,
-              size: 24,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, CreateBlogScreen.routeName);
-            },
-          ),
-          IconButton(
-            icon: const Icon(
-              Icons.feed_outlined,
-              size: 24,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, MyBlogScreen.routeName);
-            },
-          ),
-          IconButton(
-            icon: const Icon(
-              Icons.search,
-              size: 24,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, SearchBlogScreen.routeName);
-            },
-          ),
-        ],
-      ),
-      body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator.adaptive(),
-            )
-          : Consumer<BlogProvider>(builder: (context, value, child) {
-              var blogs = value.popularBlogs;
-              var newBlogs = value.newBlogs;
-              return Padding(
+        body: _isLoading && blogs.isEmpty && newBlogs.isEmpty
+            ? const Center(
+                child: CircularProgressIndicator.adaptive(),
+              )
+            : Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: ListView(
                   children: [
@@ -233,8 +233,8 @@ class _BlogListScreenState extends State<BlogListScreen> {
                     ),
                   ],
                 ),
-              );
-            }),
-    );
+              ),
+      );
+    });
   }
 }

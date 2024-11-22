@@ -12,6 +12,7 @@ import 'package:sharing_cafe/view/screens/appointment/appointment_history.dart';
 import 'package:sharing_cafe/view/screens/auth/complete_profile/complete_profile_screen.dart';
 import 'package:sharing_cafe/view/screens/auth/login/login_screen.dart';
 import 'package:sharing_cafe/view/screens/blogs/my_blogs/my_blog_screen.dart';
+import 'package:sharing_cafe/view/screens/calendar/my_calendar_screen.dart';
 import 'package:sharing_cafe/view/screens/events/my_event/my_event_screen.dart';
 import 'package:sharing_cafe/view/screens/profiles/preview_my_profile/preview_my_profile_screen.dart';
 import 'package:sharing_cafe/view/screens/profiles/profile_page/components/profile_menu.dart';
@@ -61,13 +62,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       ),
-      body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator.adaptive(),
-            )
-          : Consumer<UserProfileProvider>(builder: (context, value, child) {
-              var userProfile = value.userProfile;
-              return SingleChildScrollView(
+      body: Consumer<UserProfileProvider>(builder: (context, value, child) {
+        var userProfile = value.userProfile;
+        return _isLoading && userProfile == null
+            ? const Center(
+                child: CircularProgressIndicator.adaptive(),
+              )
+            : SingleChildScrollView(
                 child: Container(
                   padding: const EdgeInsets.all(24),
                   child: Column(
@@ -78,7 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(100),
                               child: CustomNetworkImage(
-                                  url: userProfile.profileAvatar,
+                                  url: userProfile!.profileAvatar,
                                   fit: BoxFit.cover))),
                       const SizedBox(height: 10),
                       Text(
@@ -143,19 +144,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 context, MyEventScreen.routeName);
                           }),
                       ProfileMenu(
+                          title: "Lịch",
+                          icon: LineAwesomeIcons.calendar,
+                          onPress: () {
+                            Navigator.pushNamed(
+                                context, MyCalendarScreen.routeName);
+                          }),
+                      ProfileMenu(
                           title: "Blog của bạn",
                           icon: LineAwesomeIcons.blog,
                           onPress: () {
                             Navigator.pushNamed(
                                 context, MyBlogScreen.routeName);
                           }),
-                      // ProfileMenu(
-                      //     title: "Sở thích của bạn",
-                      //     icon: LineAwesomeIcons.ice_cream,
-                      //     onPress: () {
-                      //       Navigator.pushNamed(
-                      //           context, SelectInterestScreen.routeName);
-                      //     }),
                       ProfileMenu(
                           title: "Hoàn thiện hồ sơ",
                           icon: LineAwesomeIcons.candy_cane,
@@ -196,7 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
               );
-            }),
+      }),
     );
   }
 }

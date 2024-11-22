@@ -562,7 +562,7 @@ class _PreviewMyProfileScreenState extends State<PreviewMyProfileScreen> {
                         child: Stack(
                           children: [
                             ProfileCard(
-                              refId: profiles.userId,
+                              refId: profiles!.userId,
                               image: profiles.profileAvatar,
                               name: profiles.userName,
                               description: profiles.story,

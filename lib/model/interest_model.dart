@@ -13,8 +13,8 @@ class InterestModel {
 
   factory InterestModel.fromListsJson(Map<String, dynamic> json) {
     return InterestModel(
-      interestId: json["interest_id"],
-      name: json["name"],
+      interestId: json["interest_id"] ?? "",
+      name: json["name"] ?? "",
       imageUrl: json["image"] == null || json["image"] == ""
           ? "https://picsum.photos/id/200/200/300"
           : json["image"],

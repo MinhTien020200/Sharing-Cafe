@@ -338,7 +338,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                     height: 120,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(100),
-                                      child: userProfile
+                                      child: userProfile!
                                               .profileAvatar.isNotEmpty
                                           ? CustomNetworkImage(
                                               url: userProfile.profileAvatar,

@@ -77,6 +77,9 @@ class _SwipeScreenState extends State<SwipeScreen> {
     setState(() {
       _isLoading = true;
     });
+    var priorityInterestIds = selectedFilterByInterest.isNotEmpty
+        ? selectedFilterByInterest.map((e) => e.value).join(";")
+        : null;
     Provider.of<MatchProvider>(context, listen: false)
         .filterProfile(
             minAge: _ageRange.start.round(),
@@ -90,7 +93,8 @@ class _SwipeScreenState extends State<SwipeScreen> {
             filterByDistrict: selectedFilterByDistrict.isNotEmpty
                 ? selectedFilterByDistrict.first.value
                 : null,
-            byInterest: _byInterest)
+            byInterest: _byInterest,
+            priorityInterestIds: priorityInterestIds)
         .then((_) {
       setState(() {
         _isLoading = false;
@@ -133,8 +137,15 @@ class _SwipeScreenState extends State<SwipeScreen> {
               icon: const Icon(Icons.filter_alt_outlined),
               onPressed: () async {
                 var filter = await MatchService().getFilterSetting();
-                _ageRange = RangeValues(filter.minAge?.toDouble() ?? 18,
-                    filter.maxAge?.toDouble() ?? 100);
+                double maxAge = filter.maxAge?.toDouble() == null ||
+                        filter.maxAge!.toDouble() > 100
+                    ? 100
+                    : filter.maxAge!.toDouble();
+                double minAge = filter.minAge?.toDouble() == null ||
+                        filter.minAge!.toDouble() < 18
+                    ? 18
+                    : filter.minAge!.toDouble();
+                _ageRange = RangeValues(minAge, maxAge);
                 var genders = await MatchService().getListGender();
                 selectedFilterByGender = genders
                     .where((element) => element.genderId == filter.sexId)
@@ -154,8 +165,22 @@ class _SwipeScreenState extends State<SwipeScreen> {
                     .map((e) => ValueItem(value: e.id, label: e.fullName))
                     .toList();
                 _byInterest = filter.byInterest;
-                Provider.of<UserProfileProvider>(context, listen: false)
+                await Provider.of<UserProfileProvider>(context, listen: false)
                     .getListInterests();
+                if (filter.priorityInterestIds != null) {
+                  var inte =
+                      Provider.of<UserProfileProvider>(context, listen: false)
+                          .listInterests;
+                  selectedFilterByInterest = filter.priorityInterestIds!
+                      .split(";")
+                      .map((e) => ValueItem(
+                          value: e,
+                          label: inte
+                              .firstWhere((element) =>
+                                  element.interestId.toString() == e)
+                              .name))
+                      .toList();
+                }
                 showDialog(
                     // ignore: use_build_context_synchronously
                     context: context,
@@ -175,7 +200,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                               ),
                               RangeSlider(
                                 values: _ageRange,
-                                min: 0,
+                                min: 10,
                                 max: 100,
                                 divisions: 82,
                                 labels: RangeLabels(
@@ -305,7 +330,11 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                 child: MultiSelectDropDown(
                                   selectedOptionTextColor: kPrimaryColor,
                                   hint: 'Thêm sở thích',
-                                  onOptionSelected: (options) async {},
+                                  onOptionSelected: (options) async {
+                                    setState(() {
+                                      selectedFilterByInterest = options;
+                                    });
+                                  },
                                   maxItems: 5,
                                   options: Provider.of<UserProfileProvider>(
                                           context,

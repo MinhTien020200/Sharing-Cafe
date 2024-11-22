@@ -18,7 +18,7 @@ class UserProfileProvider extends ChangeNotifier {
   List<InterestModel> _listInterests = [];
   List<ImageFile> _galleryImage = [];
   //public
-  UserProfileModel get userProfile => _userProfile!;
+  UserProfileModel? get userProfile => _userProfile;
   List<InterestModel> get listInterests => _listInterests;
   List<ImageFile> get galleryImage => _galleryImage;
 
@@ -34,7 +34,7 @@ class UserProfileProvider extends ChangeNotifier {
   }
 
   setUserAvt(String url) {
-    userProfile.profileAvatar = url;
+    userProfile!.profileAvatar = url;
     notifyListeners();
   }
 

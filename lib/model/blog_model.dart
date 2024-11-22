@@ -12,7 +12,7 @@ class BlogModel {
   final String title;
   final String ownerName;
   final String? ownerAvatar;
-  final String category;
+  final String? category;
   final String? interestId;
   bool isLike;
 
@@ -27,7 +27,7 @@ class BlogModel {
     required this.image,
     required this.title,
     required this.ownerName,
-    required this.category,
+    this.category,
     required this.isLike,
     required this.interestId,
     this.ownerAvatar,

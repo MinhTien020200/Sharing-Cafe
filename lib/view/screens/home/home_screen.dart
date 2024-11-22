@@ -155,32 +155,33 @@ class _HomeScreen extends State<HomeScreen> {
                 if (value.suggestEvents.isNotEmpty)
                   SizedBox(
                     height: 333,
-                    child: _isLoadingSuggestEvents
-                        ? const Center(
-                            child: CircularProgressIndicator.adaptive(),
-                          )
-                        : ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: value.suggestEvents.length,
-                            itemBuilder: (context, index) {
-                              var event = value.suggestEvents[index];
-                              return EventCard2(
-                                imageUrl: event.backgroundImage,
-                                title: event.title,
-                                dateTime: DateTimeHelper.formatDateTime(
-                                    event.timeOfEvent),
-                                location: event.location ?? "",
-                                attendeeCount: event.participantsCount,
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, EventDetailScreen.routeName,
-                                      arguments: {
-                                        'id': event.eventId,
-                                      });
+                    child:
+                        _isLoadingSuggestEvents && value.suggestEvents.isEmpty
+                            ? const Center(
+                                child: CircularProgressIndicator.adaptive(),
+                              )
+                            : ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: value.suggestEvents.length,
+                                itemBuilder: (context, index) {
+                                  var event = value.suggestEvents[index];
+                                  return EventCard2(
+                                    imageUrl: event.backgroundImage,
+                                    title: event.title,
+                                    dateTime: DateTimeHelper.formatDateTime(
+                                        event.timeOfEvent),
+                                    location: event.location ?? "",
+                                    attendeeCount: event.participantsCount,
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, EventDetailScreen.routeName,
+                                          arguments: {
+                                            'id': event.eventId,
+                                          });
+                                    },
+                                  );
                                 },
-                              );
-                            },
-                          ),
+                              ),
                   ),
                 const SizedBox(
                   height: 16,
@@ -189,7 +190,7 @@ class _HomeScreen extends State<HomeScreen> {
                   "Blogs phổ biến",
                   style: heading2Style,
                 ),
-                _isLoading
+                _isLoading && value.blogs.isEmpty
                     ? const Center(
                         child: CircularProgressIndicator.adaptive(),
                       )
