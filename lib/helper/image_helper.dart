@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 
 class ImageHelper {
   static Future<File?> pickImage(ImageSource source) async {
@@ -30,5 +31,10 @@ class ImageHelper {
 
     // Check if the URL ends with a valid image extension
     return imageFileExtensions.hasMatch(url);
+  }
+
+  static ImageFile convertToImageFile(XFile pickedFile) {
+    return ImageFile(pickedFile.path,
+        name: pickedFile.path, path: pickedFile.path, extension: "png");
   }
 }

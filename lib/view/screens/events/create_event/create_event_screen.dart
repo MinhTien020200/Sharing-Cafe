@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
+import 'package:sharing_cafe/enums.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/image_helper.dart';
 import 'package:sharing_cafe/helper/key_value_pair.dart';
@@ -114,6 +116,25 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   String _id = "";
   bool _isLoading = false;
 
+  final gallaryController = MultiImagePickerController(
+    maxImages: 6,
+    images: <ImageFile>[], // array of pre/default selected images
+    picker: (bool allowMultiple) async {
+      final picker = ImagePicker();
+      var pickedImages = <XFile>[];
+      if (allowMultiple) {
+        pickedImages = await picker.pickMultiImage();
+      } else {
+        var pickedImage = await picker.pickImage(source: ImageSource.camera);
+        if (pickedImage != null) {
+          pickedImages.add(pickedImage);
+        }
+      }
+      return pickedImages
+          .map((e) => ImageHelper.convertToImageFile(e))
+          .toList();
+    },
+  );
   Future initPage(String id, bool isEdit) async {
     if (isEdit) {
       // load event data
@@ -124,6 +145,16 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         var categories = (await CategoryService().getCategories())
             .map((e) => KeyValuePair(e.categoryId, e.title))
             .toList();
+        var eventGallery = await ImageService()
+            .getImageLinks(refId: id, type: ImageType.event);
+        gallaryController.updateImages(eventGallery.map((e) {
+          return ImageFile(
+            e.url,
+            path: e.url,
+            name: e.url,
+            extension: ImageHelper.getExtension(e.url),
+          );
+        }).toList());
         if (value != null) {
           setState(() {
             _titleController.text = value.title;
@@ -222,6 +253,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         endOfEvent: _endOfEvent!,
                         address: _addressController.text,
                       );
+                      if (_id.isNotEmpty) {
+                        var refId = _id;
+                        var type = ImageType.event;
+                        await ImageService().updateImageLinks(
+                            gallaryController.images.toList(), refId, type);
+                      }
                       setState(() {
                         _isUploading = false;
                       });
@@ -388,6 +425,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                                 )
                               ],
                             ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    height: 160,
+                    child: MultiImagePickerView(
+                      controller: gallaryController,
                     ),
                   ),
                   const SizedBox(height: 16),

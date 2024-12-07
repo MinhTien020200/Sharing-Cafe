@@ -3,11 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
+import 'package:sharing_cafe/enums.dart';
 import 'package:sharing_cafe/helper/datetime_helper.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/shared_prefs_helper.dart';
 import 'package:sharing_cafe/provider/event_provider.dart';
 import 'package:sharing_cafe/service/event_service.dart';
+import 'package:sharing_cafe/service/image_service.dart';
 import 'package:sharing_cafe/view/components/custom_network_image.dart';
 import 'package:sharing_cafe/view/components/form_field.dart';
 
@@ -24,6 +26,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
   bool _canJoinEvent = true;
   String _loggedUser = "";
   String id = "";
+  List<String> _imageGallery = [];
 
   @override
   void initState() {
@@ -39,6 +42,10 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
         .then((value) => EventService().getEventParticipants(id))
         .then((value) => _canJoinEvent =
             !value.any((element) => element.userId == _loggedUser))
+        .then((_) async => _imageGallery = (await ImageService()
+                .getImageLinks(refId: id, type: ImageType.event))
+            .map((e) => e.url)
+            .toList())
         .then((_) => setState(() {
               _isLoading = false;
             })));
@@ -356,7 +363,27 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                   fontSize: 16.0,
                                 ),
                               ),
-                              // Add more widgets for other details if needed
+                              const Divider(),
+                              const Text(
+                                'Hình ảnh',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18.0,
+                                ),
+                              ),
+                              ListView(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                children: _imageGallery
+                                    .map((e) => Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: CustomNetworkImage(
+                                            url: e,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ))
+                                    .toList(),
+                              ),
                             ],
                           ),
                         ),
