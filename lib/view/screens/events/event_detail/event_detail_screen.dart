@@ -12,6 +12,7 @@ import 'package:sharing_cafe/service/event_service.dart';
 import 'package:sharing_cafe/service/image_service.dart';
 import 'package:sharing_cafe/view/components/custom_network_image.dart';
 import 'package:sharing_cafe/view/components/form_field.dart';
+import 'package:sharing_cafe/view/screens/events/discussing/discussing_screen.dart';
 
 class EventDetailScreen extends StatefulWidget {
   static String routeName = "/event-detail";
@@ -21,12 +22,14 @@ class EventDetailScreen extends StatefulWidget {
   State<EventDetailScreen> createState() => _EventDetailScreenState();
 }
 
-class _EventDetailScreenState extends State<EventDetailScreen> {
+class _EventDetailScreenState extends State<EventDetailScreen>
+    with SingleTickerProviderStateMixin {
   bool _isLoading = false;
   bool _canJoinEvent = true;
   String _loggedUser = "";
   String id = "";
   List<String> _imageGallery = [];
+  TabController? tabController;
 
   @override
   void initState() {
@@ -49,7 +52,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
         .then((_) => setState(() {
               _isLoading = false;
             })));
-
+    tabController = TabController(length: 4, vsync: this);
     super.initState();
   }
 
@@ -185,7 +188,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                               const SizedBox(height: 8),
                               Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   _canJoinEvent
                                       ? TextButton(
@@ -257,27 +260,33 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                             ),
                                           ],
                                         ),
-                                  // TextButton(
-                                  //   onPressed: () {
-                                  //     // Handle attend action
-                                  //   },
-                                  //   style: ButtonStyle(
-                                  //     backgroundColor:
-                                  //         MaterialStateColor.resolveWith(
-                                  //             (states) => kPrimaryLightColor),
-                                  //     padding:
-                                  //         MaterialStateProperty.resolveWith(
-                                  //             (states) =>
-                                  //                 const EdgeInsets.symmetric(
-                                  //                     horizontal: 24.0)),
-                                  //   ),
-                                  //   child: const Text(
-                                  //     'Kết nối nhóm',
-                                  //     style: TextStyle(
-                                  //         color: kPrimaryColor,
-                                  //         fontWeight: FontWeight.bold),
-                                  //   ),
-                                  // ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, DiscussingScreen.routeName,
+                                          arguments: {
+                                            'id': eventDetails.eventId,
+                                            'eventName': eventDetails.title,
+                                            'image':
+                                                eventDetails.backgroundImage
+                                          });
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          WidgetStateColor.resolveWith(
+                                              (states) => kPrimaryLightColor),
+                                      padding: WidgetStateProperty.resolveWith(
+                                          (states) =>
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 24.0)),
+                                    ),
+                                    child: const Text(
+                                      'Thảo luận',
+                                      style: TextStyle(
+                                          color: kPrimaryColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
                                   // TextButton(
                                   //   onPressed: () {
                                   //     // Handle attend action

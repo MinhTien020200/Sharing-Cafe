@@ -4,10 +4,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sharing_cafe/enums.dart';
 import 'package:sharing_cafe/helper/api_helper.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/shared_prefs_helper.dart';
 import 'package:sharing_cafe/model/calendar_model.dart';
+import 'package:sharing_cafe/model/discussing_model.dart';
 import 'package:sharing_cafe/model/event_model.dart';
 import 'package:sharing_cafe/model/event_participant.dart';
 
@@ -279,6 +281,26 @@ class EventService {
       } else {
         ErrorHelper.showError(
             message: "Lỗi ${response.statusCode}: Không thể lấy lịch sự kiện");
+      }
+    } on Exception catch (_, e) {
+      print(e);
+    }
+    return [];
+  }
+
+  Future<List<DiscussingModel>> getDiscussing(String eventId) async {
+    try {
+      var response = await ApiHelper().get(
+          '/auth/discuss?ref_id=$eventId&type=${DiscussingType.event.value}');
+      if (response.statusCode == HttpStatus.ok) {
+        var jsonList = json.decode(response.body) as List;
+        return jsonList
+            .map<DiscussingModel>((e) => DiscussingModel.fromJson(e))
+            .toList();
+      } else {
+        ErrorHelper.showError(
+            message:
+                "Lỗi ${response.statusCode}: Không thể lấy danh sách thảo luận");
       }
     } on Exception catch (_, e) {
       print(e);

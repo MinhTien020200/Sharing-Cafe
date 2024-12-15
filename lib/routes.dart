@@ -15,6 +15,7 @@ import 'package:sharing_cafe/view/screens/calendar/my_calendar_screen.dart';
 import 'package:sharing_cafe/view/screens/chat/chat_screen.dart';
 import 'package:sharing_cafe/view/screens/chat/components/user_profile.dart';
 import 'package:sharing_cafe/view/screens/events/create_event/create_event_screen.dart';
+import 'package:sharing_cafe/view/screens/events/discussing/discussing_screen.dart';
 import 'package:sharing_cafe/view/screens/events/event_detail/event_detail_screen.dart';
 import 'package:sharing_cafe/view/screens/events/event_list/event_list_screen.dart';
 import 'package:sharing_cafe/view/screens/events/my_event/my_event_screen.dart';
@@ -75,4 +76,5 @@ final Map<String, WidgetBuilder> routes = {
   UserProfileScreen.routeName: (context) => const UserProfileScreen(),
   MyCalendarScreen.routeName: (context) => const MyCalendarScreen(),
   DayViewScreen.routeName: (context) => const DayViewScreen(),
+  DiscussingScreen.routeName: (context) => const DiscussingScreen(),
 };

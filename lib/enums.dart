@@ -54,3 +54,22 @@ enum ImageType {
     }
   }
 }
+
+enum DiscussingType {
+  event(value: 1),
+  blog(value: 2);
+
+  final int value;
+  const DiscussingType({required this.value});
+
+  static DiscussingType fromInt(int value) {
+    switch (value) {
+      case 1:
+        return DiscussingType.event;
+      case 2:
+        return DiscussingType.blog;
+      default:
+        return DiscussingType.event;
+    }
+  }
+}
