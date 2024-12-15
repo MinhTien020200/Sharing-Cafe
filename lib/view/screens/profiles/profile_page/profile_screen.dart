@@ -137,7 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                       //MENU
                       ProfileMenu(
-                          title: "Sự kiện của bạn",
+                          title: "Workshop của bạn",
                           icon: LineAwesomeIcons.calendar_check,
                           onPress: () {
                             Navigator.pushNamed(

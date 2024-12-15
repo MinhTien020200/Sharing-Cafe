@@ -67,7 +67,7 @@ class _EventListScreenState extends State<EventListScreen> {
               const SizedBox(
                 width: 8,
               ),
-              Text('Sự kiện',
+              Text('Workshop',
                   style: heading2Style.copyWith(color: kPrimaryColor)),
             ],
           ),
@@ -148,7 +148,7 @@ class _EventListScreenState extends State<EventListScreen> {
                       ),
                       if (value.newEvents.isNotEmpty)
                         const Text(
-                          "Sự kiện mới",
+                          "Workshop mới",
                           style: heading2Style,
                         ),
                       if (value.suggestEvents.isNotEmpty)

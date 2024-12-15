@@ -149,7 +149,7 @@ class _HomeScreen extends State<HomeScreen> {
                 ),
                 if (value.suggestEvents.isNotEmpty)
                   const Text(
-                    "Sự kiện thịnh hành",
+                    "Workshop thịnh hành",
                     style: heading2Style,
                   ),
                 if (value.suggestEvents.isNotEmpty)

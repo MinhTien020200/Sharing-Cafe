@@ -36,7 +36,7 @@ class _MyEventScreenState extends State<MyEventScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Sự kiện của bạn",
+          "Workshop của bạn",
           style: heading2Style,
         ),
         actions: [
