@@ -7,6 +7,7 @@ import 'package:sharing_cafe/enums.dart';
 import 'package:sharing_cafe/helper/datetime_helper.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/shared_prefs_helper.dart';
+import 'package:sharing_cafe/model/event_participant.dart';
 import 'package:sharing_cafe/provider/event_provider.dart';
 import 'package:sharing_cafe/service/event_service.dart';
 import 'package:sharing_cafe/service/image_service.dart';
@@ -30,6 +31,7 @@ class _EventDetailScreenState extends State<EventDetailScreen>
   String id = "";
   List<String> _imageGallery = [];
   TabController? tabController;
+  List<EventParticipantModel> _participants = [];
 
   @override
   void initState() {
@@ -42,7 +44,10 @@ class _EventDetailScreenState extends State<EventDetailScreen>
       _loggedUser = value;
     }).then((_) => Provider.of<EventProvider>(context, listen: false)
         .getEventDetails(id)
-        .then((value) => EventService().getEventParticipants(id))
+        .then((value) async {
+          _participants = await EventService().getEventParticipants(id);
+          return _participants;
+        })
         .then((value) => _canJoinEvent =
             !value.any((element) => element.userId == _loggedUser))
         .then((_) async => _imageGallery = (await ImageService()
@@ -356,6 +361,63 @@ class _EventDetailScreenState extends State<EventDetailScreen>
                                 title: Text(
                                   '${eventDetails.participantsCount} Người sẽ tham gia',
                                 ),
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    useSafeArea: true,
+                                    builder: (context) {
+                                      return SizedBox(
+                                        height: 600,
+                                        width: double.infinity,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              const Text(
+                                                'Danh sách tham gia',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18.0,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 8),
+                                              ListView.builder(
+                                                itemCount: _participants.length,
+                                                shrinkWrap: true,
+                                                physics:
+                                                    const NeverScrollableScrollPhysics(),
+                                                itemBuilder: (context, index) {
+                                                  return ListTile(
+                                                    leading: _participants[
+                                                                    index]
+                                                                .profileAvatar !=
+                                                            null
+                                                        ? CircleAvatar(
+                                                            backgroundImage:
+                                                                NetworkImage(
+                                                                    _participants[
+                                                                            index]
+                                                                        .profileAvatar!),
+                                                          )
+                                                        : null,
+                                                    title: Text(
+                                                      _participants[index]
+                                                              .userName ??
+                                                          "Người dùng không xác định",
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
                               ),
                               const Divider(),
                               const Text(
