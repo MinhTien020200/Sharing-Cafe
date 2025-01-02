@@ -381,11 +381,27 @@ class _SwipeScreenState extends State<SwipeScreen> {
               Navigator.pushNamed(context, PendingScreen.routeName);
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.supervisor_account),
-            onPressed: () {
-              Navigator.pushNamed(context, FriendsScreen.routeName);
-            },
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: Badge(
+              label: FutureBuilder(
+                future: MatchService().getListFriends(pending: false),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Text("0");
+                  }
+                  var friends = snapshot.data;
+                  return Text(friends?.length.toString() ?? "0");
+                },
+              ),
+              alignment: Alignment.topRight,
+              child: IconButton(
+                icon: const Icon(Icons.supervisor_account),
+                onPressed: () {
+                  Navigator.pushNamed(context, FriendsScreen.routeName);
+                },
+              ),
+            ),
           ),
         ],
       ),
