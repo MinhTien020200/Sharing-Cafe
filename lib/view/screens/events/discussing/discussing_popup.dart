@@ -17,15 +17,15 @@ class _DiscussingPopupState extends State<DiscussingPopup> {
           const SizedBox(height: 20),
           const Text('Tạo thảo luận mới'),
           const SizedBox(height: 20),
-          TextField(
-            decoration: const InputDecoration(
+          const TextField(
+            decoration: InputDecoration(
               hintText: 'Nhập tiêu đề',
               border: OutlineInputBorder(),
             ),
           ),
           const SizedBox(height: 20),
-          TextField(
-            decoration: const InputDecoration(
+          const TextField(
+            decoration: InputDecoration(
               hintText: 'Nhập nội dung',
               border: OutlineInputBorder(),
             ),

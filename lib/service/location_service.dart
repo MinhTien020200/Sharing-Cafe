@@ -35,11 +35,14 @@ class LocationService {
     var response = await ApiHelper().get(endpoint);
     if (response.statusCode == HttpStatus.ok) {
       var jsonList = jsonDecode(response.body);
-      Set<ProvinceModel> list = jsonList
+      List<ProvinceModel> list = jsonList
           .map((e) => ProvinceModel.fromJson(e))
-          .toSet()
+          .toList()
           .cast<ProvinceModel>();
-      return list;
+      // sort list
+      list = list.toList()..sort((a, b) => a.province.compareTo(b.province));
+      Set<ProvinceModel> sorted = list.toSet().cast<ProvinceModel>();
+      return sorted;
     } else {
       ErrorHelper.showError(message: "Không thể lấy danh sách tỉnh thành");
       return {};
@@ -55,11 +58,14 @@ class LocationService {
     var response = await ApiHelper().get(endpoint);
     if (response.statusCode == HttpStatus.ok) {
       var jsonList = jsonDecode(response.body);
-      Set<DistrictModel> list = jsonList
+      List<DistrictModel> list = jsonList
           .map((e) => DistrictModel.fromJson(e))
-          .toSet()
+          .toList()
           .cast<DistrictModel>();
-      return list;
+      // sort list
+      list = list.toList()..sort((a, b) => a.fullName.compareTo(b.fullName));
+      Set<DistrictModel> sorted = list.toSet().cast<DistrictModel>();
+      return sorted;
     } else {
       ErrorHelper.showError(message: "Không thể lấy danh sách quận huyện");
       return {};

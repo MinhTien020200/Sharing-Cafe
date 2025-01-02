@@ -63,7 +63,7 @@ class _DiscussingScreenState extends State<DiscussingScreen> {
                   showModalBottomSheet(
                       context: context,
                       builder: (context) {
-                        return DiscussingPopup();
+                        return const DiscussingPopup();
                       });
                 },
                 child: const Text('Tạo thảo luận'),

@@ -255,6 +255,8 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                     selectedFilterByDistrict.clear();
                                   });
                                 },
+                                searchEnabled: true,
+                                searchLabel: 'Tìm kiếm',
                                 options: provinces.map((province) {
                                   return ValueItem(
                                       label: province.province,
