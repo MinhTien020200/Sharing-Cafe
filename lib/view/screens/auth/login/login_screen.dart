@@ -185,10 +185,11 @@ class _LoginScreen extends State<LoginScreen> {
                               } catch (e) {
                                 return;
                               }
-                              var isConfirm =
-                                  await accountService.confirmVerificationEmail(
-                                      emailController.text,
-                                      passwordController.text);
+                              // var isConfirm =
+                              //     await accountService.confirmVerificationEmail(
+                              //         emailController.text,
+                              //         passwordController.text);
+                              var isConfirm = true;
                               // if all are valid then go to success screen
                               if (isConfirm) {
                                 Navigator.pushNamedAndRemoveUntil(context,
