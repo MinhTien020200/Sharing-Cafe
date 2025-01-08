@@ -52,7 +52,13 @@ class _SearchScreenState extends State<SearchScreen> {
                       title: eventProvider.searchEvents[index].title,
                       dateTime: DateTimeHelper.formatDateTime(
                           eventProvider.searchEvents[index].timeOfEvent),
-                      address: eventProvider.searchEvents[index].address ?? "",
+                      address: eventProvider.searchEvents[index].address !=
+                                  null &&
+                              eventProvider
+                                      .searchEvents[index].address!.length >
+                                  20
+                          ? '${eventProvider.searchEvents[index].address!.substring(0, 40)}...'
+                          : eventProvider.searchEvents[index].address ?? "",
                       attendeeCount:
                           eventProvider.searchEvents[index].participantsCount,
                       onTap: () {

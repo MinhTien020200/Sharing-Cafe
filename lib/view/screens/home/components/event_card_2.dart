@@ -27,6 +27,15 @@ class EventCard2 extends StatelessWidget {
       child: SizedBox(
         width: 300,
         child: Card(
+          color:
+              const Color(0xFFF8DFC5), // Set background color
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(
+              width: 1,
+              color: Colors.black.withOpacity(1),
+            ),
+          ),
           clipBehavior: Clip.antiAlias,
           child: Padding(
             padding: const EdgeInsets.all(16.0),

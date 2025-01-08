@@ -59,14 +59,14 @@ class _BlogCategoryScreenState extends State<BlogCategoryScreen> {
                             Text(
                               interestTitle,
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ),
                             ),
                             Text("$interestNumber blogs",
                                 style: const TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.black,
                                   fontSize: 12,
                                 )),
                           ],

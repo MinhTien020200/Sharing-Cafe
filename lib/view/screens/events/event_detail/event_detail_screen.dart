@@ -90,7 +90,7 @@ class _EventDetailScreenState extends State<EventDetailScreen>
                         ),
                       ),
                     ),
-                    iconTheme: const IconThemeData(color: Colors.white),
+                    iconTheme: const IconThemeData(color: Colors.black),
                     actions: [
                       IconButton(
                           onPressed: () {
@@ -172,7 +172,7 @@ class _EventDetailScreenState extends State<EventDetailScreen>
                           },
                           icon: const Icon(
                             Icons.more_vert,
-                            color: Colors.white,
+                            color: Colors.black,
                           ))
                     ],
                   ),

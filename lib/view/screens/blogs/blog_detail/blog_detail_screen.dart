@@ -72,7 +72,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                           ),
                         ),
                       ),
-                      iconTheme: const IconThemeData(color: Colors.white),
+                      iconTheme: const IconThemeData(color: Colors.black),
                       actions: [
                         IconButton(
                             onPressed: () {
@@ -156,7 +156,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                             },
                             icon: const Icon(
                               Icons.more_vert,
-                              color: Colors.white,
+                              color: Colors.black,
                             ))
                       ],
                     ),

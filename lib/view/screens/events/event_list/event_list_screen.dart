@@ -167,7 +167,10 @@ class _EventListScreenState extends State<EventListScreen> {
                                     title: event.title,
                                     dateTime: DateTimeHelper.formatDateTime(
                                         event.timeOfEvent),
-                                    address: event.address ?? "",
+                                    address: event.address != null &&
+                                            event.address!.length > 20
+                                        ? '${event.address!.substring(0, 40)}...'
+                                        : event.address ?? "",
                                     attendeeCount: event.participantsCount,
                                     onTap: () {
                                       Navigator.pushNamed(

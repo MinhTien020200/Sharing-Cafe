@@ -375,7 +375,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 textAlign: TextAlign.left),
                           ),
                           SizedBox(
-                            height: 280,
+                            height: 180,
                             child: MultiImagePickerView(
                               controller: gallaryController,
                             ),

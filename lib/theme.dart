@@ -5,13 +5,16 @@ import 'constants.dart';
 class AppTheme {
   static ThemeData lightTheme(BuildContext context) {
     return ThemeData(
-      scaffoldBackgroundColor: const Color(0xFFF6EFED),
-      fontFamily: "OpenSans",
+      scaffoldBackgroundColor: const Color(0xFFE3C9AD),
+      fontFamily: "Roboto",
       appBarTheme: const AppBarTheme(
-          color: Color(0xFFF6EFED),
+          color: Color(0xFFE3C9AD),
           elevation: 0,
           iconTheme: IconThemeData(color: Colors.black),
           titleTextStyle: TextStyle(color: Colors.black)),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: Color(0xFFE3C9AD),
+      ),
       textTheme: const TextTheme(
         bodyLarge: TextStyle(color: kTextColor),
         bodyMedium: TextStyle(color: kTextColor),

@@ -29,86 +29,93 @@ class BlogCard2 extends StatelessWidget {
       child: SizedBox(
         width: 200,
         child: Card(
-          clipBehavior: Clip.antiAlias,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                  child: CustomNetworkImage(
-                    url: imageUrl,
-                    height: 150.0,
-                    fit: BoxFit.cover,
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFFF8DFC5), // Add background color
+              border: Border.all(color: Colors.black, width: 1),
+              borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                    child: CustomNetworkImage(
+                      url: imageUrl,
+                      height: 150.0,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      const SizedBox(height: 8.0),
-                      Expanded(
-                        child: Text(
-                          title,
-                          style: heading2Style,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        const SizedBox(height: 8.0),
+                        Expanded(
+                          child: Text(
+                            title,
+                            style: heading2Style,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                      Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(8.0)),
-                            child: CustomNetworkImage(
-                              url: avtUrl,
-                              height: 15.0,
-                              width: 15.0,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 8.0,
-                          ),
-                          Expanded(
-                            child: Text(
-                              ownerName,
-                              style: const TextStyle(
-                                color: kPrimaryColor,
-                                fontSize: 12,
-                                overflow: TextOverflow.ellipsis,
+                        Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(8.0)),
+                              child: CustomNetworkImage(
+                                url: avtUrl,
+                                height: 15.0,
+                                width: 15.0,
+                                fit: BoxFit.cover,
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 8.0,
-                          ),
-                          Icon(
-                            Icons.circle,
-                            size: 4,
-                            color: Colors.grey[600],
-                          ),
-                          const SizedBox(
-                            width: 8.0,
-                          ),
-                          Expanded(
-                            child: Text(
-                              time,
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 12,
-                                overflow: TextOverflow.ellipsis,
+                            const SizedBox(
+                              width: 8.0,
+                            ),
+                            Expanded(
+                              child: Text(
+                                ownerName,
+                                style: const TextStyle(
+                                  color: kPrimaryColor,
+                                  fontSize: 12,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                            const SizedBox(
+                              width: 8.0,
+                            ),
+                            Icon(
+                              Icons.circle,
+                              size: 4,
+                              color: Colors.grey[600],
+                            ),
+                            const SizedBox(
+                              width: 8.0,
+                            ),
+                            Expanded(
+                              child: Text(
+                                time,
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 12,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

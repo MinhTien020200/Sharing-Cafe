@@ -7,7 +7,7 @@ import 'package:sharing_cafe/view/screens/matching/swipe_screen.dart';
 import 'package:sharing_cafe/view/screens/home/home_screen.dart';
 import 'package:sharing_cafe/view/screens/profiles/profile_page/profile_screen.dart';
 
-const Color inActiveIconColor = Color(0xFFB6B6B6);
+const Color inActiveIconColor = kPrimaryColor;
 
 class InitScreen extends StatefulWidget {
   const InitScreen({super.key});
@@ -56,7 +56,7 @@ class _InitScreenState extends State<InitScreen> {
             activeIcon: SvgPicture.asset(
               "assets/icons/home.svg",
               colorFilter: const ColorFilter.mode(
-                kPrimaryColor,
+                Colors.black,
                 BlendMode.srcIn,
               ),
             ),
@@ -73,7 +73,7 @@ class _InitScreenState extends State<InitScreen> {
             activeIcon: SvgPicture.asset(
               "assets/icons/event.svg",
               colorFilter: const ColorFilter.mode(
-                kPrimaryColor,
+                Colors.black,
                 BlendMode.srcIn,
               ),
             ),
@@ -90,7 +90,7 @@ class _InitScreenState extends State<InitScreen> {
             activeIcon: SvgPicture.asset(
               "assets/icons/cafe.svg",
               colorFilter: const ColorFilter.mode(
-                kPrimaryColor,
+                Colors.black,
                 BlendMode.srcIn,
               ),
             ),
@@ -107,7 +107,7 @@ class _InitScreenState extends State<InitScreen> {
             activeIcon: SvgPicture.asset(
               "assets/icons/blog.svg",
               colorFilter: const ColorFilter.mode(
-                kPrimaryColor,
+                Colors.black,
                 BlendMode.srcIn,
               ),
             ),
@@ -124,7 +124,7 @@ class _InitScreenState extends State<InitScreen> {
             activeIcon: SvgPicture.asset(
               "assets/icons/User Icon.svg",
               colorFilter: const ColorFilter.mode(
-                kPrimaryColor,
+                Colors.black,
                 BlendMode.srcIn,
               ),
             ),

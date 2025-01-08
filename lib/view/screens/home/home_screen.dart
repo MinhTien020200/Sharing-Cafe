@@ -73,6 +73,7 @@ class _HomeScreen extends State<HomeScreen> {
               icon: const Icon(
                 Icons.notifications_none_outlined,
                 size: 24,
+                color: kPrimaryColor,
               ),
               onPressed: () {
                 Navigator.pushNamed(context, NotificationScreen.routeName);

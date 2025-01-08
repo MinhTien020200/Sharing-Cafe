@@ -413,7 +413,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
               var profiles = value.profiles;
 
               return profiles.isEmpty
-                  ? const Center(child: Text("Chưa có người dùng mới"))
+                  ? const Center(child: Text("Trống"))
                   : Stack(children: [
                       Column(
                         children: <Widget>[
@@ -892,7 +892,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                                                 ),
                                                                 Expanded(
                                                                   child: Text(
-                                                                    "Đánh giá trung bình",
+                                                                    "Đánh giá cuộc hẹn",
                                                                     maxLines: 2,
                                                                     style: TextStyle(
                                                                         fontWeight:
