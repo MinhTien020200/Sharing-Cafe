@@ -12,6 +12,7 @@ import 'package:sharing_cafe/provider/friends_provider.dart';
 import 'package:sharing_cafe/provider/match_provider.dart';
 import 'package:sharing_cafe/provider/home_provider.dart';
 import 'package:sharing_cafe/provider/interest_provider.dart';
+import 'package:sharing_cafe/provider/notification_provider.dart';
 import 'package:sharing_cafe/provider/user_profile_provider.dart';
 import 'package:sharing_cafe/service/location_service.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -113,6 +114,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => FriendsProvider()),
         ChangeNotifierProvider(create: (_) => CategoriesProvider()),
         ChangeNotifierProvider(create: (_) => ChatProvider()),
+        ChangeNotifierProvider(create: (_) => NotificationProvider()),
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,

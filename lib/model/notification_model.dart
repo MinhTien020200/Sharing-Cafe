@@ -6,7 +6,7 @@ class NotificationModel {
   // final String title;
   final String content;
   final DateTime createdAt;
-  final NotificationStatus status;
+  NotificationStatus status;
 
   NotificationModel(
       {required this.id,

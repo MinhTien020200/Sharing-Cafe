@@ -29,4 +29,22 @@ class NotificationService {
     }
     return [];
   }
+
+  //mark notification as read
+  Future<bool> markAsRead(String notificationId) async {
+    try {
+      var response = await ApiHelper().put('/notifications/readNotifications', {
+        "notification_ids": [notificationId]
+      });
+      if (response.statusCode == HttpStatus.ok) {
+        return true;
+      } else {
+        ErrorHelper.showError(
+            message: "Lỗi ${response.statusCode}: Không thể đánh dấu đã đọc");
+      }
+    } on Exception catch (_, e) {
+      print(e);
+    }
+    return false;
+  }
 }

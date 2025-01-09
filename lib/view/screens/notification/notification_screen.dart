@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/enums.dart';
 import 'package:sharing_cafe/helper/datetime_helper.dart';
-import 'package:sharing_cafe/model/notification_model.dart';
-import 'package:sharing_cafe/service/notification_service.dart';
+import 'package:sharing_cafe/provider/notification_provider.dart';
 
 class NotificationScreen extends StatefulWidget {
   static String routeName = "notification";
@@ -15,6 +15,13 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   @override
+  void initState() {
+    super.initState();
+    Provider.of<NotificationProvider>(context, listen: false)
+        .getNotifications();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -23,49 +30,45 @@ class _NotificationScreenState extends State<NotificationScreen> {
           style: heading2Style,
         ),
       ),
-      body: FutureBuilder(
-        future: NotificationService().getNotifications(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasData) {
-              var data = snapshot.data as List<NotificationModel>;
-              if (data.isEmpty) {
-                return const Center(
-                  child: Text("Không có thông báo"),
-                );
-              }
-              return ListView.builder(
-                itemCount: data.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: data[index].status == NotificationStatus.read
-                          ? Colors.grey[200]
-                          : Colors.white,
-                    ),
-                    child: ListTile(
-                      title: Text(
-                        data[index].content,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(
-                          DateTimeHelper.howOldFrom(data[index].createdAt)),
-                    ),
-                  );
-                },
-              );
-            } else {
-              return const Center(
-                child: Text("Không có thông báo"),
-              );
-            }
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
+      body: Consumer<NotificationProvider>(builder: (context, value, child) {
+        var data = value.notifications;
+        if (data.isEmpty) {
+          return const Center(
+            child: Text("Không có thông báo nào."),
+          );
+        }
+        return ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            return InkWell(
+              onTap: () {
+                if (data[index].status == NotificationStatus.unread) {
+                  Provider.of<NotificationProvider>(context, listen: false)
+                      .readNotification(data[index].id);
+                }
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: data[index].status == NotificationStatus.read
+                      ? Colors.white12
+                      : kPrimaryLightColor,
+                ),
+                child: ListTile(
+                  title: Text(
+                    data[index].content,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle:
+                      Text(DateTimeHelper.howOldFrom(data[index].createdAt)),
+                  trailing: Text(data[index].status == NotificationStatus.read
+                      ? "Đã đọc"
+                      : "Chưa đọc"),
+                ),
+              ),
             );
-          }
-        },
-      ),
+          },
+        );
+      }),
     );
   }
 }
