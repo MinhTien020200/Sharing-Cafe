@@ -48,6 +48,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
                   return ListView.builder(
                     itemCount: matches.length,
                     itemBuilder: (context, index) {
+                      GlobalKey moreButtonKey = GlobalKey();
                       return InkWell(
                         onTap: () {
                           Navigator.pushNamed(context, ChatScreen.routeName,
@@ -64,6 +65,40 @@ class _FriendsScreenState extends State<FriendsScreen> {
                             ),
                             title: Text(matches[index].userName),
                             subtitle: Text(matches[index].bio),
+                            trailing: IconButton(
+                                key: moreButtonKey,
+                                onPressed: () {
+                                  final RenderBox renderBox = moreButtonKey
+                                      .currentContext
+                                      ?.findRenderObject() as RenderBox;
+                                  final Offset offset =
+                                      renderBox.localToGlobal(Offset.zero);
+                                  final RelativeRect position =
+                                      RelativeRect.fromLTRB(
+                                          offset.dx, offset.dy, 30, 0);
+                                  showMenu(
+                                      context: context,
+                                      position: position,
+                                      items: [
+                                        PopupMenuItem(
+                                          value: "unfriend",
+                                          onTap: () {
+                                            Provider.of<FriendsProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .unfriend(
+                                                    matches[index].matchedId);
+                                          },
+                                          child: const Text(
+                                            "Hủy kết bạn",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.red),
+                                          ),
+                                        ),
+                                      ]);
+                                },
+                                icon: const Icon(Icons.more_horiz)),
                           ),
                         ),
                       );

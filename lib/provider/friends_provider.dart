@@ -8,6 +8,7 @@ class FriendsProvider extends ChangeNotifier {
   List<MatchedModel> _friends = [];
 
   List<MatchedModel> get friends => _friends;
+  int get friendsCount => _friends.length;
 
   Future getListFriends({bool pending = false}) async {
     _friends = await MatchService().getListFriends(pending: pending);
@@ -19,6 +20,18 @@ class FriendsProvider extends ChangeNotifier {
       var result = await MatchService().updateMatchStatus(userId, status);
       if (result == true) {
         _friends.removeWhere((element) => element.userId == userId);
+        notifyListeners();
+      }
+    } on Exception catch (e) {
+      ErrorHelper.showError(message: e.toString());
+    }
+  }
+
+  Future unfriend(String matchedId) async {
+    try {
+      var result = await MatchService().unFriendWithMatchId(matchedId);
+      if (result == true) {
+        _friends.removeWhere((element) => element.matchedId == matchedId);
         notifyListeners();
       }
     } on Exception catch (e) {

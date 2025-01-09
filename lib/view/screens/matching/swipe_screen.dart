@@ -9,6 +9,7 @@ import 'package:sharing_cafe/constants.dart';
 import 'package:sharing_cafe/enums.dart';
 import 'package:sharing_cafe/model/interest_model.dart';
 import 'package:sharing_cafe/model/province_model.dart';
+import 'package:sharing_cafe/provider/friends_provider.dart';
 import 'package:sharing_cafe/provider/match_provider.dart';
 import 'package:sharing_cafe/provider/user_profile_provider.dart';
 import 'package:sharing_cafe/service/location_service.dart';
@@ -43,6 +44,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
   @override
   void initState() {
     getProfilesV2();
+    Provider.of<FriendsProvider>(context, listen: false).getListFriends();
     super.initState();
   }
 
@@ -384,14 +386,9 @@ class _SwipeScreenState extends State<SwipeScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 12),
             child: Badge(
-              label: FutureBuilder(
-                future: MatchService().getListFriends(pending: false),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Text("0");
-                  }
-                  var friends = snapshot.data;
-                  return Text(friends?.length.toString() ?? "0");
+              label: Consumer<FriendsProvider>(
+                builder: (context, value, child) {
+                  return Text(value.friendsCount.toString());
                 },
               ),
               alignment: Alignment.topRight,

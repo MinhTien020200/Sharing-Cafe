@@ -139,4 +139,16 @@ class MatchService {
       throw Exception("Lỗi ${response.statusCode}");
     });
   }
+
+  Future unFriendWithMatchId(String matchedId) {
+    var endpoint = "/auth/match/unfriend";
+    return ApiHelper()
+        .delete("$endpoint?matchedId=$matchedId")
+        .then((response) {
+      if (response.statusCode == HttpStatus.ok) {
+        return true;
+      }
+      throw Exception("Lỗi ${response.statusCode}");
+    });
+  }
 }
