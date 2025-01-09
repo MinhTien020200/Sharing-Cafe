@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
@@ -21,7 +22,10 @@ class WeatherHelper {
         return weatherData;
       }
     } catch (e) {
-      ErrorHelper.showError(message: "Không thể lấy thông tin thời tiết");
+      // ErrorHelper.showError(message: "Không thể lấy thông tin thời tiết");
+      if (kDebugMode) {
+        print(e);
+      }
     }
     return null;
   }
