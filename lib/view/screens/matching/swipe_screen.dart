@@ -200,6 +200,13 @@ class _SwipeScreenState extends State<SwipeScreen> {
                               const Text(
                                 "Chọn độ tuổi",
                               ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                      "${_ageRange.start.round()} - ${_ageRange.end.round()}"),
+                                ],
+                              ),
                               RangeSlider(
                                 values: _ageRange,
                                 min: 10,
