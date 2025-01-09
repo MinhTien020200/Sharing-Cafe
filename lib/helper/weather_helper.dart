@@ -8,14 +8,14 @@ import 'package:sharing_cafe/helper/location_helper.dart';
 class WeatherHelper {
   // Replace with your actual API key
   String apiKey =
-      'bd5e378503939ddaee76f12ad7a97608'; // Copy from github https://gist.github.com/lalithabacies/c8f973dc6754384d6cade282b64a8cb1
+      'qs3f4traf7wcisg8roeyn1bfuibmfv4lhgo2gj5c'; // Copy from github https://gist.github.com/lalithabacies/c8f973dc6754384d6cade282b64a8cb1
 
   Future<dynamic> getWeather() async {
     try {
       Position position = await LocationHelper.getCurrentLocation();
       final response = await http.get(
         Uri.parse(
-            'https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=$apiKey'),
+            'https://www.meteosource.com/api/v1/free/point?lat=${position.latitude}&lon=${position.longitude}&sections=current&language=en&units=auto&key=$apiKey'),
       );
       if (response.statusCode == 200) {
         var weatherData = json.decode(response.body);

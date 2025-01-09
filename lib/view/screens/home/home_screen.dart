@@ -128,14 +128,14 @@ class _HomeScreen extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Nhiệt độ: ${WeatherHelper().kelvinToCelsius(weatherData['main']['temp'])}°C",
+                                "Nhiệt độ: ${weatherData['current']['temperature']}°C",
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: kPrimaryColor,
                                 ),
                               ),
                               Text(
-                                "Độ ẩm: ${weatherData['main']['humidity']}%",
+                                "${weatherData['current']['summary']}",
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: kPrimaryColor,
