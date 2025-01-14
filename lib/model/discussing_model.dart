@@ -15,7 +15,7 @@ class DiscussingModel {
 
   factory DiscussingModel.fromJson(Map<String, dynamic> json) {
     return DiscussingModel(
-      refId: json['refId'] as String,
+      refId: json['ref_id'] as String,
       type: DiscussingType.values[json['type'] as int],
       title: json['title'] as String,
       content: json['content'] as String,
@@ -24,7 +24,7 @@ class DiscussingModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'refId': refId,
+      'ref_id': refId,
       'type': type.value,
       'title': title,
       'content': content,

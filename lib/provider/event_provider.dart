@@ -2,6 +2,7 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/model/calendar_model.dart';
+import 'package:sharing_cafe/model/discussing_model.dart';
 import 'package:sharing_cafe/model/event_model.dart';
 import 'package:sharing_cafe/service/event_service.dart';
 
@@ -15,6 +16,7 @@ class EventProvider extends ChangeNotifier {
   List<EventModel> _searchEvents = [];
   List<CalendarModel> _calendar = [];
   List<CalendarEventData> _selectedCalendarCell = [];
+  List<DiscussingModel> _discussions = [];
   // public
   List<EventModel> get newEvents => _newEvents;
   List<EventModel> get suggestEvents => _suggestEvents;
@@ -24,6 +26,7 @@ class EventProvider extends ChangeNotifier {
   List<EventModel> get searchEvents => _searchEvents;
   List<CalendarModel> get calendar => _calendar;
   List<CalendarEventData> get selectedCalendarCell => _selectedCalendarCell;
+  List<DiscussingModel> get discussions => _discussions;
 
   Future getNewEvents() async {
     _newEvents = await EventService().getNewEvents();
@@ -171,5 +174,18 @@ class EventProvider extends ChangeNotifier {
   void setSelectedCalendarCell(List<CalendarEventData> selectedCalendarCell) {
     _selectedCalendarCell = selectedCalendarCell;
     notifyListeners();
+  }
+
+  Future createDiscussion(DiscussingModel discussion) async {
+    var result = await EventService().createDiscussion(discussion);
+    if (result) {
+      getDiscussions(discussion.refId);
+    }
+  }
+
+  Future<List<DiscussingModel>> getDiscussions(String eventId) async {
+    _discussions = await EventService().getDiscussing(eventId);
+    notifyListeners();
+    return _discussions;
   }
 }

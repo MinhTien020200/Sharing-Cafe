@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sharing_cafe/constants.dart';
 
 class DiscussingItem extends StatefulWidget {
   final String ownerAvatar;
@@ -51,7 +52,7 @@ class _DiscussingItemState extends State<DiscussingItem> {
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: 5,
+            itemCount: 0,
             itemBuilder: (context, index) {
               return ListTile(
                 leading: CircleAvatar(
@@ -63,7 +64,9 @@ class _DiscussingItemState extends State<DiscussingItem> {
             },
           ),
 
-          const Divider(),
+          const Divider(
+            color: kPrimaryColor,
+          ),
         ],
       ),
     );

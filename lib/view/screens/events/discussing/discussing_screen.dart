@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sharing_cafe/model/discussing_model.dart';
-import 'package:sharing_cafe/service/event_service.dart';
+import 'package:provider/provider.dart';
+import 'package:sharing_cafe/provider/event_provider.dart';
 import 'package:sharing_cafe/view/components/custom_network_image.dart';
 import 'package:sharing_cafe/view/screens/events/discussing/discussing_item.dart';
 import 'package:sharing_cafe/view/screens/events/discussing/discussing_popup.dart';
@@ -17,19 +17,13 @@ class _DiscussingScreenState extends State<DiscussingScreen> {
   String? _eventName;
   String? _eventImage;
   String? _eventId;
-  List<DiscussingModel> _discussingList = [];
-
   @override
   void initState() {
+    if (_eventId != null) {
+      Provider.of<EventProvider>(context, listen: false)
+          .getDiscussions(_eventId!);
+    }
     super.initState();
-  }
-
-  Future getDiscuss(eventId) {
-    return EventService().getDiscussing(eventId!).then((value) {
-      setState(() {
-        _discussingList = value;
-      });
-    });
   }
 
   @override
@@ -63,7 +57,7 @@ class _DiscussingScreenState extends State<DiscussingScreen> {
                   showModalBottomSheet(
                       context: context,
                       builder: (context) {
-                        return const DiscussingPopup();
+                        return DiscussingPopup(eventId: _eventId!);
                       });
                 },
                 child: const Text('Tạo thảo luận'),
@@ -71,23 +65,22 @@ class _DiscussingScreenState extends State<DiscussingScreen> {
             ),
 
             const SizedBox(height: 20),
-            FutureBuilder(
-                future: getDiscuss(_eventId),
-                builder: (context, snapshot) {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: _discussingList.length,
-                    itemBuilder: (context, index) {
-                      var item = _discussingList[index];
-                      return DiscussingItem(
-                        ownerAvatar: 'https://picsum.photos/200',
-                        ownerName: item.title,
-                        content: item.content,
-                      );
-                    },
+            Consumer<EventProvider>(builder: (context, value, child) {
+              var discussingList = value.discussions;
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: discussingList.length,
+                itemBuilder: (context, index) {
+                  var item = discussingList[index];
+                  return DiscussingItem(
+                    ownerAvatar: 'https://picsum.photos/200',
+                    ownerName: item.title,
+                    content: item.content,
                   );
-                })
+                },
+              );
+            })
           ],
         ),
       ),

@@ -307,4 +307,20 @@ class EventService {
     }
     return [];
   }
+
+  Future<bool> createDiscussion(DiscussingModel discussion) async {
+    try {
+      var response =
+          await ApiHelper().post('/auth/discuss', discussion.toJson());
+      if (response.statusCode == HttpStatus.ok) {
+        return true;
+      } else {
+        ErrorHelper.showError(
+            message: "Lỗi ${response.statusCode}: Không thể tạo thảo luận");
+      }
+    } on Exception catch (_, e) {
+      print(e);
+    }
+    return false;
+  }
 }
