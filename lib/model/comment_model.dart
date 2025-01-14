@@ -16,10 +16,10 @@ class CommentModel {
   factory CommentModel.fromJson(Map<String, dynamic> json) {
     return CommentModel(
       commentId: json['comment_id'],
-      content: json['content'],
+      content: json['content'] ?? "",
       userId: json['user_id'],
-      userName: json['user_name'],
-      profileAvatar: json['profile_avatar'],
+      userName: json['user_name'] ?? "",
+      profileAvatar: json['profile_avatar'] ?? "",
     );
   }
 }
