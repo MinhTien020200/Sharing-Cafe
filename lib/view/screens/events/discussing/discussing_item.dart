@@ -4,11 +4,13 @@ import 'package:sharing_cafe/constants.dart';
 class DiscussingItem extends StatefulWidget {
   final String ownerAvatar;
   final String ownerName;
+  final String title;
   final String content;
   const DiscussingItem(
       {super.key,
       required this.ownerAvatar,
       required this.ownerName,
+      required this.title,
       required this.content});
 
   @override
@@ -28,10 +30,26 @@ class _DiscussingItemState extends State<DiscussingItem> {
             leading: CircleAvatar(
               backgroundImage: NetworkImage(widget.ownerAvatar),
             ),
-            title: Text(widget.ownerName),
+            title: Text(
+              widget.ownerName,
+              style: const TextStyle(
+                color: kPrimaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Text(
+              widget.title,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Color(0xFF333333)),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: Text(widget.content),
           ),
           const SizedBox(height: 8.0),

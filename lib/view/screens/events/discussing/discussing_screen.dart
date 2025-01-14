@@ -74,9 +74,11 @@ class _DiscussingScreenState extends State<DiscussingScreen> {
                 itemBuilder: (context, index) {
                   var item = discussingList[index];
                   return DiscussingItem(
-                    ownerAvatar: 'https://picsum.photos/200',
-                    ownerName: item.title,
+                    ownerAvatar:
+                        item.profileAvatar ?? 'https://picsum.photos/200',
+                    ownerName: item.userName ?? "",
                     content: item.content,
+                    title: item.title,
                   );
                 },
               );

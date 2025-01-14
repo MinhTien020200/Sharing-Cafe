@@ -294,7 +294,7 @@ class EventService {
           '/auth/discuss?ref_id=$eventId&type=${DiscussingType.event.value}');
       if (response.statusCode == HttpStatus.ok) {
         var jsonList = json.decode(response.body) as List;
-        return jsonList
+        return jsonList.reversed
             .map<DiscussingModel>((e) => DiscussingModel.fromJson(e))
             .toList();
       } else {
