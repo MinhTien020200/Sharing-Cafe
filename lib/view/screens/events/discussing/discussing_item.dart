@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:sharing_cafe/constants.dart';
+import 'package:sharing_cafe/model/comment_model.dart';
+import 'package:sharing_cafe/service/event_service.dart';
 
 class DiscussingItem extends StatefulWidget {
+  final String id;
   final String ownerAvatar;
   final String ownerName;
   final String title;
   final String content;
   const DiscussingItem(
       {super.key,
+      required this.id,
       required this.ownerAvatar,
       required this.ownerName,
       required this.title,
@@ -18,6 +22,22 @@ class DiscussingItem extends StatefulWidget {
 }
 
 class _DiscussingItemState extends State<DiscussingItem> {
+  final TextEditingController _controller = TextEditingController();
+  List<CommentModel> comments = [];
+  bool isCommenting = false;
+  @override
+  void initState() {
+    super.initState();
+    getComments();
+  }
+
+  Future getComments() async {
+    var result = await EventService().getDiscussionComments(widget.id);
+    setState(() {
+      comments = result.reversed.toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -55,13 +75,39 @@ class _DiscussingItemState extends State<DiscussingItem> {
           const SizedBox(height: 8.0),
           Row(
             children: [
-              const Spacer(),
+              Expanded(
+                child: TextField(
+                  decoration: const InputDecoration(
+                    hintText: 'Bình luận',
+                    border: OutlineInputBorder(),
+                  ),
+                  controller: _controller,
+                ),
+              ),
+              isCommenting
+                  ? const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator(
+                        color: kPrimaryColor,
+                      ),
+                    )
+                  : IconButton(
+                      icon: const Icon(Icons.send),
+                      onPressed: () async {
+                        setState(() {
+                          isCommenting = true;
+                        });
+                        await EventService()
+                            .commentDiscussion(widget.id, _controller.text);
+                        await getComments();
+                        setState(() {
+                          isCommenting = false;
+                          _controller.clear();
+                        });
+                      },
+                    ),
               IconButton(
                 icon: const Icon(Icons.thumb_up),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: const Icon(Icons.comment),
                 onPressed: () {},
               ),
             ],
@@ -70,14 +116,15 @@ class _DiscussingItemState extends State<DiscussingItem> {
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: 0,
+            itemCount: comments.length,
             itemBuilder: (context, index) {
+              var comment = comments[index];
               return ListTile(
                 leading: CircleAvatar(
-                  backgroundImage: NetworkImage(widget.ownerAvatar),
+                  backgroundImage: NetworkImage(comment.profileAvatar),
                 ),
-                title: const Text('Reply owner name'),
-                subtitle: const Text('Reply content'),
+                title: Text(comment.userName),
+                subtitle: Text(comment.content),
               );
             },
           ),

@@ -4,6 +4,7 @@ class CommentModel {
   String userId;
   String userName;
   String profileAvatar;
+  DateTime? createdAt;
 
   CommentModel({
     required this.commentId,
@@ -11,6 +12,7 @@ class CommentModel {
     required this.userId,
     required this.userName,
     required this.profileAvatar,
+    this.createdAt,
   });
 
   factory CommentModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,9 @@ class CommentModel {
       userId: json['user_id'],
       userName: json['user_name'] ?? "",
       profileAvatar: json['profile_avatar'] ?? "",
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'])
+          : null,
     );
   }
 }

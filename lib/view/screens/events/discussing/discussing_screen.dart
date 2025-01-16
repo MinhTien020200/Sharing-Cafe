@@ -19,10 +19,11 @@ class _DiscussingScreenState extends State<DiscussingScreen> {
   String? _eventId;
   @override
   void initState() {
-    if (_eventId != null) {
+    Future.delayed(const Duration(milliseconds: 100), () {
+      // ignore: use_build_context_synchronously
       Provider.of<EventProvider>(context, listen: false)
           .getDiscussions(_eventId!);
-    }
+    });
     super.initState();
   }
 
@@ -74,6 +75,7 @@ class _DiscussingScreenState extends State<DiscussingScreen> {
                 itemBuilder: (context, index) {
                   var item = discussingList[index];
                   return DiscussingItem(
+                    id: item.id ?? "",
                     ownerAvatar:
                         item.profileAvatar ?? 'https://picsum.photos/200',
                     ownerName: item.userName ?? "",

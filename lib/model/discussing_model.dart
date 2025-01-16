@@ -1,6 +1,7 @@
 import 'package:sharing_cafe/enums.dart';
 
 class DiscussingModel {
+  String? id;
   String refId;
   DiscussingType type;
   String title;
@@ -9,6 +10,7 @@ class DiscussingModel {
   String? profileAvatar;
 
   DiscussingModel({
+    this.id,
     required this.refId,
     required this.type,
     required this.title,
@@ -19,6 +21,7 @@ class DiscussingModel {
 
   factory DiscussingModel.fromJson(Map<String, dynamic> json) {
     return DiscussingModel(
+      id: json['id'] as String,
       refId: json['ref_id'] as String,
       type: DiscussingType.values[json['type'] as int],
       title: json['title'] as String,

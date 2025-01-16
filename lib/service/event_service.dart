@@ -9,6 +9,7 @@ import 'package:sharing_cafe/helper/api_helper.dart';
 import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/helper/shared_prefs_helper.dart';
 import 'package:sharing_cafe/model/calendar_model.dart';
+import 'package:sharing_cafe/model/comment_model.dart';
 import 'package:sharing_cafe/model/discussing_model.dart';
 import 'package:sharing_cafe/model/event_model.dart';
 import 'package:sharing_cafe/model/event_participant.dart';
@@ -317,6 +318,45 @@ class EventService {
       } else {
         ErrorHelper.showError(
             message: "Lỗi ${response.statusCode}: Không thể tạo thảo luận");
+      }
+    } on Exception catch (_, e) {
+      print(e);
+    }
+    return false;
+  }
+
+  Future<List<CommentModel>> getDiscussionComments(String discussId) async {
+    try {
+      var response =
+          await ApiHelper().get('/auth/discuss/comment?discuss_id=$discussId');
+      if (response.statusCode == HttpStatus.ok) {
+        var jsonList = json.decode(response.body) as List;
+        return jsonList
+            .map<CommentModel>((e) => CommentModel.fromJson(e))
+            .toList();
+      } else {
+        ErrorHelper.showError(
+            message:
+                "Lỗi ${response.statusCode}: Không thể lấy danh sách bình luận");
+      }
+    } on Exception catch (_, e) {
+      print(e);
+    }
+    return [];
+  }
+
+  Future commentDiscussion(String discussId, String content) async {
+    try {
+      var data = {
+        "discuss_id": discussId,
+        "content": content,
+      };
+      var response = await ApiHelper().post('/auth/discuss/comment', data);
+      if (response.statusCode == HttpStatus.ok) {
+        return true;
+      } else {
+        ErrorHelper.showError(
+            message: "Lỗi ${response.statusCode}: Không thể bình luận");
       }
     } on Exception catch (_, e) {
       print(e);
