@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sharing_cafe/enums.dart';
+import 'package:sharing_cafe/helper/error_helper.dart';
 import 'package:sharing_cafe/model/discussing_model.dart';
 import 'package:sharing_cafe/provider/event_provider.dart';
 

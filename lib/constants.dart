@@ -12,6 +12,7 @@ const kTextColor = Colors.black;
 const kButtonColor = Color(0xFFF6EFED);
 const kFormFieldColor = Color(0xFFFAFAFA);
 const kErrorColor = Color.fromARGB(255, 214, 38, 38);
+const kSuccessColor = Color.fromARGB(255, 0, 200, 83);
 
 const kAnimationDuration = Duration(milliseconds: 200);
 

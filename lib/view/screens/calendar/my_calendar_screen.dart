@@ -29,6 +29,7 @@ class _MyCalendarScreenState extends State<MyCalendarScreen> {
       List<CalendarEventData> calendar = value.calendar.map((e) {
         return CalendarEventData(
           date: e.startDate,
+          endDate: e.endDate,
           title: e.title,
           description: e.description,
           startTime: e.startDate,
@@ -73,40 +74,43 @@ class _MyCalendarScreenState extends State<MyCalendarScreen> {
               color: isToday ? kPrimaryLightColor : Colors.white,
             ),
             child: isInMonth
-                ? Column(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            top: isToday
-                                ? const BorderSide(color: kPrimaryColor)
-                                : BorderSide.none,
+                ? SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top: isToday
+                                  ? const BorderSide(color: kPrimaryColor)
+                                  : BorderSide.none,
+                            ),
+                          ),
+                          child: Text(
+                            date.day.toString(),
+                            style: TextStyle(
+                                color: isToday ? kPrimaryColor : Colors.black),
                           ),
                         ),
-                        child: Text(
-                          date.day.toString(),
-                          style: TextStyle(
-                              color: isToday ? kPrimaryColor : Colors.black),
-                        ),
-                      ),
-                      if (event.isNotEmpty)
-                        ListView(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          children: event
-                              .map((e) => Container(
-                                  decoration: const BoxDecoration(
-                                      color: kPrimaryColor,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(4))),
-                                  height: 20,
-                                  child: Text(
-                                    e.title,
-                                    style: const TextStyle(color: Colors.white),
-                                  )))
-                              .toList(),
-                        )
-                    ],
+                        if (event.isNotEmpty)
+                          ListView(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            children: event
+                                .map((e) => Container(
+                                    decoration: const BoxDecoration(
+                                        color: kPrimaryColor,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4))),
+                                    height: 20,
+                                    child: Text(
+                                      e.title,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    )))
+                                .toList(),
+                          )
+                      ],
+                    ),
                   )
                 : Container(),
           ),

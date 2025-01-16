@@ -51,27 +51,15 @@ class _DayViewScreenState extends State<DayViewScreen> {
               borderRadius: BorderRadius.circular(8),
             ),
             padding: const EdgeInsets.all(8),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    events.firstOrNull?.title ?? "",
-                    style: const TextStyle(
-                      color: kPrimaryColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Text(events.firstOrNull?.description ?? "",
-                      style: const TextStyle(
-                        color: kTextColor,
-                        fontSize: 16,
-                        overflow: TextOverflow.ellipsis,
-                      ))
-                ],
-              ),
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: events.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(events[index].title),
+                  subtitle: Text(events[index].description ?? ""),
+                );
+              },
             ),
           ),
         ),

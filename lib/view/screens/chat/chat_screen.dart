@@ -403,7 +403,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                                   .appointment!
                                                                   .id!,
                                                               false);
-                                                      ErrorHelper.showError(
+                                                      ErrorHelper.showSuccess(
                                                           message:
                                                               "Hủy lịch hẹn thành công");
                                                       setState(() {
