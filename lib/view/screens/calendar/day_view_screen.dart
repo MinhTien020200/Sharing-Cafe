@@ -20,19 +20,19 @@ class _DayViewScreenState extends State<DayViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<EventProvider>(builder: (context, value, child) {
-      final List<CalendarEventData> events = value.selectedCalendarCell;
+      final List<CalendarEventData> _events = value.selectedCalendarCell;
       return Scaffold(
         appBar: AppBar(
           title: const Text("Lịch của tôi"),
         ),
         body: DayView(
-          controller: EventController()..addAll(events),
+          controller: EventController()..addAll(_events),
           showVerticalLine: true, // To display live time line in day view.
           showLiveTimeLineInAllDays:
               true, // To display live time line in all pages in day view.
           minDay: DateTime(1990),
           maxDay: DateTime(2050),
-          initialDay: events.firstOrNull?.date ?? _now,
+          initialDay: _events.firstOrNull?.date ?? _now,
           heightPerMinute: 1, // height occupied by 1 minute time span.
           eventArranger:
               const SideEventArranger(), // To define how simultaneous events will be arranged.
