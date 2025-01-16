@@ -87,15 +87,53 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   }
 
   void _handleDateTimeChange(DateTime? dateTime) {
+    if (_endOfEvent != null) {
+      var end = DateTime.tryParse(_endOfEvent!);
+      if (end != null) {
+        if (dateTime != null) {
+          if (dateTime.isAfter(end) || compareTimeBigger(dateTime, end)) {
+            ErrorHelper.showError(
+                message: "Giờ bắt đầu phải nhỏ hơn giờ kết thúc");
+            return;
+          }
+        }
+      }
+    }
     setState(() {
       _timeOfEvent = dateTime?.toIso8601String();
     });
   }
 
   void _handleEndTimeChange(DateTime? dateTime) {
+    // check time of end larger than start time
+    if (_timeOfEvent != null) {
+      var start = DateTime.tryParse(_timeOfEvent!);
+      if (start != null) {
+        if (dateTime != null) {
+          if (dateTime.isBefore(start) || !compareTimeBigger(dateTime, start)) {
+            ErrorHelper.showError(
+                message: "Giờ kết thúc phải lớn hơn giờ bắt đầu");
+            return;
+          }
+        }
+      }
+    }
     setState(() {
       _endOfEvent = dateTime?.toIso8601String();
     });
+  }
+
+  bool compareTimeBigger(DateTime dt1, DateTime dt2) {
+    if (dt1.hour != dt2.hour) {
+      return dt1.hour > dt2.hour;
+    }
+    if (dt1.minute != dt2.minute) {
+      return dt1.minute > dt2.minute;
+    }
+    if (dt1.second != dt2.second) {
+      return dt1.second > dt2.second;
+    }
+    return dt1.millisecond > dt2.millisecond;
   }
 
   @override
