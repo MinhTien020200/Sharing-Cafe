@@ -9,13 +9,17 @@ class DiscussingItem extends StatefulWidget {
   final String ownerName;
   final String title;
   final String content;
+  final int likeCount;
+  final bool isLiked;
   const DiscussingItem(
       {super.key,
       required this.id,
       required this.ownerAvatar,
       required this.ownerName,
       required this.title,
-      required this.content});
+      required this.content,
+      required this.likeCount,
+      required this.isLiked});
 
   @override
   State<DiscussingItem> createState() => _DiscussingItemState();
@@ -25,8 +29,13 @@ class _DiscussingItemState extends State<DiscussingItem> {
   final TextEditingController _controller = TextEditingController();
   List<CommentModel> comments = [];
   bool isCommenting = false;
+  int _likeCount = 0;
+  bool _isLike = false;
+  bool isLiking = false;
   @override
   void initState() {
+    _likeCount = widget.likeCount;
+    _isLike = widget.isLiked;
     super.initState();
     getComments();
   }
@@ -36,6 +45,10 @@ class _DiscussingItemState extends State<DiscussingItem> {
     setState(() {
       comments = result.reversed.toList();
     });
+  }
+
+  Future likeDiscuss() {
+    return EventService().likeDiscuss(widget.id, !_isLike);
   }
 
   @override
@@ -106,10 +119,32 @@ class _DiscussingItemState extends State<DiscussingItem> {
                         });
                       },
                     ),
-              IconButton(
-                icon: const Icon(Icons.thumb_up),
-                onPressed: () {},
-              ),
+              Text('$_likeCount'),
+              isLiking
+                  ? const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator(
+                        color: kPrimaryColor,
+                      ))
+                  : IconButton(
+                      icon: Icon(
+                        Icons.thumb_up,
+                        color: _isLike ? kPrimaryColor : null,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isLiking = true;
+                        });
+                        likeDiscuss().then((value) {
+                          setState(() {
+                            _isLike = !_isLike;
+                            _likeCount =
+                                _isLike ? _likeCount + 1 : _likeCount - 1;
+                            isLiking = false;
+                          });
+                        });
+                      },
+                    ),
             ],
           ),
           // reply list

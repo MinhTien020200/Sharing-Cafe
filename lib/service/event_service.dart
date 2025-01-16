@@ -363,4 +363,22 @@ class EventService {
     }
     return false;
   }
+
+  Future likeDiscuss(String discussId, bool isLike) async {
+    try {
+      var response = await ApiHelper().post('/auth/discuss/like', {
+        "discuss_id": discussId,
+        "is_like": isLike,
+      });
+      if (response.statusCode == HttpStatus.ok) {
+        return true;
+      } else {
+        ErrorHelper.showError(
+            message: "Lỗi ${response.statusCode}: Không thể thích");
+      }
+    } on Exception catch (_, e) {
+      print(e);
+    }
+    return false;
+  }
 }

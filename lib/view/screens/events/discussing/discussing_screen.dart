@@ -81,6 +81,8 @@ class _DiscussingScreenState extends State<DiscussingScreen> {
                     ownerName: item.userName ?? "",
                     content: item.content,
                     title: item.title,
+                    likeCount: item.likeCount,
+                    isLiked: item.isLiked,
                   );
                 },
               );

@@ -8,6 +8,8 @@ class DiscussingModel {
   String content;
   String? userName;
   String? profileAvatar;
+  int likeCount;
+  bool isLiked;
 
   DiscussingModel({
     this.id,
@@ -17,6 +19,8 @@ class DiscussingModel {
     required this.content,
     this.userName,
     this.profileAvatar,
+    this.likeCount = 0,
+    this.isLiked = false,
   });
 
   factory DiscussingModel.fromJson(Map<String, dynamic> json) {
@@ -28,6 +32,8 @@ class DiscussingModel {
       content: json['content'] as String,
       userName: json['user_name'] as String?,
       profileAvatar: json['profile_avatar'] as String?,
+      likeCount: json['like_count'] as int,
+      isLiked: json['is_like'] as bool,
     );
   }
 
